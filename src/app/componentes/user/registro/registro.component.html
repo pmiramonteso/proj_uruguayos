@@ -13,7 +13,7 @@
         </div>
         <h2 class="text-lg font-semibold text-left text-black mb-4">Crea tu cuenta</h2>
 
-        <form [formGroup]="registroForm" (ngSubmit)="registrar()" class="space-y-4">
+        <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="space-y-4">
           <!-- Campo Nombre -->
           <div>
             <label for="nombre" class="block text-sm font-medium text-black mb-1">Nombre</label>
@@ -39,7 +39,7 @@
               placeholder="Introduce tus apellidos"
             />
             @if(registroForm.get('apellidos')?.invalid && (registroForm.get('apellidos')?.dirty || registroForm.get('apellidos')?.touched)) {
-                <div class="text-red-500 text-sm">Los apellidos son requerido</div>
+                <div class="text-red-500 text-sm">Los apellidos son requeridos</div>
               }
           </div>
 
@@ -58,7 +58,7 @@
                 Ya hay una cuenta registrada con este correo.
               </div>
             }
-               @if(registroForm.get('email')?.invalid && (registroForm.get('email')?.dirty || registroForm.get('email')?.touched)) {
+            @if(registroForm.get('email')?.invalid && (registroForm.get('email')?.dirty || registroForm.get('email')?.touched)) {
                 <div class="text-red-500 text-sm">El email es requerido y debe ser válido</div>
               }
           </div>
@@ -80,7 +80,7 @@
 
           <button
             type="submit"
-            (click)="registrar()"
+            (click)="onSubmit()"
             class="w-full py-2 mt-4 bg-teal-400 text-white font-semibold rounded hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             [disabled]="registroForm.invalid"
           >

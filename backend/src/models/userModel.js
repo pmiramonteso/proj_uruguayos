@@ -3,7 +3,7 @@ import { sequelize } from '../db.js';
 
 const User = sequelize.define('User', {
   id_user: {
-    type: DataTypes.INTEGER(8).UNSIGNED,
+    type: DataTypes.INTEGER(5).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
   },
@@ -37,7 +37,7 @@ const User = sequelize.define('User', {
     set(value) {
       this.setDataValue('roles', value.join(','));
     }
-  }/*,
+  },
   photo: {
     type: DataTypes.STRING(30),
     allowNull: true,
@@ -46,7 +46,7 @@ const User = sequelize.define('User', {
   indexes: [{ unique: true, fields: ['email'] }],
   timestamps: true, // Activa la creación automática de createdAt y updatedAt
   updatedAt: 'updated_at',
-  createdAt: 'created_at'*/
+  createdAt: 'created_at'
 });
 
 export default User;

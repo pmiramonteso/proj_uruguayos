@@ -9,7 +9,7 @@ const RecoveryToken = sequelize.define('RecoveryToken', {
     unique: true
   },
   user_id: {
-    type: DataTypes.INTEGER(8).UNSIGNED,
+    type: DataTypes.INTEGER(5).UNSIGNED,
     allowNull: false
   },
   created_at: {

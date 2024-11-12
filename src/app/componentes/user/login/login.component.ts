@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
 
@@ -10,37 +10,49 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginForm!: FormGroup;
+  email: FormControl;
+  password: FormControl;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService,  private router: Router) {}
+  constructor( private authService: AuthService,  private router: Router) {
+    this.email = new FormControl('', Validators.required);
+    this.password = new FormControl('', Validators.required);
 
-    ngOnInit(): void {
-      this.loginForm = this.fb.group({
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required]]
-      });
-    }
+    this.loginForm = new FormGroup({
+      email: this.email,
+      password: this.password,
+    })
+  }
   
-    onSubmit(): void {
-      if (this.loginForm.valid) {
-        const { email, password } = this.loginForm.value;
-  
-        this.authService.login(email, password).subscribe(
-          (response) => {
-            this.authService.setToken(response.token);
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.errorMessage = null;
 
-            if (this.authService.isAdmin()) {
-              this.router.navigate(['/admin']);
-            } else {
-            this.router.navigate(['/home']);
+      this.authService.login(this.email.value, this.password.value).subscribe({
+        next: response => {
+          if (response.code === 1) {
+            console.log('Login correcto');
+            this.router.navigate(['/']);
+          } else {
+            console.error('Login incorrecto', response.message);
           }
         },
-        (error) => {
-          this.errorMessage = error.message || 'Error de autenticación';
+        error: error => {
+          if (error.status === 401) {
+            if (error.error.message === 'user No exist') {
+              this.errorMessage = 'No estás registrado como usuario';
+            } else if (error.error.message === 'Credenciales incorrectas') {
+              this.errorMessage = 'Contraseña incorrecta';
+            } else {
+              this.errorMessage = 'Login incorrecto. Verifica tu email y/o contraseña';
+            }
+          } else {
+            console.error('Login error', error);
           }
-        );
-      }
+        }
+      });
     }
+  }
 }

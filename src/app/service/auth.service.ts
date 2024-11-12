@@ -1,40 +1,67 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000'; //Back
+  private apiUrl = `${environment.endpoint}auth` //Back
+  private userId: number | null = null;
 
   constructor(private http: HttpClient) {}
 
+  getUserId(): number | null {
+    return this.userId;
+  }
+  public setUserId(id: number): void {
+    this.userId = id;
+  }
+
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/usuarios`, { email, password }).pipe(
-      catchError(this.handleError),
-      tap((response: any) => {
-        if (response.token) {
-          console.log('Token recibido:', response.token); 
-          this.setToken(response.token);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const body = new URLSearchParams();
+    body.set('email', email);
+    body.set('password', password);
+
+    return this.http.post<any>(`${this.apiUrl}/login`, body.toString(), { headers, withCredentials: true }).pipe(
+      tap(response => {
+        console.log('Login response:', response);
+        if (response.code === 1) {
+          localStorage.setItem('token', response.token);
+          console.log('User data received:', response.data);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          const userObj = response.data.user;
+          this.userId = userObj.id_user;
+
+          if (userObj.photo) {
+            localStorage.setItem('userPhotoUrl', `${environment.endpoint}uploads/${userObj.photo}`);
+          }
+        } else {
+          console.error('Login failed:', response.message);
         }
       })
     );
   }
 
-  registro(nombre: string, apellidos: string, email: string, password: string): Observable<any> {
-    const body = { nombre, apellidos, email, password };
-    return this.http.post(`${this.apiUrl}/api/usuarios`, body).pipe(
-      catchError((error) => {
-          if (error.error.message === 'El correo ya está registrado') {
-              return throwError(() => new Error('Este correo ya está registrado.'));
+  registro(userData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/registro`, userData, { withCredentials: true }).pipe(
+      tap(response => {
+        if (response.code === 1) {
+          if (response.token) {
+            localStorage.setItem('token', response.token);
           }
-          return throwError(() => new Error(error.message));
+          if (response.data && response.data.user) {
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+          }
+        } else {
+          console.error('Registration failed:', response.message);
+        }
       })
-  );
-}
+    );
+  }
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -44,50 +71,9 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  isAuthenticated(): boolean {
-    const token = this.getToken();
-    if (token) {
-      const decodedToken = this.decodeToken(token);
-      if (this.isTokenExpired(decodedToken)) {
-        this.logout();
-        return false;
-      }
-      return true;
-    }
-    return false;
-  }
-
-  isAdmin(): boolean {
-    const token = this.getToken();
-    if (token) {
-      const decodedToken = this.decodeToken(token);
-      return decodedToken.rol === 'admin';
-    }
-    return false;
-  }
-
-  decodeToken(token: string) {
-    const payload = atob(token.split('.')[1]);
-    return JSON.parse(payload);
-  }
-
-  isTokenExpired(decodedToken: any): boolean {
-    const expDate = decodedToken.exp * 1000;
-    return new Date().getTime() > expDate;
-  }
-
-  logout() {
+  logout(): void {
     localStorage.removeItem('token');
-  }
-
-  private handleError(error: any) {
-    let errorMessage = 'An error occurred';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      errorMessage = `Backend returned code ${error.status}, body was: ${error.error}`;
-    }
-    return throwError(() => new Error(errorMessage));
+    localStorage.removeItem('user');
   }
 
 //CRUD Usuarios

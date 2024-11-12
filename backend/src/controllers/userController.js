@@ -15,8 +15,8 @@ export const getUser = async (req, res) => {
       "email": req.user.email,
       "photo": req.user.photo,
       "roles": req.user.roles,
-      //"created_at": req.user.created_at,
-      //"updated_at": req.user.updated_at
+     "created_at": req.user.created_at,
+     "updated_at": req.user.updated_at
     };
 
     // Enviar una respuesta al cliente

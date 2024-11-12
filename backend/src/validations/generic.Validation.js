@@ -5,5 +5,5 @@ export const idValidator = [
 ]
 
 export const nameValidator = [
-    body('name').isString().withMessage('Invalid Name file')
+    body('nombre').isString().withMessage('Invalid Name file')
 ]
