@@ -1,7 +1,7 @@
-import Book from '../models/bookModel.js';
-import { validationResult } from 'express-validator';
+const Book = require('../models/bookModel.js');
+const { validationResult } = require('express-validator');
 
-export const getBooks = async (req, res) => {
+const getBooks = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -28,7 +28,7 @@ export const getBooks = async (req, res) => {
   }
 };
 
-export const getBookById = async (req, res) => {
+const getBookById = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -63,7 +63,7 @@ export const getBookById = async (req, res) => {
   }
 };
 
-export const addBook = async (req, res) => {
+const addBook = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -108,7 +108,7 @@ export const addBook = async (req, res) => {
   }
 };
 
-export const updateBook = async (req, res) => {
+const updateBook = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -149,7 +149,7 @@ export const updateBook = async (req, res) => {
   }
 };
 
-export const deleteBook = async (req, res) => {
+const deleteBook = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -169,8 +169,8 @@ export const deleteBook = async (req, res) => {
         code: -100,
         message: 'Book Not Found'
       });
-     }
- 
+    }
+
     // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
@@ -184,4 +184,12 @@ export const deleteBook = async (req, res) => {
       message: 'Ha ocurrido un error al eliminar el libro'
     });
   }
+};
+
+module.exports = {
+  getBooks,
+  getBookById,
+  addBook,
+  updateBook,
+  deleteBook
 };

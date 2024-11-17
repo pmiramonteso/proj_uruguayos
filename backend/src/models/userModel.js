@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db.js');
 
 const User = sequelize.define('User', {
   id_user: {
@@ -24,9 +24,10 @@ const User = sequelize.define('User', {
     allowNull: false,
   },
   roles: {
-    type: DataTypes.STRING(30),
+    type: DataTypes.ENUM("admin","user"),
     allowNull: false,
-    get() {
+    defaultValue: 'user',
+    /*get() {
       const rawValue = this.getDataValue('roles');
       if (!rawValue) {
         console.log('Valor de roles es undefined o null');
@@ -36,17 +37,17 @@ const User = sequelize.define('User', {
     },
     set(value) {
       this.setDataValue('roles', value.join(','));
-    }
+    }*/
   },
   photo: {
     type: DataTypes.STRING(30),
     allowNull: true,
   },
-},{
+}, {
   indexes: [{ unique: true, fields: ['email'] }],
   timestamps: true, // Activa la creación automática de createdAt y updatedAt
   updatedAt: 'updated_at',
   createdAt: 'created_at'
 });
 
-export default User;
+module.exports = User;

@@ -1,9 +1,8 @@
-// src/routes/userRoutes.js
-import { Router } from 'express';
-import { getBooks, getBookById, addBook, updateBook, deleteBook } from '../controllers/bookController.js';
-import { authenticateToken } from '../middlewares/authenticateToken.js';
-import { bookValidator } from '../validations/book.Validation.js';
-import { idValidator } from '../validations/generic.Validation.js'
+const { Router } = require('express');
+const { getBooks, getBookById, addBook, updateBook, deleteBook } = require('../controllers/bookController.js');
+const { authenticateToken } = require('../middlewares/authenticateToken.js');
+const { bookValidator } = require('../validations/book.Validation.js');
+const { idValidator } = require('../validations/generic.Validation.js');
 
 const router = Router();
 
@@ -15,4 +14,4 @@ router.patch('/:id', authenticateToken(['user','mod','admin']), idValidator, boo
 router.delete('/:id', authenticateToken(['user','mod','admin']), idValidator, deleteBook);
 router.get('/top-ventas', getBooks);
 
-export default router;
+module.exports = router;

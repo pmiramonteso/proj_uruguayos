@@ -11,13 +11,13 @@ import { Router } from '@angular/router';
   styleUrl: './registro.component.scss'
 })
 export class RegistroComponent {
-  registroForm!: FormGroup;
+  registroForm: FormGroup;
   nombre: FormControl;
   apellidos: FormControl;
   email: FormControl;
   password: FormControl;
   selectedFile: File | null = null;
-  correoEnUso: boolean = false;
+  correoEnUso: string | null = null;
 
   constructor( private authService: AuthService, private router: Router) {
     
@@ -27,17 +27,24 @@ export class RegistroComponent {
       this.password = new FormControl('', [
         Validators.required,
         Validators.minLength(6)]);
-        this.registroForm = new FormGroup({
-          nombre: this.nombre,
-          apellidos: this.apellidos,
-          email: this.email,
-          password: this.password,
-        });
+      
+      this.registroForm = new FormGroup({
+      nombre: this.nombre,
+      apellidos: this.apellidos,
+      email: this.email,
+      password: this.password,
+      });
+    }
+
+    onFileSelected(event: Event) {
+      const fileInput = event.target as HTMLInputElement;
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        this.selectedFile = fileInput.files[0];
       }
-  
+    }
   onSubmit() {
     if (this.registroForm.valid) {
-      this.correoEnUso = false;
+      this.correoEnUso = null;
 
       const formData = new FormData();
       formData.append('nombre', this.nombre.value);
@@ -48,7 +55,10 @@ export class RegistroComponent {
       if (this.selectedFile) {
         formData.append('file', this.selectedFile);
       }
-
+      //Verifico que recibo datos
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
       this.authService.registro(formData).subscribe({
         next: response => {
           if (response.code === 1) {
@@ -71,8 +81,8 @@ export class RegistroComponent {
           console.error('Error en registro', error);
           if (error.status === 400) {
             console.error('Detalles del error:', error.error);
-          if (error.status === 400 && error.error.message === 'Ya existe un usuario con el mismo correo electrónico') {
-            this.correoEnUso = true;
+          if (error.status === 400 && error.error.message === 'Existe un usuario con este correo electrónico') {
+            this.correoEnUso = 'Ya existe este correo';
           }
         }
         }

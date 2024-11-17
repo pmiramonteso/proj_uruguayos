@@ -1,8 +1,7 @@
-// src/middlewares/authenticateToken.js
-import jwt from 'jsonwebtoken';
-import User from '../models/userModel.js';
+const jwt = require('jsonwebtoken');
+const User = require('../models/userModel.js');
 
-export const authenticateToken = (allowedRoles) => async (req, res, next) => {
+const authenticateToken = (allowedRoles) => async (req, res, next) => {
   try {
     const { cookies } = req;
     const accessToken = cookies.token;
@@ -41,3 +40,5 @@ export const authenticateToken = (allowedRoles) => async (req, res, next) => {
     });
   }
 };
+
+module.exports = { authenticateToken };

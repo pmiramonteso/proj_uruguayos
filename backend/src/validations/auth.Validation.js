@@ -1,7 +1,6 @@
-import { body } from 'express-validator';
+const { body } = require('express-validator');
 
-
-export const loginValidator = [
+const loginValidator = [
     body("email").isEmail().withMessage("Provide valid email"),
     body("password")
         .exists()
@@ -9,10 +8,10 @@ export const loginValidator = [
         .isString()
         .withMessage("Password should be string")
         .isLength({ min: 6 })
-        .withMessage("Password should be at least 5 characters")
-]
+        .withMessage("Password should be at least 6 characters")
+];
 
-export const registroValidator = [
+const registroValidator = [
     body("nombre").isString(),
     body("apellidos").isString(),
     body("email").isEmail(),
@@ -23,22 +22,16 @@ export const registroValidator = [
         .withMessage("Password should be string")
         .isLength({ min: 6 })
         .withMessage("Password should be at least 6 characters")
-        .custom(value => {
-            if (value == '123456') {
-                throw new Error('Este pass es muy basico');
-            }
-            return true;
-        })
-]
+];
 
-export const forgotPasswordValidator = [
+const forgotPasswordValidator = [
     body("email").isEmail()
 ];
 
-export const changePasswordValidator = [
+const changePasswordValidator = [
     body("token")
         .exists(),
-        body("password")
+    body("password")
         .exists()
         .withMessage("Password is required")
         .isString()
@@ -46,3 +39,10 @@ export const changePasswordValidator = [
         .isLength({ min: 6 })
         .withMessage("Password should be at least 6 characters")
 ];
+
+module.exports = {
+    loginValidator,
+    registroValidator,
+    forgotPasswordValidator,
+    changePasswordValidator
+};

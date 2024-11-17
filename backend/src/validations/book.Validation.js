@@ -1,8 +1,8 @@
-import { body, check } from 'express-validator';
-//body():se utiliza para validar los campos en el cuerpo (body)
-//check():se utiliza para validar los campos en el cuerpo (body), los parámetros de la ruta (params)
+const { body } = require('express-validator');
+// body():se utiliza para validar los campos en el cuerpo (body)
+// check():se utiliza para validar los campos en el cuerpo (body), los parámetros de la ruta (params)
 
-export const bookValidator = [
+const bookValidator = [
     body("title")
         .exists()
         .withMessage("Title is required")
@@ -15,4 +15,8 @@ export const bookValidator = [
         .withMessage("Year is required")
         .isInt({ min: 1000, max: new Date().getFullYear() })  // Establecer el rango de años válido
         .withMessage("Year should be a valid year")
-]
+];
+
+module.exports = {
+    bookValidator
+};

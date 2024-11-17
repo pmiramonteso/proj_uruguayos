@@ -2,17 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../environments/environment';
-
+import { User } from '../interface/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${environment.endpoint}auth` //Back
+  private apiUrl = `${environment.endpoint}` //Back
   private userId: number | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
 
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userObj: User = JSON.parse(user);
+      console.log('User object from localStorage:', userObj);
+      this.userId = userObj.id_user;
+    }
+  }
+    
   getUserId(): number | null {
     return this.userId;
   }
@@ -31,7 +39,6 @@ export class AuthService {
         console.log('Login response:', response);
         if (response.code === 1) {
           localStorage.setItem('token', response.token);
-          console.log('User data received:', response.data);
           localStorage.setItem('user', JSON.stringify(response.data.user));
           const userObj = response.data.user;
           this.userId = userObj.id_user;
@@ -47,7 +54,7 @@ export class AuthService {
   }
 
   registro(userData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/registro`, userData, { withCredentials: true }).pipe(
+    return this.http.post<any>('http://localhost:3000/auth/registro', userData, { withCredentials: true  }).pipe(
       tap(response => {
         if (response.code === 1) {
           if (response.token) {
@@ -63,6 +70,11 @@ export class AuthService {
     );
   }
 
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
+  }
+  
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
@@ -75,57 +87,4 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   }
-
-//CRUD Usuarios
-/*
-obtenerTodos(): Observable<User[]> {
-  const token = localStorage.getItem('token'); 
-  console.log('Token en localStorage:', token); // Obtén el token de localStorage o de donde lo estés guardando
-  if (!token) {
-    throw new Error('No se encontró el token');
-  }
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  return this.http.get<User[]>(`${this.apiUrl}/api/usuarios`, { headers });  // Añadimos /api/usuarios al final
-}
-
-ingresar(user: User): Observable<User> {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('No se encontró el token');
-  }
-
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-
-  return this.http.post<User>(`${this.apiUrl}/api/usuarios`, user, { headers });  // Añadimos /api/usuarios al final
-}
-
-actualizar(user: User): Observable<User> {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('No se encontró el token');
-  }
-
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-
-  return this.http.put<User>(`${this.apiUrl}/api/usuarios/${user.id}`, user, { headers });  // Añadimos /api/usuarios al final y el id
-}
-
-eliminar(id: number): Observable<void> {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('No se encontró el token');
-  }
-
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-
-  return this.http.delete<void>(`${this.apiUrl}/api/usuarios/${id}`, { headers });  // Añadimos /api/usuarios al final y el id
-}*/
 }

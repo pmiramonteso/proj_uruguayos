@@ -1,9 +1,7 @@
-// src/routes/userRoutes.js
-import { Router } from 'express';
-import { getUser, uploadPhoto } from '../controllers/userController.js';
-import { authenticateToken } from '../middlewares/authenticateToken.js';
-import { uploadFileMiddleware } from '../middlewares/upload.js';
-
+const { Router } = require('express');
+const { getUser, uploadPhoto } = require('../controllers/userController.js');
+const { authenticateToken } = require('../middlewares/authenticateToken.js');
+const { uploadFileMiddleware } = require('../middlewares/upload.js');
 
 const router = Router();
 
@@ -11,4 +9,4 @@ const router = Router();
 router.get('/', authenticateToken(['user']), getUser);
 router.post("/upload-photo", authenticateToken(['user']), uploadFileMiddleware, uploadPhoto);
 
-export default router;
+module.exports = router;

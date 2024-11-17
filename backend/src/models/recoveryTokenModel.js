@@ -1,6 +1,6 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db.js';
-import User from './userModel.js';
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db.js');
+const User = require('./userModel.js');
 
 const RecoveryToken = sequelize.define('RecoveryToken', {
   token: {
@@ -18,9 +18,16 @@ const RecoveryToken = sequelize.define('RecoveryToken', {
     allowNull: false
   }
 }, {
-  timestamps: false
+  timestamps: false,
+  indexes: [
+    {
+      unique: true,
+      fields: ['token']
+    }
+  ]
 });
+
 User.hasMany(RecoveryToken, { foreignKey: 'user_id' });
 RecoveryToken.belongsTo(User, { foreignKey: 'user_id' });
 
-export default RecoveryToken;
+module.exports = RecoveryToken;

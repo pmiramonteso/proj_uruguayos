@@ -1,28 +1,35 @@
-import bcrypt from 'bcrypt';
-import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
-import User from '../models/userModel.js';
-import RecoveryToken from '../models/recoveryTokenModel.js';
-import sendEmail from "../utils/email/sendEmail.js";
-import { validationResult } from 'express-validator';
-import { serialize } from 'cookie';
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const User = require('../models/userModel');
+const RecoveryToken = require('../models/recoveryTokenModel');
+const sendEmail = require("../utils/email/sendEmail");
+const { validationResult } = require('express-validator');
+const { serialize } = require('cookie');
 // Creación de funciones personalizadas
-import { esPar, contraseniasCoinciden } from '../utils/utils.js';
+const { esPar, contraseniasCoinciden } = require('../utils/utils');
 
 const userURL = process.env.USER_URL;
 
-export const registro = async (req, res) => {
+const registro = async (req, res) => {
+  console.log('Headers received:', req.headers);
+    console.log('Body received:', req.body);
     try {
       const errors = validationResult(req);
   
       // Si hay errores de validación, responde con un estado 400 Bad Request
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
-      14 }
+      }
      
-      const { nombre, apellidos, email, password  } = req.body;
+      const { nombre, apellidos, email, password } = req.body;
+      let photo = null;
+
+      if (req.file) {
+        photo = req.file.filename;
+      }
       // Verificar si ya existe un usuario con el mismo correo electrónico
-      const existingUser = await User.findOne({ where: { email }});
+      const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
         return res.status(400).json({
           code: -2,
@@ -31,7 +38,7 @@ export const registro = async (req, res) => {
       }
       // Crear un nuevo usuario
       const hashedPassword = await bcrypt.hash(password, Number(process.env.BCRYPT_SALT));
-      const newUser = new User({ nombre, apellidos, email, password: hashedPassword, status: 1 });
+      const newUser = new User({ nombre, apellidos, email, password: hashedPassword, photo, status: 1 });
       await newUser.save();
   
       // Generar un token de acceso y lo guardo en un token seguro (httpOnly)
@@ -39,7 +46,7 @@ export const registro = async (req, res) => {
       const token = serialize('token', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 60 * 60 * 24 * 30,
         path: '/',
       });
@@ -58,9 +65,10 @@ export const registro = async (req, res) => {
         error: error,
       });
     }
-  };
+    console.log('Body received:', req.body);
+};
 
-  export const login = async (req, res) => {
+const login = async (req, res) => {
     try {
       const errors = validationResult(req);
   
@@ -93,7 +101,7 @@ export const registro = async (req, res) => {
       const token = serialize('token', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 60 * 60 * 24 * 30,
         path: '/',
       });
@@ -105,9 +113,11 @@ export const registro = async (req, res) => {
         message: 'Login OK',
         data: {
           user: {
+            id_user: user.id_user,
             nombre: user.nombre,
             apellidos: user.apellidos,
-            email: user.email
+            email: user.email,
+            photo: user.photo
           } 
         }
       });
@@ -119,9 +129,9 @@ export const registro = async (req, res) => {
         error: error
       });
     }
-  };
-  
-  export const forgotPassword = async (req, res) => {
+};
+
+const forgotPassword = async (req, res) => {
     try {
       const errors = validationResult(req);
   
@@ -148,7 +158,7 @@ export const registro = async (req, res) => {
         created_at: Date.now(),
       }).save();
   
-      const link = `${clietURL}/change-password?token=${resetToken}&id=${user.id_user}`;
+      const link = `${userURL}/change-password?token=${resetToken}&id=${user.id_user}`;
   
       await sendEmail(
         user.email,
@@ -169,14 +179,14 @@ export const registro = async (req, res) => {
           }
         });
   
-      },error => {
-        console.error (error)
+      }, error => {
+        console.error (error);
         res.status(200).json({
           code: -80,
           message: 'Send Email KO',
           data: {error}
         });
-      })
+      });
   
     } catch (error) {
       console.error(error);
@@ -186,8 +196,9 @@ export const registro = async (req, res) => {
         error: error
       });
     }
-  };
-  export const changePassword = async (req, res) => {
+};
+
+const changePassword = async (req, res) => {
     try {
       const errors = validationResult(req);
   
@@ -216,23 +227,23 @@ export const registro = async (req, res) => {
         });
       }
   
-  
       // Actualizar la contraseña del usuario
       user.password = await bcrypt.hash(password, Number(process.env.BCRYPT_SALT));
       await user.save();
-      //Elimino el token
+  
+      // Elimino el token
       await RecoveryToken.destroy({
         where: {
           user_id: token_row.user_id
         }
-      })
+      });
   
       // Generar un token de acceso y lo guardo en un token seguro (httpOnly)
       const accessToken = jwt.sign({ id_user: user.id_user, nombre: user.nombre }, process.env.JWT_SECRET);
       const token_jwt = serialize('token', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 60 * 60 * 24 * 30,
         path: '/',
       });
@@ -258,16 +269,16 @@ export const registro = async (req, res) => {
         error: error
       });
     }
-  };
-  export const logout = async (req, res) => {
+};
 
+const logout = async (req, res) => {
     const { cookies } = req;
     const jwt = cookies.token;
   
     const token = serialize('token', null, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'none',
       maxAge: -1,
       path: '/',
     });
@@ -276,4 +287,12 @@ export const registro = async (req, res) => {
       code: 0,
       message: 'Logged out - Delete Token',
     });
-  }
+};
+
+module.exports = {
+  registro,
+  login,
+  forgotPassword,
+  changePassword,
+  logout
+};

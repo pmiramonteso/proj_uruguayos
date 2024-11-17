@@ -1,7 +1,6 @@
-// src/routes/authRoutes.js
-import { Router } from 'express';
-import { registro, login, logout, forgotPassword, changePassword } from '../controllers/authController.js';
-import { registroValidator, loginValidator, forgotPasswordValidator, changePasswordValidator } from '../validations/auth.Validation.js'
+const { Router } = require('express');
+const { registro, login, logout, forgotPassword, changePassword } = require('../controllers/authController.js');
+const { registroValidator, loginValidator, forgotPasswordValidator, changePasswordValidator } = require('../validations/auth.Validation.js');
 
 const router = Router();
 
@@ -12,4 +11,4 @@ router.post('/forgot-password', forgotPasswordValidator, forgotPassword);
 router.post('/change-password', changePasswordValidator, changePassword);
 router.get('/logout', logout);
 
-export default router;
+module.exports = router;

@@ -1,6 +1,6 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../db.js';
-import User from './userModel.js';
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../db.js');
+const User = require('./userModel.js');
 
 const Book = sequelize.define('Book', {
   id_book: {
@@ -30,10 +30,12 @@ const Book = sequelize.define('Book', {
   updatedAt: 'updated_at',
   createdAt: 'created_at'
 });
+
 User.hasMany(Book, { foreignKey: 'user_id' });
 Book.belongsTo(User, { foreignKey: 'user_id' });
-//Ten en cuenta que hasMany solo establece la relación desde el modelo principal hacia el secundario.
-//En algunos casos, eso puede ser suficiente si no necesitas navegar desde el secundario hacia el principal.
-//Sin embargo, si necesitas la relación inversa(por ejemplo, obtener el usuario al que pertenece un libro), entonces necesitarás belongsTo.
 
-export default Book;
+// Ten en cuenta que hasMany solo establece la relación desde el modelo principal hacia el secundario.
+// En algunos casos, eso puede ser suficiente si no necesitas navegar desde el secundario hacia el principal.
+// Sin embargo, si necesitas la relación inversa (por ejemplo, obtener el usuario al que pertenece un libro), entonces necesitarás belongsTo.
+
+module.exports = Book;

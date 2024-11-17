@@ -6,4 +6,4 @@ function contraseniasCoinciden(password, confirmPassword) {
     return password === confirmPassword;
 }
 
-export { esPar, contraseniasCoinciden };
+module.exports = { esPar, contraseniasCoinciden };
