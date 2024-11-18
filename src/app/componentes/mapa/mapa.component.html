@@ -10,11 +10,14 @@
       <div id="map"></div>
       <div class="card-container">
 
-        @for (negocio of negocios; track negocios.titulo) {
+       @for (negocio of negocios; track negocio.nombre) {
 
         <div class="card">
-          <h3>{{ negocio.titulo }}</h3>
-          <p>Ubicación: {{ negocio.ubicacion }}</p>
+          <h3>{{ negocio.nombre }}</h3>
+          <p>Ubicación: {{ negocio.direccion }}</p>
+          @if (negocio.redesSociales) {
+            <a [href]="negocio.redesSociales" target="_blank">Redes Sociales</a>
+          }
         </div>
         }
       </div>

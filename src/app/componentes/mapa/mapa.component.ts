@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import { Negocio } from '../../interface/negocio';
 import { NegociosService } from '../../service/negocios.service';
+
 
 @Component({
   selector: 'app-mapa',
@@ -11,14 +13,27 @@ import { NegociosService } from '../../service/negocios.service';
 })
 export class MapaComponent implements OnInit, AfterViewInit {
   map: any;
-  negocios: any[] = []; 
+  negocios: Negocio[] = [];
   constructor(private negociosService: NegociosService) {}
 
   ngOnInit(): void {
+    this.negociosService.getNegocios().subscribe(
+      (data: Negocio[]) => {
+        this.negocios = data;
+        this.añadirNegocioMapa();
+      },
+      (error) => {
+        console.error('Error al obtener los negocios:', error);
+      }
+    );
   }
   
   ngAfterViewInit(): void {
-    this.map = L.map('map').setView([40.4637, -3.7492],6)
+    this.iniciarMapa();
+  }
+
+  iniciarMapa(): void {
+    this.map = L.map('map').setView([40.4637, -3.7492],7)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
@@ -36,6 +51,34 @@ export class MapaComponent implements OnInit, AfterViewInit {
       this.map.whenReady(() => {
         this.map.invalidateSize();
       })
-        
+    }
+
+  añadirNegocioMapa(): void {
+        if (!this.map) {
+          console.error('Mapa no inicializado');
+          return;
+        }
+    
+        const customIcon = L.icon({
+          iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+        });
+    
+        this.negocios.forEach(negocio => {
+          L.marker([negocio.latitud, negocio.longitud], { icon: customIcon })
+            .addTo(this.map!)
+            .bindPopup(`
+              <b>${negocio.nombre}</b><br>
+              ${negocio.descripcion}<br>
+              ${negocio.direccion ? `Dirección: ${negocio.direccion}<br>` : ''}
+              ${negocio.redesSociales ? `<a href="${negocio.redesSociales}" target="_blank">Redes Sociales</a>` : ''}
+            `);
+        });
+    
+        const group = L.featureGroup(this.negocios.map(negocio => L.marker([negocio.latitud, negocio.longitud])));
+        this.map.fitBounds(group.getBounds().pad(0.5));
+      }
   }
-}
+

@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const testRoutes = require('./routes/testRoutes');
+const negociosRoutes = require('./routes/negociosRoutes');
 const { testConnection } = require('./db');
 const dotenv = require('dotenv');
 const { insertInitialUserData } = require('./start_data');
@@ -37,6 +38,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/book', bookRoutes);
 app.use('/test', testRoutes);
+app.use('/negocios', negociosRoutes);
 
 // Iniciar el servidor
 app.listen(3000, () => {

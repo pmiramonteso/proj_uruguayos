@@ -9,6 +9,7 @@ import { HomeComponent } from './componentes/home/home.component';
 import { CalendarioComponent } from './componentes/calendario/calendario.component';
 import { GraficosComponent } from './componentes/graficos/graficos.component';
 import { MapaComponent } from './componentes/mapa/mapa.component';
+import { PresentacionComponent } from './presentacion/presentacion.component';
 
 
 
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: 'calendario', component: CalendarioComponent},
     { path: 'graficos', component: GraficosComponent},
     { path: 'mapa', component: MapaComponent},
+    { path: 'presentacion', component: PresentacionComponent},
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: '**', redirectTo: '/home' }
 ];
