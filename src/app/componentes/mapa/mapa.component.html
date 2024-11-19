@@ -12,12 +12,16 @@
        @for (negocio of negocios; track negocio.nombre) {
         <div class="card">
           <h3>{{ negocio.nombre }}</h3>
-          <p>Ubicación: {{ negocio.direccion }}</p>
+          <p>Dirección: {{ negocio.direccion }}</p>
           @if (negocio.redesSociales) {
             <a [href]="negocio.redesSociales" target="_blank">Redes Sociales</a>
           }
         </div>
+        @if (isAdmin) {
+          <button (click)="editNegocio(negocio)">Editar</button>
+          <button (click)="deleteNegocio(negocio.id_negocio.toString())">Eliminar</button>
         }
+      }
       </div>
   </body>
 </html>

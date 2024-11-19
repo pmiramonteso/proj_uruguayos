@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { User } from '../interface/user';
 
@@ -54,19 +55,23 @@ export class AuthService {
   }
 
   registro(userData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}auth/registro`, userData, { withCredentials: true  }).pipe(
+    const headers = { 'enctype': 'multipart/form-data' };
+    return this.http.post<any>(`${this.apiUrl}auth/registro`, userData, { headers, withCredentials: true }).pipe(
       tap(response => {
-
         if (response.code === 1) {
           if (response.token) {
             localStorage.setItem('token', response.token);
           }
-          if (response.data && response.data.user) {
+          if (response.data?.user) {
             localStorage.setItem('user', JSON.stringify(response.data.user));
           }
         } else {
           console.error('Registration failed:', response.message);
         }
+      }),
+      catchError(error => {
+        console.error('HTTP Error:', error);
+        return throwError(() => error);
       })
     );
   }

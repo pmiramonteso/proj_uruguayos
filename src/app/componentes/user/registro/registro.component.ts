@@ -12,29 +12,17 @@ import { Router } from '@angular/router';
 })
 export class RegistroComponent {
   registroForm: FormGroup;
-  nombre: FormControl;
-  apellidos: FormControl;
-  email: FormControl;
-  password: FormControl;
   selectedFile: File | null = null;
   correoEnUso: string | null = null;
 
   constructor( private authService: AuthService, private router: Router) {
-    
-      this.nombre = new FormControl('', Validators.required);
-      this.apellidos = new FormControl('', Validators.required);
-      this.email = new FormControl('', [Validators.required, Validators.email]);
-      this.password = new FormControl('', [
-        Validators.required,
-        Validators.minLength(6)]);
-      
-      this.registroForm = new FormGroup({
-      nombre: this.nombre,
-      apellidos: this.apellidos,
-      email: this.email,
-      password: this.password,
-      });
-    }
+    this.registroForm = new FormGroup({
+      nombre: new FormControl('', Validators.required),
+      apellidos: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    });
+  }
 
     onFileSelected(event: Event) {
       const fileInput = event.target as HTMLInputElement;
@@ -47,10 +35,10 @@ export class RegistroComponent {
       this.correoEnUso = null;
 
       const formData = new FormData();
-      formData.append('nombre', this.nombre.value);
-      formData.append('apellidos', this.apellidos.value);
-      formData.append('email', this.email.value);
-      formData.append('password', this.password.value);
+      formData.append('nombre', this.registroForm.get('nombre')?.value);
+      formData.append('apellidos', this.registroForm.get('apellidos')?.value);
+      formData.append('email', this.registroForm.get('email')?.value);
+      formData.append('password', this.registroForm.get('password')?.value);
 
       if (this.selectedFile) {
         formData.append('file', this.selectedFile);

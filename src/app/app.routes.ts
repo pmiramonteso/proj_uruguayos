@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
 import { PanelAdminComponent } from './componentes/admin/panel-admin/panel-admin.component';
+import { NegociosAdminComponent } from './componentes/admin/negocios-admin/negocios-admin.component';
+
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistroComponent } from './componentes/user/registro/registro.component';
 
@@ -15,6 +17,7 @@ import { PresentacionComponent } from './presentacion/presentacion.component';
 
 export const routes: Routes = [
     { path: 'admin', component: PanelAdminComponent, canActivate: [authGuard]},
+    { path: 'admin/negocios', component: NegociosAdminComponent, canActivate: [authGuard]},
     { path: 'login', component: LoginComponent},
     { path: 'registro', component: RegistroComponent},
     { path: 'home', component: HomeComponent},
