@@ -12,8 +12,8 @@ const { esPar, contraseniasCoinciden } = require('../utils/utils');
 const userURL = process.env.USER_URL;
 
 const registro = async (req, res) => {
-  console.log('Headers received:', req.headers);
-    console.log('Body received:', req.body);
+//  console.log('Headers received:', req.headers);
+  //  console.log('Body received:', req.body);
     try {
       const errors = validationResult(req);
   

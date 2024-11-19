@@ -66,19 +66,31 @@ export class MapaComponent implements OnInit, AfterViewInit {
           popupAnchor: [1, -34],
         });
     
-        this.negocios.forEach(negocio => {
-          L.marker([negocio.latitud, negocio.longitud], { icon: customIcon })
-            .addTo(this.map!)
-            .bindPopup(`
-              <b>${negocio.nombre}</b><br>
-              ${negocio.descripcion}<br>
-              ${negocio.direccion ? `Dirección: ${negocio.direccion}<br>` : ''}
-              ${negocio.redesSociales ? `<a href="${negocio.redesSociales}" target="_blank">Redes Sociales</a>` : ''}
-            `);
+        const markers: L.Marker[] = [];
+
+        this.negocios.forEach((negocio) => {
+          if (negocio.latitud && negocio.longitud) { // Validamos latitud y longitud
+            const marker = L.marker([+negocio.latitud, +negocio.longitud], { icon: customIcon }) // Convertimos a número
+              .bindPopup(`
+                <b>${negocio.nombre}</b><br>
+                ${negocio.descripcion}<br>
+                ${negocio.direccion ? `Dirección: ${negocio.direccion}<br>` : ''}
+                ${negocio.redesSociales ? `<a href="${negocio.redesSociales}" target="_blank">Redes Sociales</a>` : ''}
+              `);
+            marker.addTo(this.map);
+            markers.push(marker);
+          } else {
+            console.warn(`Negocio con datos incompletos: ${JSON.stringify(negocio)}`);
+          }
         });
     
-        const group = L.featureGroup(this.negocios.map(negocio => L.marker([negocio.latitud, negocio.longitud])));
-        this.map.fitBounds(group.getBounds().pad(0.5));
+        if (markers.length > 0) {
+          const group = L.featureGroup(markers);
+          this.map.fitBounds(group.getBounds().pad(0.5)); // Ajusta la vista del mapa para incluir todos los marcadores.
+        } else {
+          console.warn('No se agregaron marcadores porque no hay datos válidos.');
+        }
+        console.log('Negocios recibidos:', this.negocios);
       }
   }
 

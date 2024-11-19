@@ -78,13 +78,18 @@ export class RegistroComponent {
           }
         },
         error: error => {
-          console.error('Error en registro', error);
-          if (error.status === 400) {
-            console.error('Detalles del error:', error.error);
-          if (error.status === 400 && error.error.message === 'Existe un usuario con este correo electrónico') {
-            this.correoEnUso = 'Ya existe este correo';
+          if (error.status === 400 && error.error.errors) {
+            console.error('Detalles del error:', error.error.errors);
+            const validationErrors = error.error.errors;
+            validationErrors.forEach((err: any) => {
+              if (err.path === 'nombre') {
+                console.error('Error en nombre:', err.msg);
+              }
+              if (err.path === 'password') {
+                console.error('Error en password:', err.msg);
+              }
+            });
           }
-        }
         }
       });
     }

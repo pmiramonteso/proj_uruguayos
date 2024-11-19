@@ -34,7 +34,7 @@ export class AuthService {
     body.set('email', email);
     body.set('password', password);
 
-    return this.http.post<any>(`${this.apiUrl}/login`, body.toString(), { headers, withCredentials: true }).pipe(
+    return this.http.post<any>(`${this.apiUrl}auth/login`, body.toString(), { headers, withCredentials: true }).pipe(
       tap(response => {
         console.log('Login response:', response);
         if (response.code === 1) {
@@ -54,8 +54,9 @@ export class AuthService {
   }
 
   registro(userData: FormData): Observable<any> {
-    return this.http.post<any>('http://localhost:3000/auth/registro', userData, { withCredentials: true  }).pipe(
+    return this.http.post<any>(`${this.apiUrl}auth/registro`, userData, { withCredentials: true  }).pipe(
       tap(response => {
+
         if (response.code === 1) {
           if (response.token) {
             localStorage.setItem('token', response.token);

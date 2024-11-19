@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
 })
 export class UsuariosService {
 
-  private userUrl = `${environment.endpoint}auth/user`;
+  private userUrl = `${environment.endpoint}auth/registro`;
 
   constructor(private http: HttpClient) { }
 

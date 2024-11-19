@@ -11,7 +11,7 @@ const getNegocios = async (req, res) => {
     }
 
     // Obtener todos los usuarios de la base de datos
-    const negocios = await Negocio.findAll();
+    const negocios = await Negocios.findAll();
 
     // Enviar una respuesta al cliente
     res.status(200).json({
