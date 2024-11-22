@@ -3,25 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Negocios en el Mapa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <div class="map-container">
-      <div id="map"></div>
-      
-       @for (negocio of negocios; track negocio.nombre) {
-        <div class="card">
-          <h3>{{ negocio.nombre }}</h3>
-          <p>Dirección: {{ negocio.direccion }}</p>
-          @if (negocio.redesSociales) {
-            <a [href]="negocio.redesSociales" target="_blank">Redes Sociales</a>
+  <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+
+    @if (isLoading){
+    <app-barra-carga></app-barra-carga>
+  }
+  @if (!isLoading){
+    <div class="container mx-auto p-6">
+      <!-- Contenedor Principal -->
+      <div class="flex flex-col gap-6 lg:grid lg:grid-cols-4 bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+        <!-- Mapa -->
+        <div
+          id="map"
+          class="h-[400px] lg:h-[600px] lg:col-span-3 bg-gray-700 rounded-t-lg lg:rounded-l-lg lg:rounded-tr-none flex items-center justify-center"
+        >
+          <p class="text-gray-300">Mapa Interactivo Aquí</p>
+        </div>
+
+        <!-- Cards de Negocios -->
+        <div class="p-6 flex flex-col gap-4 bg-gray-900 border-t border-gray-700 lg:border-t-0 lg:border-l lg:rounded-r-lg">
+          <!-- Título -->
+          <h2 class="text-2xl font-semibold text-center mb-4">Negocios</h2>
+
+          <!-- Tarjetas -->
+          @for (negocio of negocios; track negocio.nombre) {
+          <div
+            class="bg-gray-800 border border-gray-700 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow"
+          >
+            <h3 class="text-lg font-bold text-teal-400">{{ negocio.nombre }}</h3>
+            <p class="text-sm text-gray-400 mt-1">Dirección: {{ negocio.direccion }}</p>
+
+            <!-- Redes Sociales -->
+            @if (negocio.redesSociales) {
+            <a
+              [href]="negocio.redesSociales"
+              target="_blank"
+              class="text-teal-400 underline text-sm mt-2 inline-block hover:text-teal-500"
+              >Redes Sociales</a
+            >
+            }
+
+            <!-- Botones para Admin -->
+            @if (isAdmin) {
+            <div class="flex gap-2 mt-4">
+              <button
+                (click)="editNegocio(negocio)"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Editar
+              </button>
+              <button
+                (click)="deleteNegocio(negocio.id_negocio.toString())"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Eliminar
+              </button>
+            </div>
+            }
+          </div>
           }
         </div>
-        @if (isAdmin) {
-          <button (click)="editNegocio(negocio)">Editar</button>
-          <button (click)="deleteNegocio(negocio.id_negocio.toString())">Eliminar</button>
-        }
-      }
       </div>
+    </div>
+  }
   </body>
 </html>
+
+

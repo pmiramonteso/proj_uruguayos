@@ -38,6 +38,7 @@
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.20",
     "bcrypt": "^5.1.1",
+    "chart.js": "^4.4.6",
     "daisyui": "^4.12.14",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",

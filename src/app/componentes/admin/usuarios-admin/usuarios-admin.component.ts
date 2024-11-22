@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
   selector: 'app-lista-usuarios',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './lista-usuarios.component.html',
-  styleUrl: './lista-usuarios.component.scss'
+  templateUrl: './usuarios-admin.component.html',
+  styleUrl: './usuarios-admin.component.scss'
 })
 
-export class ListaUsuariosComponent implements OnInit {
+export class UsuariosAdminComponent implements OnInit {
   usuarios: User[] = [];
   currentUser: User = {
     id_user: 0, // Ajusta a 0 para que siempre sea válido

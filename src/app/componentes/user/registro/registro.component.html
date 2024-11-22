@@ -9,7 +9,9 @@
     <div class="flex items-center justify-center min-h-screen">
       <div class="bg-yellow-100 border-2 border-yellow-300 rounded-lg shadow-lg p-8 w-full max-w-md z-10">
         <div class="flex justify-center mb-6">
-          <img src="/assets/img/logo-uru.png" alt="LogoUru" class="w-32 h-auto" />
+          <a href="/home">
+            <img src="/assets/img/logo-uru.png" alt="LogoUru" class="w-32 h-auto" />
+          </a>
         </div>
         <h2 class="text-lg font-semibold text-left text-black mb-4">Crea tu cuenta</h2>
 
@@ -29,6 +31,7 @@
               }
           </div>
 
+          <!-- Campo Apellidos -->
           <div>
             <label for="apellidos" class="block text-sm font-medium text-black mb-1">Apellidos</label>
             <input
@@ -76,6 +79,22 @@
             @if(registroForm.get('password')?.invalid && (registroForm.get('password')?.dirty || registroForm.get('password')?.touched)) {
                 <div class="text-red-500 text-sm">La contraseña es requerida y debe tener al menos 6 caracteres</div>
               }
+          </div>
+
+          <!-- Campo Foto de Perfil -->
+          <div>
+            <label for="photo" class="block text-sm font-medium text-black mb-1">Foto de perfil</label>
+            <input
+              type="file"
+              id="photo"
+              formControlName="photo"
+              class="w-full px-4 py-2 bg-white text-black rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+            />
+             @if(selectedFile) {
+              <div class="text-red-500 text-sm">La foto no debe exceder los 2MB</div>
+            } 
           </div>
 
           <button

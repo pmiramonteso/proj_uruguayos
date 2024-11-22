@@ -5,11 +5,17 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens: {
-        '920': '920px',
-      }
+      animation: {
+      draw: 'draw 2s ease-out forwards',
     },
+    keyframes: {
+      draw: {
+        '0%': { 'stroke-dashoffset': '300' },
+        '100%': { 'stroke-dashoffset': '0' },
+      },
   },
+},
+},
   plugins: [
     require('daisyui')
   ],

@@ -2,12 +2,13 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { Negocio } from '../../interface/negocio';
 import { NegociosService } from '../../service/negocios.service';
+import { BarraCargaComponent } from '../barra-carga/barra-carga.component';
 
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [],
+  imports: [BarraCargaComponent],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.scss'
 })
@@ -15,6 +16,7 @@ export class MapaComponent implements OnInit, AfterViewInit {
   map: any;
   negocios: Negocio[] = [];
   isAdmin: boolean = false;
+  isLoading: boolean = true;
 
   constructor(private negociosService: NegociosService) {}
 
@@ -22,6 +24,9 @@ export class MapaComponent implements OnInit, AfterViewInit {
     this.checkRole();
     this.iniciarMapa();
     this.cargarNegocios();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
   }
   
   checkRole(): void {
@@ -64,7 +69,7 @@ export class MapaComponent implements OnInit, AfterViewInit {
   }
   deleteNegocio(id_negocio: string): void {
     const id = Number(id_negocio);
-    this.negociosService.deleteNegocio(id_negocio).subscribe(() => {
+    this.negociosService.deleteNegocio(Number(id_negocio)).subscribe(() => {
       this.cargarNegocios();
     });
   }

@@ -11,6 +11,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 export class NegociosAdminComponent {
 
   negocioForm!: FormGroup;
+  redSocialElegida: string | null = null;
+  urlRedSocial: string | null = null;
 
   constructor(private fb: FormBuilder) {}
 
@@ -19,15 +21,18 @@ export class NegociosAdminComponent {
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
       direccion: ['', Validators.required],
-      redesSociales: ['', Validators.required],
+      tipoRedSocial: ['', Validators.required],
+      urlRedSocial: ['', Validators.required],
       categoria: ['', Validators.required],
     });
   }
 
   onSubmit(): void {
     if (this.negocioForm.valid) {
-      console.log(this.negocioForm.value);
-      // Aquí manejas el envío del formulario
+      const formValue = this.negocioForm.value;
+      this.redSocialElegida = formValue.tipoRedSocial;
+      this.urlRedSocial = formValue.urlRedSocial;
+      console.log('Formulario enviado:', formValue);
     }
   }
 }
