@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 })
 export class EventosService {
 
-  private apiUrl = `${environment.endpoint}/api/eventos`;
+  private apiUrl = `${environment.endpoint}api/eventos`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +21,10 @@ export class EventosService {
     return this.http.post<Evento>(this.apiUrl, evento);
   }
 
+  actualizarEvento(evento: Evento): Observable<Evento> {
+    return this.http.put<Evento>(`${this.apiUrl}/${evento.id}`, evento);
+  }
+  
   eliminarEvento(id:number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

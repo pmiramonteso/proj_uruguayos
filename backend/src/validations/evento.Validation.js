@@ -2,7 +2,7 @@ const { body } = require('express-validator');
 
 // Validación de los campos de los eventos
 const eventoValidator = [
-    body("title")
+    body("titulo")
         .exists()
         .withMessage("El título del evento es obligatorio")
         .isString()
@@ -10,24 +10,30 @@ const eventoValidator = [
         .isLength({ min: 5 })
         .withMessage("El título debe tener al menos 5 caracteres"),
     
-    body("date")
+    body("descripcion")
+        .exists()
+        .isString()
+        .withMessage("La descripción debe ser una cadena de texto"),
+
+    body("fecha")
         .exists()
         .withMessage("La fecha del evento es obligatoria")
         .isISO8601()
         .withMessage("La fecha debe tener un formato válido (YYYY-MM-DD)"),
 
-    body("description")
-        .optional()
-        .isString()
-        .withMessage("La descripción debe ser una cadena de texto"),
+    body("hora")
+        .exists()
+        .withMessage("La hora del evento es obligatoria")
+        .matches(/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/)
+        .withMessage("La hora debe tener un formato válido (HH:mm o HH:mm:ss)"),
 
     body("entrada")
         .exists()
         .withMessage("La entrada es obligatoria")
         .isString()
         .withMessage("La entrada debe ser una cadena de texto")
-        .isIn(['gratuita', 'con precio'])
-        .withMessage("La entrada debe ser 'gratuita' o 'con precio'"),
+        .isIn(['Gratuito', 'Con precio'])
+        .withMessage("La entrada debe ser 'Gratuito' o 'Con precio'"),
 
     body("precio")
         .optional()
@@ -35,7 +41,7 @@ const eventoValidator = [
         .withMessage("El precio debe ser un número positivo"),
     
     body("ubicacion")
-        .optional()
+        .exists()
         .isString()
         .withMessage("La ubicación debe ser una cadena de texto")
 ];

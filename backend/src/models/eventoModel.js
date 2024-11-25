@@ -13,10 +13,14 @@ const Eventos = sequelize.define('Eventos', {
   },
   descripcion: {
     type: DataTypes.TEXT,
-    allowNull: true
+    allowNull: false
   },
   fecha: {
     type: DataTypes.DATE,
+    allowNull: false
+  },
+  hora: {
+    type: DataTypes.TIME,
     allowNull: false
   },
   entrada: {
@@ -34,6 +38,10 @@ const Eventos = sequelize.define('Eventos', {
       isDecimal: true, 
       min: 0 // El precio debe ser mayor o igual a 0
     }
+  },
+  ubicacion: {
+    type:DataTypes.STRING,
+    allowNull: false
 }
 }, 
 {

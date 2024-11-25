@@ -6,7 +6,7 @@ const negocioValidator = [
         .withMessage("El nombre es obligatorio")
         .isString()
         .withMessage("El nombre debe ser una cadena de texto")
-        .isLength({ min: 3, max: 100 })
+        .isLength({ min: 3, max: 50 })
         .withMessage("El nombre debe tener entre 3 y 100 caracteres"),
     body("descripcion")
         .exists()
@@ -21,27 +21,31 @@ const negocioValidator = [
         .withMessage("La dirección debe ser una cadena de texto")
         .isLength({ max: 200 })
         .withMessage("La dirección no puede superar los 200 caracteres"),
-    body("redesSociales")
-        .optional()
-        .isURL()
-        .withMessage("Las redes sociales deben ser una URL válida"),
     body("latitud")
-        .exists()
-        .withMessage("La latitud es obligatoria")
+        .optional()
         .isDecimal()
         .withMessage("La latitud debe ser un número decimal válido"),
     body("longitud")
-        .exists()
-        .withMessage("La longitud es obligatoria")
+        .optional()
         .isDecimal()
         .withMessage("La longitud debe ser un número decimal válido"),
+    body("tipoRedSocial")
+        .optional()
+        .isString()
+        .withMessage("El tipo de red social debe ser una cadena de texto")
+        .isIn(["instagram", "pagina_web", "twitter", "facebook", "youtube"])
+        .withMessage("El tipo de red social debe ser una de las siguientes: instagram, pagina_web, twitter, facebook, youtube"),
+    body("urlRedSocial")
+        .optional()
+        .isURL()
+        .withMessage("La URL de la red social debe ser válida"),
     body("categoria")
         .exists()
         .withMessage("La categoría es obligatoria")
         .isString()
         .withMessage("La categoría debe ser una cadena de texto")
-        .isIn(["restaurante", "tienda", "oficina", "otros"])
-        .withMessage("La categoría debe ser una de las siguientes: restaurante, tienda, oficina, otros")
+        .isIn(["restaurante", "panaderia", "centro social", "otros"])
+        .withMessage("La categoría debe ser una de las siguientes: restaurante, panaderia, centro social, otros")
 ];
 
 module.exports = {

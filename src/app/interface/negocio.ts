@@ -3,8 +3,9 @@ export interface Negocio {
     nombre: string;
     descripcion: string;
     direccion?: string;
-    redesSociales?: string;
-    latitud: number;
-    longitud: number;
+    latitud?: number;
+    longitud?: number;
+    tipoRedSocial?: string;
+    urlRedSocial?: string;
     categoria: string;
   }

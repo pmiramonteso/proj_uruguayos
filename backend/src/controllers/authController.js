@@ -24,10 +24,10 @@ const registro = async (req, res) => {
      
       const { nombre, apellidos, email, password } = req.body;
       let photo = null;
-
       if (req.file) {
         photo = req.file.filename;
       }
+
       // Verificar si ya existe un usuario con el mismo correo electrónico
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
@@ -36,6 +36,7 @@ const registro = async (req, res) => {
           message: 'Ya existe un usuario con el mismo correo electrónico'
         });
       }
+      
       // Crear un nuevo usuario
       const hashedPassword = await bcrypt.hash(password, Number(process.env.BCRYPT_SALT));
       const newUser = new User({ nombre, apellidos, email, password: hashedPassword, photo, status: 1 });

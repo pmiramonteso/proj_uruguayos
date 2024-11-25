@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { EventosService } from '../../../service/eventos.service';
 import { Evento } from '../../../interface/evento';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-eventos-admin',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './eventos-admin.component.html',
   styleUrl: './eventos-admin.component.scss'
 })
 export class EventosAdminComponent implements OnInit {
-  evento = { 
-    titulo: '', 
-    descripcion: '', 
-    fecha: '', 
-    time: '', 
-    location: '', 
-    entrada: '', 
-    precio: undefined as number | undefined
+  evento: Partial<Evento> = {
+    titulo: '',
+    descripcion: '',
+    fecha: '',
+    hora: '',
+    entrada: '',
+    precio: undefined,
+    ubicacion: '',
   };
 
   eventos: Evento[] = [];
@@ -34,26 +35,51 @@ export class EventosAdminComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.evento.titulo && this.evento.descripcion && this.evento.fecha && this.evento.time && this.evento.location && this.evento.entrada) {
-      const eventoAEnviar: Evento = {
-        ...this.evento,
-        ...(this.evento.entrada !== 'gratuita' && this.evento.precio !== undefined && { precio: this.evento.precio })
-      };
-
-      this.eventosService.crearEvento(eventoAEnviar).subscribe(() => {
+    if (this.evento.id) {
+      // Actualizar evento
+      this.eventosService.actualizarEvento(this.evento as Evento).subscribe(() => {
         this.obtenerEventos();
-        this.evento = { titulo: '', descripcion: '', fecha: '', time: '', location: '', entrada: '', precio: undefined };
+        this.resetearFormulario();
+      });
+    } else {
+      // Crear evento
+      const nuevoEvento: Partial<Evento> = { ...this.evento };
+      this.eventosService.crearEvento(nuevoEvento as  Evento).subscribe(() => {
+        this.obtenerEventos();
+        this.resetearFormulario();
       });
     }
   }
 
   editarEvento(evento: Evento) {
-    this.evento = { ...evento };
+    this.evento = { 
+      ...evento, 
+      precio: evento.precio ?? undefined 
+    };
+  }
+  
+  eliminarEvento(evento: Evento) {
+    if (evento.id) {
+      this.eventosService.eliminarEvento(evento.id).subscribe(() => {
+        this.obtenerEventos();
+      });
+    } else {
+      console.error("No se puede eliminar un evento sin ID");
+    }
   }
 
-  eliminarEvento(evento: Evento) {
-    this.eventosService.eliminarEvento(evento.id).subscribe(() => {
-      this.obtenerEventos();
-    });
+  cancelarEdicion() {
+    this.resetearFormulario();
+  }
+
+  private resetearFormulario() {
+    this.evento = {  
+      titulo: '', 
+      descripcion: '', 
+      fecha: '',
+      hora: '',
+      entrada: '', 
+      precio: undefined,
+      ubicacion: ''};
   }
 }

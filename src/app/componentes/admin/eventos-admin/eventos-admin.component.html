@@ -1,126 +1,196 @@
 <div class="bg-gray-900 text-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
-    <h2 class="text-2xl font-semibold mb-6">Update Event</h2>
-    <form class="space-y-6">
-      <!-- Title -->
-      <div>
-        <label class="block text-sm font-medium mb-1" for="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Event Title"
+  <h2 class="text-2xl font-semibold mb-6">{{ evento.id ? 'Editar evento' : 'Agregar evento' }}</h2>
+  <form class="space-y-6" (ngSubmit)="onSubmit()">
+    <!-- Title -->
+    <div>
+      <label class="block text-sm font-medium mb-1" for="title">Titulo</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        [(ngModel)]="evento.titulo"
+        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required      
         />
-      </div>
-  
-      <!-- Date Selector -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium mb-1" for="start-date">Select Date</label>
-          <input
-            type="date"
-            id="start-date"
-            class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div>
-          <input
-            type="date"
-            id="end-date"
-            class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      </div>
-  
-      <!-- All Day Checkbox and Frequency -->
-      <div class="flex items-center space-x-4">
-        <label class="flex items-center space-x-2">
-          <input type="checkbox" class="bg-gray-800 border-gray-700 text-blue-500 focus:ring-blue-500" />
-          <span>All day</span>
-        </label>
-        <select class="bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option>Daily</option>
-          <option>Weekly</option>
-          <option>Monthly</option>
-        </select>
-      </div>
-  
-      <!-- Google Meet -->
+    </div>
+
+    <!-- Date Selector -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500">
-          Join with Google Meet
-        </button>
-        <p class="text-sm text-gray-400 mt-2">
-          <a href="#" class="text-blue-400 underline">meet.google.com/asd-fgh-jfgu</a> (Up to 100 guest connections)
-        </p>
-      </div>
-  
-      <!-- Tag Colors -->
-      <div>
-        <label class="block text-sm font-medium mb-1">Tag Color</label>
-        <div class="flex space-x-2">
-          <button class="w-6 h-6 rounded-full bg-purple-500"></button>
-          <button class="w-6 h-6 rounded-full bg-blue-500"></button>
-          <button class="w-6 h-6 rounded-full bg-teal-500"></button>
-          <button class="w-6 h-6 rounded-full bg-green-500"></button>
-          <button class="w-6 h-6 rounded-full bg-yellow-500"></button>
-          <button class="w-6 h-6 rounded-full bg-orange-500"></button>
-          <button class="w-6 h-6 rounded-full bg-red-500"></button>
-        </div>
-      </div>
-  
-      <!-- Description -->
-      <div>
-        <label class="block text-sm font-medium mb-1" for="description">Description</label>
-        <textarea
-          id="description"
+        <label class="block text-sm font-medium mb-1" for="start-date">Fecha</label>
+        <input
+          type="date"
+          id="start-date"
+          [(ngModel)]="evento.fecha"
+          name="fecha"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          rows="4"
-          placeholder="Event Description"
+          required
+          />
+      </div>
+      <div>
+        <input
+          type="date"
+          id="end-date"
+          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 mt-6 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+          />
+      </div>
+    </div>
+
+    <!-- Time Selector -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1" for="start-time">Hora de inicio</label>
+        <input
+          type="time"
+          id="start-time"
+          name="start-time"
+          [(ngModel)]="evento.hora"
+          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+          />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1" for="end-time">Hora de finalización</label>
+        <input
+          type="time"
+          id="end-time"
+          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+          />
+      </div>
+    </div>
+
+    <!-- All Day Checkbox and Frequency -->
+    <div class="flex items-center space-x-4">
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" class="bg-gray-800 border-gray-700 text-blue-500 focus:ring-blue-500" />
+        <span>Todo el día</span>
+      </label>
+      <select class="bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option>Diariamente</option>
+        <option>Semanalmente</option>
+        <option>Mensualmente</option>
+      </select>
+    </div>
+
+    <!-- Tag Colors -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Identificación</label>
+      <div class="flex space-x-2">
+        <button class="w-6 h-6 rounded-full bg-purple-500"></button>
+        <button class="w-6 h-6 rounded-full bg-blue-500"></button>
+        <button class="w-6 h-6 rounded-full bg-teal-500"></button>
+        <button class="w-6 h-6 rounded-full bg-green-500"></button>
+        <button class="w-6 h-6 rounded-full bg-yellow-500"></button>
+        <button class="w-6 h-6 rounded-full bg-orange-500"></button>
+        <button class="w-6 h-6 rounded-full bg-red-500"></button>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label class="block text-sm font-medium mb-1" for="description">Descripción</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="evento.descripcion"
+        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        rows="4"
+        required
         ></textarea>
-      </div>
-  
-      <!-- Reminder -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium mb-1">Reminder</label>
-          <select class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option>Notification</option>
-            <option>Email</option>
-          </select>
+    </div>
+    <!-- Entrada -->
+    <div>
+      <label class="block text-sm font-medium mb-1" for="entrada">Entrada</label>
+      <select
+        id="entrada"
+        [(ngModel)]="evento.entrada"
+        name="entrada"
+        required
+        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="Gratuito">Gratuito</option>
+        <option value="Pago">Pago</option>
+      </select>
+    </div>
+
+      <!-- Costo -->
+       @if (evento.entrada === 'Pago'){
+    <div>
+      <label class="block text-sm font-medium mb-1" for="precio">Precio</label>
+      <input
+        type="number"
+        id="precio"
+        [(ngModel)]="evento.precio"
+        name="precio"
+        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+  }
+
+     <!-- Ubicación -->
+     <div>
+      <label class="block text-sm font-medium mb-1" for="ubicacion">Ubicación</label>
+      <input
+        type="text"
+        id="ubicacion"
+        [(ngModel)]="evento.ubicacion"
+        name="ubicacion"
+        required
+        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-between">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+      >
+      {{ evento.id ? 'Actualizar evento' : 'Agregar evento' }}
+      </button>
+
+      @if (evento.id) {
+      <button
+      type="button"
+      (click)="cancelarEdicion()"
+      class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 focus:ring-2 focus:ring-gray-500">
+      Cancelar
+    </button>
+  }
+    </div>
+  </form>
+
+  @if (eventos.length > 0){
+  <div class="mt-8">
+    <h3 class="text-xl font-semibold mb-4">Lista de eventos</h3>
+    <ul>
+      @for (item of eventos; track eventos) {
+      <li
+        class="bg-gray-800 p-4 mb-2 rounded-lg flex justify-between items-center"
+      >
+        <span>{{ item.titulo }}</span>
+        <div class="space-x-2">
+          <button
+            (click)="editarEvento(item)"
+            class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+          >
+            Editar
+          </button>
+          <button
+            (click)="eliminarEvento(item)"
+            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
+            Eliminar
+          </button>
         </div>
-        <div>
-          <label class="block text-sm font-medium mb-1">Time</label>
-          <div class="flex space-x-2">
-            <input
-              type="number"
-              class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="4"
-            />
-            <select class="bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option>Minutes</option>
-              <option>Hours</option>
-              <option>Days</option>
-            </select>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Actions -->
-      <div class="flex justify-between">
-        <button
-          type="submit"
-          class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
-        >
-          Update Event
-        </button>
-        <button
-          type="button"
-          class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-500"
-        >
-          Delete
-        </button>
-      </div>
-    </form>
+      </li>
+    }
+    </ul>
   </div>
+}
+</div>
+
   
   

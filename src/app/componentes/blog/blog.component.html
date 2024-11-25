@@ -1,0 +1,23 @@
+<div class="container">
+    <h1>Lista de Publicaciones</h1>
+    <a routerLink="/blog/create" class="btn btn-primary">Nueva Publicación</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Categoría</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (blog of blogs; track blog.title) {
+            <tr>
+                <td>{{ blog.title }}</td>
+                <td>{{ blog.category || 'Sin categoría' }}</td>
+              </tr>
+        }
+        
+      </tbody>
+    </table>
+  </div>
+  

@@ -6,9 +6,9 @@ const { idValidator } = require('../validations/generic.Validation');
 
 const router = Router();
 
-router.get('/', authenticateToken(['user']), getNegocios);
-router.get('/:id', authenticateToken(['user', 'mod', 'admin']), idValidator, getNegocioById);
-router.post('/', authenticateToken(['mod', 'admin']), negocioValidator, addNegocio);
+router.get('/', getNegocios);
+router.get('/:id', idValidator, getNegocioById);
+router.post('/', negocioValidator, addNegocio);
 router.patch('/:id', authenticateToken(['mod', 'admin']), idValidator, negocioValidator, updateNegocio);
 router.delete('/:id', authenticateToken(['admin']), idValidator, deleteNegocio);
 

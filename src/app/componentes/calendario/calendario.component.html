@@ -1,46 +1,65 @@
-<div class="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
-    <div class="md:pr-14">
-      <div class="flex items-center">
-        <h2 class="flex-auto text-sm font-semibold text-gray-900">January 2022</h2>
-        <button type="button" class="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
-          <span class="sr-only">Previous month</span>
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-            <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-          </svg>
-        </button>
-        <button type="button" class="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
-          <span class="sr-only">Next month</span>
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-          </svg>
-        </button>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-lg bg-white rounded-lg shadow-md p-6">
+    <!-- Navegación de meses -->
+    <div class="flex items-center justify-between mb-4">
+      <button 
+        type="button" 
+        (click)="cambiarMes(-1)" 
+        class="p-2 text-gray-400 hover:text-gray-500">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+        </svg>
+      </button>
 
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
-      <div class="rounded-lg border border-gray-300 p-6">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xl font-semibold text-gray-900">{{ mes.nombre }}</h2>
-        </div>
-      @for (mes of meses; track mes.nombre) {
-          <div class="mt-4 grid grid-cols-7 text-xs text-gray-500">
-            <div class="text-center font-semibold">L</div>
-            <div class="text-center font-semibold">M</div>
-            <div class="text-center font-semibold">X</div>
-            <div class="text-center font-semibold">J</div>
-            <div class="text-center font-semibold">V</div>
-            <div class="text-center font-semibold">S</div>
-            <div class="text-center font-semibold">D</div>
-          </div>
-          }
-          <div class="grid grid-cols-7 text-center text-sm mt-2">
-            @for (semana of getSemanasDelMes(mes.numero); track semana) {
+      <h2 class="text-lg font-semibold text-gray-900">{{ mes.nombre }}</h2>
+
+      <button 
+        type="button" 
+        (click)="cambiarMes(1)" 
+        class="p-2 text-gray-400 hover:text-gray-500">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Encabezado de días de la semana -->
+    <div class="grid grid-cols-7 gap-10 text-center text-sm font-bold text-gray-700">
+      <div>L</div>
+      <div>M</div>
+      <div>X</div>
+      <div>J</div>
+      <div>V</div>
+      <div>S</div>
+      <div>D</div>
+    </div>
+
+    <!-- Días del mes -->
+    <div class="grid grid-cols-7 gap-10 mt-4 text-center text-sm sm:text-base lg:text-lg">
+            @for (semana of semanasDelMes; track semana) {
               @for (dia of semana; track dia) {
-                <div [class.text-gray-400]="!dia">{{ dia || '' }}</div>
+                <div 
+                class="p-6 lg:p-8 rounded-lg border flex items-center justify-center lg:w-16 lg:h-16"
+                [ngClass]="{
+                  'bg-gray-100 text-gray-400': !dia,
+                  'bg-blue-500 text-white font-bold': dia === hoy.dia && mes.numero === hoy.mes,
+                  'text-gray-800': dia && !(dia === hoy.dia && mes.numero === hoy.mes)
+                }">
+                {{ dia || '' }}
+              </div>
               }
             }
           </div>
           </div>
-        </div>
+ 
       
     <section class="mt-12 md:mt-0 md:pl-14">
       <h2 class="text-base font-semibold text-gray-900">Schedule for <time datetime="2022-01-21">January 21, 2022</time></h2>
@@ -84,5 +103,6 @@
         <!-- More meetings... -->
       </ol>
     </section>
-  </div>
+  </body>
+  </html>
   

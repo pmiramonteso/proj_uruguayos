@@ -2,13 +2,11 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { Negocio } from '../../interface/negocio';
 import { NegociosService } from '../../service/negocios.service';
-import { BarraCargaComponent } from '../barra-carga/barra-carga.component';
-
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [BarraCargaComponent],
+  imports: [],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.scss'
 })
@@ -16,19 +14,9 @@ export class MapaComponent implements OnInit, AfterViewInit {
   map: any;
   negocios: Negocio[] = [];
   isAdmin: boolean = false;
-  isLoading: boolean = true;
 
   constructor(private negociosService: NegociosService) {}
 
-  ngOnInit(): void {
-    this.checkRole();
-    this.iniciarMapa();
-    this.cargarNegocios();
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
-  }
-  
   checkRole(): void {
     const token = localStorage.getItem('token'); // Suponiendo que guardas el token en localStorage.
     if (token) {
@@ -36,44 +24,67 @@ export class MapaComponent implements OnInit, AfterViewInit {
       this.isAdmin = payload.role === 'admin';
     }
   }
+  ngOnInit(): void {
+    this.cargarNegocios();
+  }
+
   ngAfterViewInit(): void {
     this.iniciarMapa();
   }
 
   iniciarMapa(): void {
-    this.map = L.map('map').setView([40.4637, -3.7492],7)
+    this.map = L.map('map').setView([40.4637, -3.7492], 7)
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+    if (this.map) {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+    } else {
+      console.error('Error al inicializar el mapa');
+    }
   }
 
   cargarNegocios(): void {
-      this.negociosService.getNegocios().subscribe((data) => {
-      this.negocios = data;
-      this.añadirMarkers();
-    });
+      this.negociosService.getNegocios().subscribe((negocios: Negocio[]) => {
+        console.log('Respuesta de la API:', negocios);
+          this.negocios = negocios;
+          this.añadirMarkers();
+          }, (error) => {
+        console.error('Error al cargar los negocios:', error);
+      });
   }
 
   añadirMarkers(): void {
-    this.negocios.forEach((negocio) => {
-      L.marker([+negocio.latitud, +negocio.longitud]).addTo(this.map).bindPopup(`
-        <b>${negocio.nombre}</b><br>
-        ${negocio.descripcion}<br>
-        ${negocio.direccion ? `Dirección: ${negocio.direccion}<br>` : ''}
-        ${negocio.redesSociales ? `<a href="${negocio.redesSociales}" target="_blank">Redes Sociales</a>` : ''}
-      `);
-    })
-  }
-
-  editNegocio(negocio: any): void {
-    // Lógica para editar negocio.
-  }
-  deleteNegocio(id_negocio: string): void {
-    const id = Number(id_negocio);
-    this.negociosService.deleteNegocio(Number(id_negocio)).subscribe(() => {
-      this.cargarNegocios();
+    const iconMenu = L.icon({
+      iconUrl: 'assets/iconos/menu.png',
+      iconSize: [30, 30], 
+      iconAnchor: [15, 30],
+      popupAnchor: [0, -30],
     });
+
+    this.negocios.forEach((negocio) => {
+
+      if (negocio.latitud && negocio.longitud) {
+        const lat = +negocio.latitud;
+        const lng = +negocio.longitud;
+
+      if (!isNaN(lat) && !isNaN(lng)) {
+        const icon = negocio.categoria === 'Restaurante' ? iconMenu : undefined;
+        const popupContent = `
+          <b>${negocio.nombre}</b><br>
+          ${negocio.descripcion}<br>
+          ${negocio.direccion ? `Dirección: ${negocio.direccion}<br>` : ''}
+          ${negocio.tipoRedSocial ? `
+            <a href="${negocio.urlRedSocial}" target="_blank">Visita nuestras Redes Sociales</a>` : ''}
+        `;
+        
+        L.marker([lat, lng], { icon })
+          .addTo(this.map)
+          .bindPopup(popupContent);
+    } else {
+        console.error('Coordenadas inválidas para el negocio:', negocio);
+      }
+    } else {
+      console.error('Faltan coordenadas para el negocio:', negocio);
+    }
+  });
   }
 }
-  
-   
-

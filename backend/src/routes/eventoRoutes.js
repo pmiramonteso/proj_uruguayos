@@ -7,12 +7,11 @@ const { idValidator } = require('../validations/generic.Validation.js');
 const router = Router();
 
 // Rutas para obtener y modificar los datos de los eventos
-router.get('/', authenticateToken(['user']), getEventos);
-router.get('/:id', authenticateToken(['user', 'mod', 'admin']), idValidator, getEventoById);
-router.post('/', authenticateToken(['user', 'mod', 'admin']), eventoValidator, addEvento);
-router.patch('/:id', authenticateToken(['user', 'mod', 'admin']), idValidator, eventoValidator, updateEvento);
-router.delete('/:id', authenticateToken(['user', 'mod', 'admin']), idValidator, deleteEvento);
-router.get('/top-eventos', getEventos);
+router.get('/', getEventos);
+router.get('/:id', idValidator, getEventoById);
+router.post('/', eventoValidator, addEvento);
+router.patch('/:id', authenticateToken(['mod', 'admin']), idValidator, eventoValidator, updateEvento);
+router.delete('/:id', authenticateToken(['admin']), idValidator, deleteEvento);
 
 module.exports = router;
 

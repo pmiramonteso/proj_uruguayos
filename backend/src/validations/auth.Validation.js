@@ -1,43 +1,64 @@
 const { body } = require('express-validator');
 
 const loginValidator = [
-    body("email").isEmail().withMessage("Provide valid email"),
+    body("email")
+        .isEmail()
+        .withMessage("Proporcione un correo válido"),
     body("password")
         .exists()
-        .withMessage("Password is required")
+        .withMessage("La contraseña es obligatoria")
         .isString()
-        .withMessage("Password should be string")
+        .withMessage("La contraseña debe ser una cadena de texto")
         .isLength({ min: 6 })
-        .withMessage("Password should be at least 6 characters")
+        .withMessage("La contraseña debe tener al menos 6 caracteres")
 ];
 
 const registroValidator = [
-    body("nombre").isString(),
-    body("apellidos").isString(),
-    body("email").isEmail(),
+    body("nombre")
+        .exists()
+        .withMessage("El nombre es obligatorio")
+        .isString()
+        .withMessage("El nombre debe ser una cadena de texto")
+        .isLength({ max: 30 })
+        .withMessage("El nombre debe tener máximo 30 caracteres"),
+
+    body("apellidos")
+        .optional()
+        .isString()
+        .withMessage("El apellido debe ser una cadena de texto")
+        .isLength({ max: 30 })
+        .withMessage("El apellido debe tener máximo 30 caracteres"),
+
+    body("email")
+        .isEmail()
+        .withMessage("El correo debe tener un formato válido"),
+
     body("password")
         .exists()
-        .withMessage("Password is required")
+        .withMessage("La contraseña es obligatoria")
         .isString()
-        .withMessage("Password should be string")
+        .withMessage("La contraseña debe ser una cadena de texto")
         .isLength({ min: 6 })
-        .withMessage("Password should be at least 6 characters")
+        .withMessage("La contraseña debe tener al menos 6 caracteres")
 ];
 
 const forgotPasswordValidator = [
-    body("email").isEmail()
+    body("email")
+        .isEmail()
+        .withMessage("Proporcione un correo válido")
 ];
 
 const changePasswordValidator = [
     body("token")
-        .exists(),
+        .exists()
+        .withMessage("El token es obligatorio"),
     body("password")
         .exists()
-        .withMessage("Password is required")
+        .withMessage("La contraseña es obligatoria")
         .isString()
-        .withMessage("Password should be string")
+        .withMessage("La contraseña debe ser una cadena de texto")
         .isLength({ min: 6 })
-        .withMessage("Password should be at least 6 characters")
+        .withMessage("La contraseña debe tener al menos 6 caracteres")
 ];
 
 module.exports = {
@@ -46,3 +67,4 @@ module.exports = {
     forgotPasswordValidator,
     changePasswordValidator
 };
+

@@ -3,10 +3,10 @@ export interface Evento {
     titulo: string;
     descripcion: string;
     fecha: string;
-    time: string;
-    location: string;
+    hora: string,
     entrada: string;
     precio?: number;
+    ubicacion: string;
     createdAt?: string;
     updatedAt?: string;
   }

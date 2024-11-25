@@ -65,7 +65,7 @@
 
   <!-- Redes Sociales -->
   <div>
-    <label for="redesSociales" class="block text-sm font-medium mb-1">Redes Sociales</label>
+    <label for="tipoRedSocial" class="block text-sm font-medium mb-1">Redes Sociales</label>
     <div class="flex items-center gap-4">
       <!-- Selección de Red Social -->
       <select
@@ -83,7 +83,7 @@
 
       <!-- Enlace de la Red Social -->
       <input
-        id="redesSociales"
+        id="urlRedSocial"
         formControlName="urlRedSocial"
         type="text"
         class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -114,31 +114,31 @@
   </button>
 </form>
 
-@if(redSocialElegida && urlRedSocial) {
+@if(tipoRedSocial && urlRedSocial) {
 <div class="mt-6">
   <h3 class="text-lg font-semibold mb-2">Vista previa:</h3>
   <div class="flex items-center gap-4">
     <!-- Ícono según la red social -->
-    @if(redSocialElegida === 'instagram') {
+    @if(tipoRedSocial === 'instagram') {
       <i class="fab fa-instagram text-pink-500 text-2xl"></i>
   }
 
-    @if(redSocialElegida === 'twitter') {
+    @if(tipoRedSocial === 'twitter') {
       <i class="fab fa-twitter text-blue-400 text-2xl"
     ></i>
   }
 
-    @if(redSocialElegida === 'facebook') {
+    @if(tipoRedSocial === 'facebook') {
     <i
       class="fab fa-facebook text-blue-600 text-2xl"
     ></i>
   }
-    @if(redSocialElegida ==='youtube') {
+    @if(tipoRedSocial ==='youtube') {
     <i
       class="fab fa-youtube text-red-500 text-2xl"
     ></i>
   } 
-    @if(redSocialElegida === 'pagina_web') {
+    @if(tipoRedSocial === 'pagina_web') {
      <i
       class="fas fa-globe text-green-500 text-2xl"
     ></i>

@@ -1,40 +1,40 @@
-#map {
-    width: 50%;
-    height: 100vh;
-  } 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
 .map-container {
-    display: flex;
-    justify-content: space-between;
-    height: 100vh;
-  } 
-  .card-container {
-    width: 30%;
-    padding: 20px;
-    overflow-y: auto;  // Para permitir el scroll si hay muchas tarjetas
-  }
+  display: flex;
+  height: 100%;
+}
 
-  .card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-  }
+.card-container {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
 
-  .card h3 {
-    margin: 0;
-  }
-  
-  .card p {
-    font-size: 14px;
-  }
+.card {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
 
-  .leaflet-div-icon {
-    background: transparent !important;
-    border: none !important;
-  }
-  
-  .leaflet-marker-icon {
-    background: transparent !important;
-    border: none !important;
-  }
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  font-size: 14px;
+}
+
+.leaflet-div-icon,
+.leaflet-marker-icon {
+  background: transparent !important;
+  border: none !important;
+}

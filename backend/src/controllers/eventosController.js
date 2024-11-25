@@ -1,4 +1,4 @@
-const Eventos = require('../models/eventosModel');
+const Eventos = require('../models/eventoModel');
 const { validationResult } = require('express-validator');
 
 // Obtener todos los eventos
@@ -75,7 +75,7 @@ const addEvento = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { titulo, descripcion, fecha, entrada, precio } = req.body;
+    const { titulo, descripcion, fecha, hora, entrada, precio, ubicacion } = req.body;
 
     // Validación adicional para precio si la entrada es 'Con precio'
     if (entrada === 'Con precio' && (!precio || precio <= 0)) {
@@ -92,14 +92,21 @@ const addEvento = async (req, res) => {
         titulo,
         descripcion,
         fecha,
+        hora,
         entrada,
         precio: entrada === 'Con precio' ? precio : null, // Solo asignamos precio si es "Con precio"
-        user_id: req.user.id_user
+        ubicacion
       });
     } catch (error) {
-      // Manejo de errores generales
+      if (error.name === "SequelizeValidationError") {
+        return res.status(400).json({
+          code: -20,
+          message: "Error de validación en los datos enviados",
+          errors: error.errors.map(err => err.message)
+        });
+      }
       console.error(error);
-      return res.status(500).json({
+      res.status(500).json({
         code: -100,
         message: 'Ha ocurrido un error al añadir el evento'
       });
@@ -138,7 +145,7 @@ const updateEvento = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { titulo, descripcion, fecha, entrada, precio } = req.body;
+    const { titulo, descripcion, fecha, hora, entrada, precio, ubicacion } = req.body;
 
     // Validación adicional para precio si la entrada es 'Con precio'
     if (entrada === 'Con precio' && (!precio || precio <= 0)) {
@@ -161,8 +168,10 @@ const updateEvento = async (req, res) => {
     evento.titulo = titulo;
     evento.descripcion = descripcion;
     evento.fecha = fecha;
+    evento.hora = hora;
     evento.entrada = entrada;
     evento.precio = entrada === 'Con precio' ? req.body.precio : null; // Solo asignamos precio si es "Con precio"
+    evento.ubicacion = ubicacion;
     await evento.save();
 
     // Enviar una respuesta al cliente

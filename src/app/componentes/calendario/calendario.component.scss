@@ -1,0 +1,23 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 700px; /* Ajusta el tamaño */
+    margin: 0 auto;
+  }
+  
+  .grid {
+    gap: 1rem;
+  }
+  
+  .bg-gray-100 {
+    background-color: #f7fafc;
+  }
+  .bg-blue-500 {
+    background-color: #4299e1;
+  }
+  .text-white {
+    color: white;
+  }
+  .text-gray-800 {
+    color: #2d3748;
+  }
