@@ -1,0 +1,12 @@
+::ng-deep .ql-picker-label::after {
+    display: none !important; /* Oculta las flechas */
+  }
+  
+  ::ng-deep .ql-picker {
+    display: none !important; /* Oculta cualquier elemento de tipo picker */
+  }
+  
+  /* Controla la visibilidad del contenido de Quill */
+  ::ng-deep .ql-container {
+    overflow: hidden !important;
+}

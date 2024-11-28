@@ -17,10 +17,10 @@
     <!-- Date Selector -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium mb-1" for="start-date">Fecha</label>
+        <label class="block text-sm font-medium mb-1" for="fecha">Fecha</label>
         <input
           type="date"
-          id="start-date"
+          id="fecha"
           [(ngModel)]="evento.fecha"
           name="fecha"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -30,9 +30,10 @@
       <div>
         <input
           type="date"
-          id="end-date"
+          id="fecha_fin"
+          name="fecha_fin"
+          [(ngModel)]="evento.fecha_fin"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 mt-6 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
           />
       </div>
     </div>
@@ -40,52 +41,43 @@
     <!-- Time Selector -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium mb-1" for="start-time">Hora de inicio</label>
+        <label class="block text-sm font-medium mb-1" for="hora_inicio">Hora de inicio</label>
         <input
           type="time"
-          id="start-time"
-          name="start-time"
-          [(ngModel)]="evento.hora"
+          id="hora_inicio"
+          name="hora_inicio"
+          [(ngModel)]="evento.hora_inicio"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
           />
       </div>
       <div>
-        <label class="block text-sm font-medium mb-1" for="end-time">Hora de finalización</label>
+        <label class="block text-sm font-medium mb-1" for="hora_fin">Hora de finalización</label>
         <input
           type="time"
-          id="end-time"
+          id="hora_fin"
+          name="hora_fin"
+          [(ngModel)]="evento.hora_fin"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
           />
       </div>
     </div>
 
-    <!-- All Day Checkbox and Frequency -->
-    <div class="flex items-center space-x-4">
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" class="bg-gray-800 border-gray-700 text-blue-500 focus:ring-blue-500" />
-        <span>Todo el día</span>
-      </label>
-      <select class="bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <option>Diariamente</option>
-        <option>Semanalmente</option>
-        <option>Mensualmente</option>
-      </select>
-    </div>
-
     <!-- Tag Colors -->
-    <div>
-      <label class="block text-sm font-medium mb-1">Identificación</label>
-      <div class="flex space-x-2">
-        <button class="w-6 h-6 rounded-full bg-purple-500"></button>
-        <button class="w-6 h-6 rounded-full bg-blue-500"></button>
-        <button class="w-6 h-6 rounded-full bg-teal-500"></button>
-        <button class="w-6 h-6 rounded-full bg-green-500"></button>
-        <button class="w-6 h-6 rounded-full bg-yellow-500"></button>
-        <button class="w-6 h-6 rounded-full bg-orange-500"></button>
-        <button class="w-6 h-6 rounded-full bg-red-500"></button>
-      </div>
+    <!-- Tag Colors -->
+<div>
+  <label class="block text-sm font-medium mb-1">Identificación</label>
+  <div class="flex space-x-2">
+    <button class="w-6 h-6 rounded-full bg-purple-500" type="button" (click)="setColor('purple')"></button>
+    <button class="w-6 h-6 rounded-full bg-blue-500" type="button" (click)="setColor('blue')"></button>
+    <button class="w-6 h-6 rounded-full bg-teal-500" type="button" (click)="setColor('teal')"></button>
+    <button class="w-6 h-6 rounded-full bg-green-500" type="button" (click)="setColor('green')"></button>
+    <button class="w-6 h-6 rounded-full bg-yellow-500" type="button" (click)="setColor('yellow')"></button>
+    <button class="w-6 h-6 rounded-full bg-orange-500" type="button" (click)="setColor('orange')"></button>
+    <button class="w-6 h-6 rounded-full bg-red-500" type="button" (click)="setColor('red')"></button>
+  </div>    
+      <!-- Campo oculto para almacenar el color seleccionado -->
+      <input type="hidden" id="color" name="color" value="" />
     </div>
 
     <!-- Description -->

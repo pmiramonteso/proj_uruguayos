@@ -67,7 +67,7 @@ export class MapaComponent implements OnInit, AfterViewInit {
         const lng = +negocio.longitud;
 
       if (!isNaN(lat) && !isNaN(lng)) {
-        const icon = negocio.categoria === 'Restaurante' ? iconMenu : undefined;
+        const icon = negocio.categoria === 'restaurante' ? iconMenu : undefined;
         const popupContent = `
           <b>${negocio.nombre}</b><br>
           ${negocio.descripcion}<br>

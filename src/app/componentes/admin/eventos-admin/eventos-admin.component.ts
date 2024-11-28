@@ -15,7 +15,10 @@ export class EventosAdminComponent implements OnInit {
     titulo: '',
     descripcion: '',
     fecha: '',
-    hora: '',
+    fecha_fin: '',
+    hora_inicio: '',
+    hora_fin: '',
+    color: '',
     entrada: '',
     precio: undefined,
     ubicacion: '',
@@ -33,18 +36,42 @@ export class EventosAdminComponent implements OnInit {
       this.eventos = data;
     });
   }
-
+  setColor(color: string) {
+    this.evento.color = color;
+  }
   onSubmit() {
+    if (this.evento.fecha) {
+      this.evento.fecha = new Date(this.evento.fecha).toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    } else {
+      delete this.evento.fecha;
+    }
+
+    if (this.evento.fecha_fin) {
+      this.evento.fecha_fin = new Date(this.evento.fecha_fin).toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    } else {
+      delete this.evento.fecha_fin;
+    }
+
+    if (this.evento.hora_inicio) {
+      this.evento.hora_inicio = new Date(`1970-01-01T${this.evento.hora_inicio}`).toISOString().split('T')[1].slice(0, 5); // Formato HH:mm
+    } else {
+      delete this.evento.hora_inicio;
+    }
+
+    if (this.evento.hora_fin) {
+      this.evento.hora_fin = new Date(`1970-01-01T${this.evento.hora_fin}`).toISOString().split('T')[1].slice(0, 5); // Formato HH:mm
+    } else {
+      delete this.evento.hora_fin;
+    }
+
     if (this.evento.id) {
-      // Actualizar evento
       this.eventosService.actualizarEvento(this.evento as Evento).subscribe(() => {
         this.obtenerEventos();
         this.resetearFormulario();
       });
     } else {
-      // Crear evento
       const nuevoEvento: Partial<Evento> = { ...this.evento };
-      this.eventosService.crearEvento(nuevoEvento as  Evento).subscribe(() => {
+      this.eventosService.crearEvento(nuevoEvento as Evento).subscribe(() => {
         this.obtenerEventos();
         this.resetearFormulario();
       });
@@ -77,7 +104,10 @@ export class EventosAdminComponent implements OnInit {
       titulo: '', 
       descripcion: '', 
       fecha: '',
-      hora: '',
+      fecha_fin: '',
+      hora_inicio: '',
+      hora_fin: '',
+      color: '',
       entrada: '', 
       precio: undefined,
       ubicacion: ''};

@@ -21,19 +21,36 @@ const eventoValidator = [
         .isISO8601()
         .withMessage("La fecha debe tener un formato válido (YYYY-MM-DD)"),
 
-    body("hora")
+    body("fecha_fin")
+        .optional()
+        .isISO8601()
+        .withMessage("La fecha debe tener un formato válido (YYYY-MM-DD)"),
+
+    body("hora_inicio")
         .exists()
         .withMessage("La hora del evento es obligatoria")
         .matches(/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/)
         .withMessage("La hora debe tener un formato válido (HH:mm o HH:mm:ss)"),
+
+    body("hora_fin")
+        .optional()
+        .matches(/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/)
+        .withMessage("La hora debe tener un formato válido (HH:mm o HH:mm:ss)"),
+
+    body("color")
+        .optional()
+        .isString()
+        .withMessage("El color debe ser una cadena de texto")
+        .isIn(['purple', 'blue', 'teal', 'green', 'yellow', 'orange', 'red'])
+        .withMessage("El color debe ser uno de los siguientes: 'purple', 'blue', 'teal', 'green', 'yellow', 'orange', 'red'"),
 
     body("entrada")
         .exists()
         .withMessage("La entrada es obligatoria")
         .isString()
         .withMessage("La entrada debe ser una cadena de texto")
-        .isIn(['Gratuito', 'Con precio'])
-        .withMessage("La entrada debe ser 'Gratuito' o 'Con precio'"),
+        .isIn(['Gratuito', 'Pago'])
+        .withMessage("La entrada debe ser 'Gratuito' o 'Pago'"),
 
     body("precio")
         .optional()

@@ -2,19 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../../service/blog.service';
-
+import { EditorModule  } from '@tinymce/tinymce-angular';
 
 @Component({
   selector: 'app-blog-admin',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, EditorModule ],
   templateUrl: './blog-admin.component.html',
   styleUrl: './blog-admin.component.scss'
 })
 export class BlogAdminComponent implements OnInit{
   blogForm: FormGroup;
   blogId: number | null = null;
-
+  editorConfig = {
+    apiKey: 'qobixfl8d269htsdhbgkwr5cglvx91ltdouomicefl5sxc3x',
+    height: 500,
+    menubar: false,
+    plugins: ['advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'wordcount'],
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | help',
+    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+  };
+  
   constructor(
     private fb: FormBuilder,
     private blogService: BlogService,
@@ -41,7 +49,7 @@ export class BlogAdminComponent implements OnInit{
   loadBlog(): void {
     if (this.blogId) {
       this.blogService.getBlogById(this.blogId).subscribe((data: any) => {
-        this.blogForm.patchValue(data.data); // Asegúrate de que esto coincida con la respuesta del backend
+        this.blogForm.patchValue(data.data);
       });
     }
   }

@@ -5,10 +5,11 @@ import { PanelAdminComponent } from './componentes/admin/panel-admin/panel-admin
 import { NegociosAdminComponent } from './componentes/admin/negocios-admin/negocios-admin.component';
 import { EventosAdminComponent } from './componentes/admin/eventos-admin/eventos-admin.component';
 import { BlogAdminComponent } from './componentes/admin/blog-admin/blog-admin.component';
+import { UsuariosAdminComponent } from './componentes/admin/usuarios-admin/usuarios-admin.component';
 
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistroComponent } from './componentes/user/registro/registro.component';
-import { UsuariosAdminComponent } from './componentes/admin/usuarios-admin/usuarios-admin.component';
+
 
 import { HomeComponent } from './componentes/home/home.component';
 import { CalendarioComponent } from './componentes/calendario/calendario.component';

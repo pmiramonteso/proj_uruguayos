@@ -75,10 +75,10 @@ const addEvento = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { titulo, descripcion, fecha, hora, entrada, precio, ubicacion } = req.body;
+    const { titulo, descripcion, fecha, fecha_fin, hora_inicio, hora_fin, color, entrada, precio, ubicacion } = req.body;
 
-    // Validación adicional para precio si la entrada es 'Con precio'
-    if (entrada === 'Con precio' && (!precio || precio <= 0)) {
+    // Validación adicional para precio si la entrada es 'Pago'
+    if (entrada === 'Pago' && (!precio || precio <= 0)) {
       return res.status(400).json({
         code: -62,
         message: 'Debe proporcionar un precio válido cuando el evento tiene un costo'
@@ -92,9 +92,12 @@ const addEvento = async (req, res) => {
         titulo,
         descripcion,
         fecha,
-        hora,
+        fecha_fin,
+        hora_inicio,
+        hora_fin,
+        color,
         entrada,
-        precio: entrada === 'Con precio' ? precio : null, // Solo asignamos precio si es "Con precio"
+        precio: entrada === 'Pago' ? precio : null, // Solo asignamos precio si es "Pago"
         ubicacion
       });
     } catch (error) {
@@ -145,10 +148,10 @@ const updateEvento = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { titulo, descripcion, fecha, hora, entrada, precio, ubicacion } = req.body;
+    const { titulo, descripcion, fecha, fecha_fin, hora_inicio, hora_fin, color, entrada, precio, ubicacion } = req.body;
 
-    // Validación adicional para precio si la entrada es 'Con precio'
-    if (entrada === 'Con precio' && (!precio || precio <= 0)) {
+    // Validación adicional para precio si la entrada es 'Pago'
+    if (entrada === 'Pago' && (!precio || precio <= 0)) {
       return res.status(400).json({
         code: -62,
         message: 'Debe proporcionar un precio válido cuando el evento tiene un costo'
@@ -168,9 +171,12 @@ const updateEvento = async (req, res) => {
     evento.titulo = titulo;
     evento.descripcion = descripcion;
     evento.fecha = fecha;
-    evento.hora = hora;
+    evento.fecha_fin = fecha_fin;
+    evento.hora_inicio = hora_inicio;
+    evento.hora_fin = hora_fin;
+    evento.color = color;
     evento.entrada = entrada;
-    evento.precio = entrada === 'Con precio' ? req.body.precio : null; // Solo asignamos precio si es "Con precio"
+    evento.precio = entrada === 'Pago' ? req.body.precio : null; // Solo asignamos precio si es "Pago"
     evento.ubicacion = ubicacion;
     await evento.save();
 

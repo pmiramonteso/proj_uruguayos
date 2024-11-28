@@ -19,21 +19,36 @@ const Eventos = sequelize.define('Eventos', {
     type: DataTypes.DATE,
     allowNull: false
   },
-  hora: {
+  fecha_fin: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  hora_inicio: {
     type: DataTypes.TIME,
     allowNull: false
+  },
+  hora_fin: {
+    type: DataTypes.TIME,
+    allowNull: true
+  },
+  color: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isIn: [['purple', 'blue', 'teal', 'green', 'yellow', 'orange', 'red']]
+    }
   },
   entrada: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'Gratuito', // Valor por defecto si no se proporciona
     validate: {
-      isIn: [['Gratuito', 'Con precio', 'No disponible']] // Valores posibles
+      isIn: [['Gratuito', 'Pago', 'No disponible']] // Valores posibles
     }
   },
   precio: {
     type: DataTypes.DECIMAL,
-    allowNull: true, // Solo se proporciona si 'entrada' es 'Con precio'
+    allowNull: true, // Solo se proporciona si 'entrada' es 'Pago'
     validate: {
       isDecimal: true, 
       min: 0 // El precio debe ser mayor o igual a 0
