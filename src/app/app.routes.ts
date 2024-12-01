@@ -16,7 +16,7 @@ import { CalendarioComponent } from './componentes/calendario/calendario.compone
 import { GraficosComponent } from './componentes/graficos/graficos.component';
 import { MapaComponent } from './componentes/mapa/mapa.component';
 import { BlogComponent } from './componentes/blog/blog.component';
-import { PresentacionComponent } from './presentacion/presentacion.component';
+import { PresentacionComponent } from './componentes/presentacion/presentacion.component';
 
 
 

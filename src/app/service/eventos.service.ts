@@ -22,7 +22,7 @@ export class EventosService {
   }
 
   actualizarEvento(evento: Evento): Observable<Evento> {
-    return this.http.put<Evento>(`${this.apiUrl}/${evento.id}`, evento);
+    return this.http.put<Evento>(`${this.apiUrl}/${evento.id_evento}`, evento);
   }
   
   eliminarEvento(id:number): Observable<void> {

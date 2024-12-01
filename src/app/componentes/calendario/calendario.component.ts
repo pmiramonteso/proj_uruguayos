@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Evento } from '../../interface/evento';
+import { EventosService } from '../../service/eventos.service';
 
 @Component({
   selector: 'app-calendario',
@@ -10,33 +12,31 @@ import { Component } from '@angular/core';
 })
 
 export class CalendarioComponent {
-  mes = { nombre: '', numero: 0 }; // Nombre y número del mes actual
+  mes = { nombre: '', numero: 0 };
   hoy = { dia: new Date().getDate(), mes: new Date().getMonth() + 1, anio: new Date().getFullYear() };
-  semanasDelMes: (number | null)[][] = []; // Arreglo para las semanas del mes
-
+  semanasDelMes: (number | null)[][] = [];
+  eventos: Evento[] = [];
   nombresMeses = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
-  constructor() {
+  constructor(private eventosService: EventosService) {
     this.mes.numero = this.hoy.mes;
     this.mes.nombre = this.nombresMeses[this.mes.numero - 1];
     this.generarCalendario(this.hoy.anio, this.mes.numero);
+    this.obtenerEventos();
   }
 
   generarCalendario(anio: number, mes: number) {
-    const primerDia = new Date(anio, mes - 1, 1); // Primer día del mes
-    const ultimoDia = new Date(anio, mes, 0); // Último día del mes
-
-    const diasEnMes = ultimoDia.getDate(); // Total de días en el mes
-    const primerDiaSemana = primerDia.getDay(); // Día de la semana del primer día (0 = domingo, 1 = lunes, ...)
-    
-    // Ajustar para que empiece en lunes (opcional, depende de tu diseño)
+    const primerDia = new Date(anio, mes - 1, 1);
+    const ultimoDia = new Date(anio, mes, 0);
+    const diasEnMes = ultimoDia.getDate();
+    const primerDiaSemana = primerDia.getDay();
     const inicio = primerDiaSemana === 0 ? 6 : primerDiaSemana - 1; 
 
     const semanas: (number | null)[][] = [];
-    let semana: (number | null)[] = Array(inicio).fill(null); // Rellenar días vacíos al principio
+    let semana: (number | null)[] = Array(inicio).fill(null);
 
     for (let dia = 1; dia <= diasEnMes; dia++) {
       if (semana.length === 7) {
@@ -46,7 +46,6 @@ export class CalendarioComponent {
       semana.push(dia);
     }
 
-    // Rellenar días vacíos al final de la última semana
     while (semana.length < 7) {
       semana.push(null);
     }
@@ -68,5 +67,11 @@ export class CalendarioComponent {
 
     this.mes.nombre = this.nombresMeses[this.mes.numero - 1];
     this.generarCalendario(this.hoy.anio, this.mes.numero);
+  }
+  obtenerEventos() {
+    this.eventosService.getEventos().subscribe((data) => {
+      console.log(data);
+      this.eventos = data;
+    });
   }
 }

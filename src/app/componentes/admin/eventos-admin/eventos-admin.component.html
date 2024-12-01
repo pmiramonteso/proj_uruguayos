@@ -1,5 +1,35 @@
-<div class="bg-gray-900 text-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
-  <h2 class="text-2xl font-semibold mb-6">{{ evento.id ? 'Editar evento' : 'Agregar evento' }}</h2>
+<div class="text-black p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+  <h2 class="text-2xl font-semibold mb-6">Gestor de eventos</h2>
+<button class="btn bg-teal-400 text-white" (click)="mostrarFormulario()">Agregar evento</button>
+  @if (eventos.length > 0){
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold mb-4">Lista de eventos</h3>
+      <ul>
+       <li
+          class="bg-gray-800 p-4 mb-2 rounded-lg flex justify-between items-center"
+        > @for (evento of eventos; track evento.id_evento) {
+          <span>{{ evento.titulo }}</span>
+          <div class="space-x-2">
+            <button
+              (click)="editarEvento(evento)"
+              class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+            >
+              Editar
+            </button>
+            <button
+              (click)="eliminarEvento(evento)"
+              class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+            >
+              Eliminar
+            </button>
+          </div>
+        }
+        </li>
+      </ul>
+    </div>
+  }
+
+  @if (mostrarFormularioEvento) {
   <form class="space-y-6" (ngSubmit)="onSubmit()">
     <!-- Title -->
     <div>
@@ -14,7 +44,7 @@
         />
     </div>
 
-    <!-- Date Selector -->
+    <!-- Selector de fechas -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium mb-1" for="fecha">Fecha</label>
@@ -138,12 +168,11 @@
     <div class="flex justify-between">
       <button
         type="submit"
-        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
-      >
-      {{ evento.id ? 'Actualizar evento' : 'Agregar evento' }}
+        class="bg-teal-400 text-white px-4 py-2 rounded-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-500"
+      > Agregar evento
       </button>
 
-      @if (evento.id) {
+      @if (evento.id_evento) {
       <button
       type="button"
       (click)="cancelarEdicion()"
@@ -153,35 +182,8 @@
   }
     </div>
   </form>
-
-  @if (eventos.length > 0){
-  <div class="mt-8">
-    <h3 class="text-xl font-semibold mb-4">Lista de eventos</h3>
-    <ul>
-      @for (item of eventos; track eventos) {
-      <li
-        class="bg-gray-800 p-4 mb-2 rounded-lg flex justify-between items-center"
-      >
-        <span>{{ item.titulo }}</span>
-        <div class="space-x-2">
-          <button
-            (click)="editarEvento(item)"
-            class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
-          >
-            Editar
-          </button>
-          <button
-            (click)="eliminarEvento(item)"
-            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-          >
-            Eliminar
-          </button>
-        </div>
-      </li>
-    }
-    </ul>
-  </div>
 }
+
 </div>
 
   

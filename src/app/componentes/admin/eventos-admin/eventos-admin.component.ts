@@ -24,7 +24,10 @@ export class EventosAdminComponent implements OnInit {
     ubicacion: '',
   };
 
+  agregarEvento: boolean = false;
   eventos: Evento[] = [];
+  mostrarFormularioEvento: boolean = false;
+
 
   constructor(private eventosService: EventosService) {}
   ngOnInit(): void {
@@ -32,39 +35,46 @@ export class EventosAdminComponent implements OnInit {
   }
 
   obtenerEventos() {
-    this.eventosService.getEventos().subscribe((data) => {
+    this.eventosService.getEventos().subscribe((data: Evento[]) => {
+      console.log('Eventos obtenidos:', data);
       this.eventos = data;
+    }, error => {
+      console.error('Error al obtener eventos', error);
     });
+  }
+  mostrarFormulario() {
+    this.resetearFormulario();
+    this.mostrarFormularioEvento = true;
   }
   setColor(color: string) {
     this.evento.color = color;
   }
   onSubmit() {
     if (this.evento.fecha) {
-      this.evento.fecha = new Date(this.evento.fecha).toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      this.evento.fecha = new Date(this.evento.fecha).toISOString().split('T')[0];
     } else {
       delete this.evento.fecha;
     }
 
     if (this.evento.fecha_fin) {
-      this.evento.fecha_fin = new Date(this.evento.fecha_fin).toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      this.evento.fecha_fin = new Date(this.evento.fecha_fin).toISOString().split('T')[0];
     } else {
       delete this.evento.fecha_fin;
     }
 
     if (this.evento.hora_inicio) {
-      this.evento.hora_inicio = new Date(`1970-01-01T${this.evento.hora_inicio}`).toISOString().split('T')[1].slice(0, 5); // Formato HH:mm
+      this.evento.hora_inicio = new Date(`1970-01-01T${this.evento.hora_inicio}`).toISOString().split('T')[1].slice(0, 5);
     } else {
       delete this.evento.hora_inicio;
     }
 
     if (this.evento.hora_fin) {
-      this.evento.hora_fin = new Date(`1970-01-01T${this.evento.hora_fin}`).toISOString().split('T')[1].slice(0, 5); // Formato HH:mm
+      this.evento.hora_fin = new Date(`1970-01-01T${this.evento.hora_fin}`).toISOString().split('T')[1].slice(0, 5);
     } else {
       delete this.evento.hora_fin;
     }
 
-    if (this.evento.id) {
+    if (this.evento.id_evento) {
       this.eventosService.actualizarEvento(this.evento as Evento).subscribe(() => {
         this.obtenerEventos();
         this.resetearFormulario();
@@ -83,11 +93,12 @@ export class EventosAdminComponent implements OnInit {
       ...evento, 
       precio: evento.precio ?? undefined 
     };
+    this.mostrarFormularioEvento = true;
   }
   
   eliminarEvento(evento: Evento) {
-    if (evento.id) {
-      this.eventosService.eliminarEvento(evento.id).subscribe(() => {
+    if (evento.id_evento) {
+      this.eventosService.eliminarEvento(evento.id_evento).subscribe(() => {
         this.obtenerEventos();
       });
     } else {
@@ -97,6 +108,7 @@ export class EventosAdminComponent implements OnInit {
 
   cancelarEdicion() {
     this.resetearFormulario();
+    this.mostrarFormularioEvento = false;
   }
 
   private resetearFormulario() {
