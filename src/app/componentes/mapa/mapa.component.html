@@ -30,20 +30,30 @@
           <!-- Tarjetas -->
           @for (negocio of negocios; track negocio.id_negocio) {
           <div
-            class=" border border-white rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow"
+            class=" border border-white rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow "
           >
             <h3 class="text-lg font-bold text-teal-400">{{ negocio.nombre }}</h3>
             <p class="text-sm text-gray-400 mt-1">Dirección: {{ negocio.direccion }}</p>
-
             <!-- Redes Sociales -->
-            @if (negocio.tipoRedSocial) {
-            <a
-              [href]="negocio.tipoRedSocial"
-              target="_blank"
-              class="text-teal-400 underline text-sm mt-2 inline-block hover:text-teal-500"
-              ></a
-            >
+            @if(negocio.tipoRedSocial === 'instagram') {
+              <i class="fab fa-instagram text-pink-500 text-xl"></i>
             }
+            @if(negocio.tipoRedSocial === 'twitter') {
+              <i class="fab fa-twitter text-blue-400 text-xl"></i>
+            }
+            @if(negocio.tipoRedSocial === 'facebook') {
+              <i class="fab fa-facebook text-blue-600 text-xl"></i>
+            }
+            @if(negocio.tipoRedSocial === 'youtube') {
+              <i class="fab fa-youtube text-red-500 text-xl"></i>
+            }
+            @if(negocio.tipoRedSocial === 'pagina_web') {
+              <i class="fas fa-globe text-green-500 text-xl"></i>
+            }
+  
+            <a [href]="negocio.urlRedSocial" target="_blank" class="text-blue-400 underline">
+              {{ negocio.urlRedSocial }}
+            </a>
           </div>
           }
         </div>

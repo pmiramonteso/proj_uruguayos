@@ -1,55 +1,63 @@
 import { Component, OnInit } from '@angular/core';
 import { EventosService } from '../../../service/eventos.service';
 import { Evento } from '../../../interface/evento';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-eventos-admin',
   standalone: true,
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './eventos-admin.component.html',
   styleUrl: './eventos-admin.component.scss'
 })
 export class EventosAdminComponent implements OnInit {
-  evento: Partial<Evento> = {
-    titulo: '',
-    descripcion: '',
-    fecha: '',
-    fecha_fin: '',
-    hora_inicio: '',
-    hora_fin: '',
-    color: '',
-    entrada: '',
-    precio: undefined,
-    ubicacion: '',
-  };
-
-  agregarEvento: boolean = false;
+  eventoForm!: FormGroup;
   eventos: Evento[] = [];
   mostrarFormularioEvento: boolean = false;
+  eventoEditando: any = null;
+  editando = false;
+  agregando = false;
+  evento: Partial<Evento> = {};
 
-
-  constructor(private eventosService: EventosService) {}
+  constructor(private fb: FormBuilder, private eventosService: EventosService) {}
   ngOnInit(): void {
+    this.eventoForm = this.fb.group({
+      titulo: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      fecha: ['', Validators.required],
+      fecha_fin: ['', Validators.required],
+      hora_inicio: ['', Validators.required],
+      hora_fin: ['', Validators.required],
+      color: ['', Validators.required],
+      entrada: ['', Validators.required],
+      precio: null,
+      ubicacion: ['', Validators.required]
+    });
     this.obtenerEventos();
   }
 
   obtenerEventos() {
-    this.eventosService.getEventos().subscribe((data: Evento[]) => {
-      console.log('Eventos obtenidos:', data);
-      this.eventos = data;
+    this.eventosService.getEventos().subscribe((eventos) => {
+      console.log('Eventos obtenidos:', eventos);
+      this.eventos = eventos;
     }, error => {
       console.error('Error al obtener eventos', error);
     });
   }
-  mostrarFormulario() {
-    this.resetearFormulario();
-    this.mostrarFormularioEvento = true;
+  limpiarFormulario(): void {
+    this.eventoForm.reset();
+    this.eventoEditando = null;
+    this.mostrarFormularioEvento = false;
   }
+
   setColor(color: string) {
     this.evento.color = color;
   }
-  onSubmit() {
+  agregarEvento() {
+    this.mostrarFormularioEvento = !this.mostrarFormularioEvento;
+    this.editando = false;
+    this.agregando = true;
+
     if (this.evento.fecha) {
       this.evento.fecha = new Date(this.evento.fecha).toISOString().split('T')[0];
     } else {
@@ -74,25 +82,61 @@ export class EventosAdminComponent implements OnInit {
       delete this.evento.hora_fin;
     }
 
-    if (this.evento.id_evento) {
-      this.eventosService.actualizarEvento(this.evento as Evento).subscribe(() => {
-        this.obtenerEventos();
-        this.resetearFormulario();
-      });
-    } else {
-      const nuevoEvento: Partial<Evento> = { ...this.evento };
-      this.eventosService.crearEvento(nuevoEvento as Evento).subscribe(() => {
-        this.obtenerEventos();
-        this.resetearFormulario();
-      });
+    if (this.eventoForm.valid) {
+      const formValue = this.eventoForm.value;
+      console.log('Formulario enviado:', formValue);
+      
+      if (this.eventoEditando) {
+        const eventoActualizado = { ...formValue, id_evento: this.eventoEditando.id_evento };
+        console.log('Evento actualizado:', eventoActualizado);
+        this.eventosService.actualizarEvento(eventoActualizado).subscribe({
+          next: (response) => {
+            console.log('Evento actualizado:', response);
+            this.obtenerEventos();
+            this.limpiarFormulario();
+          },
+          error: (error) => {
+            console.error('Error al actualizar evento:', error);
+          }
+        });
+      } else {
+        this.eventosService.crearEvento(formValue).subscribe({
+          next: (response) => {
+            console.log('Evento creado:', response);
+            this.obtenerEventos();
+            this.limpiarFormulario();
+          },
+          error: (error) => {
+            console.error('Error al crear evento:', error);
+          }
+        });
+      }
     }
   }
 
-  editarEvento(evento: Evento) {
-    this.evento = { 
-      ...evento, 
-      precio: evento.precio ?? undefined 
-    };
+  editarEvento(evento: Evento): void {
+    if (!evento) {
+      console.error("El evento no tiene datos válidos.");
+      return;
+    }
+  
+    this.editando = true;
+    this.agregando = false;
+  
+    this.eventoEditando = evento;
+    this.eventoForm.patchValue({
+      titulo: evento.titulo || '',
+      descripcion: evento.descripcion || '',
+      fecha: evento.fecha ? new Date(evento.fecha).toISOString().split('T')[0] : '',
+      fecha_fin: evento.fecha_fin ? new Date(evento.fecha_fin).toISOString().split('T')[0] : '',
+      hora_inicio: evento.hora_inicio ? evento.hora_inicio.slice(0, 5) : '',
+      hora_fin: evento.hora_fin ? evento.hora_fin.slice(0, 5) : '',
+      color: evento.color || 'defaultColor',
+      entrada: evento.entrada || 'Gratuito',
+      precio: evento.precio ?? null,
+      ubicacion: evento.ubicacion || '',
+    });
+  
     this.mostrarFormularioEvento = true;
   }
   
@@ -104,24 +148,5 @@ export class EventosAdminComponent implements OnInit {
     } else {
       console.error("No se puede eliminar un evento sin ID");
     }
-  }
-
-  cancelarEdicion() {
-    this.resetearFormulario();
-    this.mostrarFormularioEvento = false;
-  }
-
-  private resetearFormulario() {
-    this.evento = {  
-      titulo: '', 
-      descripcion: '', 
-      fecha: '',
-      fecha_fin: '',
-      hora_inicio: '',
-      hora_fin: '',
-      color: '',
-      entrada: '', 
-      precio: undefined,
-      ubicacion: ''};
   }
 }

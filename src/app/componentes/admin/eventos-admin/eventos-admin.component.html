@@ -1,44 +1,16 @@
-<div class="text-black p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
-  <h2 class="text-2xl font-semibold mb-6">Gestor de eventos</h2>
-<button class="btn bg-teal-400 text-white" (click)="mostrarFormulario()">Agregar evento</button>
-  @if (eventos.length > 0){
-    <div class="mt-8">
-      <h3 class="text-xl font-semibold mb-4">Lista de eventos</h3>
-      <ul>
-       <li
-          class="bg-gray-800 p-4 mb-2 rounded-lg flex justify-between items-center"
-        > @for (evento of eventos; track evento.id_evento) {
-          <span>{{ evento.titulo }}</span>
-          <div class="space-x-2">
-            <button
-              (click)="editarEvento(evento)"
-              class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
-            >
-              Editar
-            </button>
-            <button
-              (click)="eliminarEvento(evento)"
-              class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-            >
-              Eliminar
-            </button>
-          </div>
-        }
-        </li>
-      </ul>
-    </div>
-  }
-
+<div class="space-y-6">
+  @if(!editando && !agregando){
+  <button (click)="agregarEvento()" class= "btn-agregar bg-teal-400">Agregar nuevo evento</button>
+}
   @if (mostrarFormularioEvento) {
-  <form class="space-y-6" (ngSubmit)="onSubmit()">
+  <form  [formGroup]="eventoForm" class="space-y-6" (ngSubmit)="agregarEvento()">
     <!-- Title -->
     <div>
       <label class="block text-sm font-medium mb-1" for="title">Titulo</label>
       <input
         type="text"
         id="title"
-        name="title"
-        [(ngModel)]="evento.titulo"
+        formControlName="title"
         class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         required      
         />
@@ -51,8 +23,7 @@
         <input
           type="date"
           id="fecha"
-          [(ngModel)]="evento.fecha"
-          name="fecha"
+          formControlName="fecha"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
           />
@@ -61,8 +32,7 @@
         <input
           type="date"
           id="fecha_fin"
-          name="fecha_fin"
-          [(ngModel)]="evento.fecha_fin"
+          formControlName="fecha_fin"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 mt-6 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
       </div>
@@ -75,8 +45,7 @@
         <input
           type="time"
           id="hora_inicio"
-          name="hora_inicio"
-          [(ngModel)]="evento.hora_inicio"
+          formControlName="hora_inicio"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
           />
@@ -86,8 +55,7 @@
         <input
           type="time"
           id="hora_fin"
-          name="hora_fin"
-          [(ngModel)]="evento.hora_fin"
+          formControlName="hora_fin"
           class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
       </div>
@@ -115,8 +83,7 @@
       <label class="block text-sm font-medium mb-1" for="description">Descripción</label>
       <textarea
         id="description"
-        name="description"
-        [(ngModel)]="evento.descripcion"
+        formControlName="description"
         class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         rows="4"
         required
@@ -127,8 +94,7 @@
       <label class="block text-sm font-medium mb-1" for="entrada">Entrada</label>
       <select
         id="entrada"
-        [(ngModel)]="evento.entrada"
-        name="entrada"
+        formControlName="entrada"
         required
         class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
@@ -144,8 +110,7 @@
       <input
         type="number"
         id="precio"
-        [(ngModel)]="evento.precio"
-        name="precio"
+        formControlName="precio"
         class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
@@ -157,33 +122,59 @@
       <input
         type="text"
         id="ubicacion"
-        [(ngModel)]="evento.ubicacion"
-        name="ubicacion"
+        formControlName="ubicacion"
         required
         class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
 
-    <!-- Actions -->
-    <div class="flex justify-between">
-      <button
-        type="submit"
-        class="bg-teal-400 text-white px-4 py-2 rounded-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-500"
-      > Agregar evento
-      </button>
-
-      @if (evento.id_evento) {
-      <button
-      type="button"
-      (click)="cancelarEdicion()"
-      class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 focus:ring-2 focus:ring-gray-500">
-      Cancelar
-    </button>
-  }
-    </div>
+  <!-- Botón Guardar -->
+  <button
+    type="submit"
+    class="bg-teal-400 text-white px-4 py-2 rounded-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-500 w-full">
+    Guardar
+  </button>
   </form>
 }
 
+<div class="space-y-4 mt-8">
+  @if(!editando && !agregando){
+  <h2 class="text-2xl font-semibold text-center">Lista de Eventos</h2>
+  @if(eventos && eventos.length > 0) {
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+  >
+    @for(evento of eventos; track evento.id_evento) {
+    <div class="card">
+      <h3 class="font-semibold text-lg">{{ evento.titulo }}</h3>
+      <p class="text-sm text-gray-400">{{ evento.descripcion }}</p>
+      <p class="text-sm text-gray-400">{{ evento.fecha }}</p>
+      <p class="text-sm text-gray-400">{{ evento.hora_inicio }}</p>
+      <p class="text-sm text-gray-400">{{ evento.entrada }}</p>
+      <p class="text-sm text-gray-400">{{ evento.ubicacion }}</p>
+
+      <div class="mt-4 flex gap-4">
+        <button
+          (click)="editarEvento(evento)"
+          class="btn-eventos bg-teal-400 text-white px-4 py-2 rounded-md hover:bg-teal-600"
+        >
+          Editar
+        </button>
+        <button
+          (click)="eliminarEvento(evento)"
+          class="btn-eventos bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="text-center text-gray-500">No hay eventos disponibles.</div>
+  }
+}
+</div>
 </div>
 
   

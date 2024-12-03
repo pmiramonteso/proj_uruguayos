@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', getNegocios);
 router.get('/:id', idValidator, getNegocioById);
 router.post('/', negocioValidator, addNegocio);
-router.patch('/:id', authenticateToken(['mod', 'admin']), idValidator, negocioValidator, updateNegocio);
+router.patch('/:id', idValidator, negocioValidator, updateNegocio);
 router.delete('/:id', authenticateToken(['admin']), idValidator, deleteNegocio);
 
 module.exports = router;

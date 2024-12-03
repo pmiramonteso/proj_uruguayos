@@ -24,7 +24,7 @@ addNegocio(negocio: Negocio): Observable<Negocio> {
 }
 
 updateNegocio(negocio: Negocio): Observable<Negocio> {
-  return this.http.put<Negocio>(`${this.apiUrl}${negocio.id_negocio}`, negocio);
+  return this.http.patch<Negocio>(`${this.apiUrl}/${negocio.id_negocio}`, negocio);
 }
 
 deleteNegocio(id: number): Observable<Negocio> {

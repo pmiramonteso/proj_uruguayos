@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Evento } from '../interface/evento';
+import { ApiEventos } from '../interface/api-eventos';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -14,7 +15,9 @@ export class EventosService {
   constructor(private http: HttpClient) {}
 
   getEventos(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(this.apiUrl);
+    return this.http.get<ApiEventos>(this.apiUrl).pipe(
+      map((response) => response.data)
+    );
   }
 
   crearEvento(evento: Evento): Observable<Evento> {

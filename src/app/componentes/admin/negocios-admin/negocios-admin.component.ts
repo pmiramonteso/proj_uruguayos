@@ -10,10 +10,14 @@ import { Negocio } from '../../../interface/negocio';
   styleUrl: './negocios-admin.component.scss'
 })
 export class NegociosAdminComponent implements OnInit{
-
+  negocios: Negocio[] = [];
   negocioForm!: FormGroup;
   tipoRedSocial: string | null = null;
   urlRedSocial: string | null = null;
+  negocioEditando: any = null;
+  mostrarFormulario: boolean = false;
+  editando = false;
+  agregando = false;
 
   constructor(private fb: FormBuilder, private negociosService: NegociosService) {}
 
@@ -28,34 +32,68 @@ export class NegociosAdminComponent implements OnInit{
       urlRedSocial: ['', Validators.required],
       categoria: ['', Validators.required],
     });
+    this.getNegocios();
   }
-
-  onSubmit(): void {
-  if (this.negocioForm.valid) {
-    const formValue = this.negocioForm.value;
-    // Llamamos al servicio para agregar el nuevo negocio
-    this.negociosService.addNegocio(formValue).subscribe({
-      next: (response) => {
-        console.log('Negocio creado:', response);
-      },
-      error: (error) => {
-        console.error('Error al crear negocio:', error);
-      }
-    });
-}
-}
-
-onUpdate(negocio: Negocio): void {
-  if (this.negocioForm.valid) {
-    this.negociosService.updateNegocio(negocio).subscribe(
-      (response) => {
-        console.log('Negocio actualizado:', response);
-      },
-      (error) => {
-        console.error('Error al actualizar negocio:', error);
-      }
-    );
+  limpiarFormulario(): void {
+    this.negocioForm.reset();
+    this.negocioEditando = null;
+    this.mostrarFormulario = false;
   }
+  
+  agregarNegocio(): void {
+    this.mostrarFormulario = !this.mostrarFormulario;
+    this.editando = false;
+    this.agregando = true;
+  
+    if (this.negocioForm.valid) {
+      const formValue = this.negocioForm.value;
+      console.log('Formulario enviado:', formValue);
+      
+      if (this.negocioEditando) {
+        const negocioActualizado = { ...formValue, id_negocio: this.negocioEditando.id_negocio };
+        console.log('Negocio actualizado:', negocioActualizado);
+        this.negociosService.updateNegocio(negocioActualizado).subscribe({
+          next: (response) => {
+            console.log('Negocio actualizado:', response);
+            this.getNegocios();
+            this.limpiarFormulario();
+          },
+          error: (error) => {
+            console.error('Error al actualizar negocio:', error);
+          }
+        });
+      } else {
+        this.negociosService.addNegocio(formValue).subscribe({
+          next: (response) => {
+            console.log('Negocio creado:', response);
+            this.getNegocios();
+            this.limpiarFormulario();
+          },
+          error: (error) => {
+            console.error('Error al crear negocio:', error);
+          }
+        });
+      }
+    }
+  }
+  
+
+editarNegocio(negocio: Negocio): void {
+  this.editando = true;
+  this.agregando = false;
+
+  this.negocioEditando = negocio;
+  this.negocioForm.setValue({
+    nombre: negocio.nombre,
+    descripcion: negocio.descripcion,
+    direccion: negocio.direccion,
+    latitud: negocio.latitud,
+    longitud: negocio.longitud,
+    tipoRedSocial: negocio.tipoRedSocial || '',
+    urlRedSocial: negocio.urlRedSocial,
+    categoria: negocio.categoria
+  });
+  this.mostrarFormulario = true;
 }
 
 // Método para eliminar un negocio
@@ -64,6 +102,7 @@ onDelete(id: number): void {
     (response) => {
       console.log('Negocio eliminado:', response);
       // Aquí podrías actualizar la lista de negocios o hacer otras acciones después de la eliminación
+      this.getNegocios();
     },
     (error) => {
       console.error('Error al eliminar negocio:', error);
@@ -76,6 +115,7 @@ getNegocios(): void {
   this.negociosService.getNegocios().subscribe(
     (negocios) => {
       console.log('Negocios obtenidos:', negocios);
+      this.negocios = negocios;
       // Aquí podrías almacenar los negocios en una variable para mostrarlos en el componente
     },
     (error) => {

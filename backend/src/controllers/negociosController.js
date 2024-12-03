@@ -124,10 +124,10 @@ const updateNegocio = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { title, year } = req.body;
+    const { nombre, descripcion, direccion, latitud, longitud, tipoRedSocial, urlRedSocial, categoria } = req.body;
 
     // Buscar un usuario por su ID en la base de datos
-    const negocio = await Negocio.findByPk(id);
+    const negocio = await Negocios.findByPk(id);
     if (!negocio) {
       return res.status(404).json({
         code: -3,
@@ -136,21 +136,27 @@ const updateNegocio = async (req, res) => {
     }
 
     // Actualizar el correo electrónico y la contraseña del usuario
-    negocio.title = title;
-    negocio.year = year;
-    await Negocio.save();
+    negocio.nombre = nombre;
+    negocio.descripcion = descripcion;
+    negocio.direccion = direccion;
+    negocio.latitud = latitud;
+    negocio.longitud = longitud;
+    negocio.tipoRedSocial = tipoRedSocial;
+    negocio.urlRedSocial = urlRedSocial;
+    negocio.categoria = categoria;
+    await negocio.save();
 
     // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
       message: 'Negocio Updated Successfully',
-      data: Negocio
+      data: negocio
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       code: -100,
-      message: 'Ha ocurrido un error al actualizar el libro'
+      message: 'Ha ocurrido un error al actualizar el negocio'
     });
   }
 };
