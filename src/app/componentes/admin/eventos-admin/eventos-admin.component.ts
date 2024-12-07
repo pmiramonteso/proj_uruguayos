@@ -30,12 +30,24 @@ export class EventosAdminComponent implements OnInit {
       hora_fin: ['', Validators.required],
       color: ['', Validators.required],
       entrada: ['', Validators.required],
-      precio: null,
+      precio: [null, Validators.min(0)],
       ubicacion: ['', Validators.required]
+    });
+    this.eventoForm.get('entrada')?.valueChanges.subscribe(value => {
+      this.togglePrecio(value);
     });
     this.obtenerEventos();
   }
 
+  togglePrecio(entrada: string): void {
+    if (entrada === 'Pago') {
+      this.eventoForm.get('precio')?.setValidators([Validators.required, Validators.min(0)]);
+    } else {
+      this.eventoForm.get('precio')?.clearValidators();
+    }
+    this.eventoForm.get('precio')?.updateValueAndValidity();
+  }
+  
   obtenerEventos() {
     this.eventosService.getEventos().subscribe((eventos) => {
       console.log('Eventos obtenidos:', eventos);
@@ -51,7 +63,7 @@ export class EventosAdminComponent implements OnInit {
   }
 
   setColor(color: string) {
-    this.evento.color = color;
+    this.eventoForm.patchValue({ color });
   }
   agregarEvento() {
     this.mostrarFormularioEvento = !this.mostrarFormularioEvento;
@@ -84,7 +96,7 @@ export class EventosAdminComponent implements OnInit {
 
     if (this.eventoForm.valid) {
       const formValue = this.eventoForm.value;
-      console.log('Formulario enviado:', formValue);
+      console.log('color:', formValue.color);
       
       if (this.eventoEditando) {
         const eventoActualizado = { ...formValue, id_evento: this.eventoEditando.id_evento };
@@ -103,6 +115,7 @@ export class EventosAdminComponent implements OnInit {
         this.eventosService.crearEvento(formValue).subscribe({
           next: (response) => {
             console.log('Evento creado:', response);
+            this.eventosService.notificarActualizacion();
             this.obtenerEventos();
             this.limpiarFormulario();
           },
@@ -115,28 +128,22 @@ export class EventosAdminComponent implements OnInit {
   }
 
   editarEvento(evento: Evento): void {
-    if (!evento) {
-      console.error("El evento no tiene datos válidos.");
-      return;
-    }
-  
     this.editando = true;
     this.agregando = false;
   
     this.eventoEditando = evento;
-    this.eventoForm.patchValue({
+    this.eventoForm.setValue({
       titulo: evento.titulo || '',
       descripcion: evento.descripcion || '',
       fecha: evento.fecha ? new Date(evento.fecha).toISOString().split('T')[0] : '',
       fecha_fin: evento.fecha_fin ? new Date(evento.fecha_fin).toISOString().split('T')[0] : '',
       hora_inicio: evento.hora_inicio ? evento.hora_inicio.slice(0, 5) : '',
       hora_fin: evento.hora_fin ? evento.hora_fin.slice(0, 5) : '',
-      color: evento.color || 'defaultColor',
+      color: evento.color || '',
       entrada: evento.entrada || 'Gratuito',
       precio: evento.precio ?? null,
       ubicacion: evento.ubicacion || '',
     });
-  
     this.mostrarFormularioEvento = true;
   }
   

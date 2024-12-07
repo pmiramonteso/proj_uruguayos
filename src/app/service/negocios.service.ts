@@ -28,6 +28,6 @@ updateNegocio(negocio: Negocio): Observable<Negocio> {
 }
 
 deleteNegocio(id: number): Observable<Negocio> {
-  return this.http.delete<Negocio>(`${this.apiUrl}${id}`);
+  return this.http.delete<Negocio>(`${this.apiUrl}/${id}`);
 }
 }

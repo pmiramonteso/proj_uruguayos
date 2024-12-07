@@ -21,17 +21,25 @@ export class CalendarioComponent {
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
+    events: this.eventos
 };
 
   constructor(private eventosService: EventosService) {
-  
     this.obtenerEventos();
+    this.eventosService.getEventosActualizados().subscribe(() => {
+      this.obtenerEventos();
+    });
   }
 
   obtenerEventos() {
     this.eventosService.getEventos().subscribe((data) => {
-      console.log(data);
-      this.eventos = data;
+      this.eventos = data.map(evento => ({
+        title: evento.titulo,
+        start: evento.fecha,
+        end: evento.fecha_fin,
+        backgroundColor: evento.color,
+      }));
+      this.calendarOptions.events = this.eventos;
     });
   }
 }

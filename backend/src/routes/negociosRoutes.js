@@ -10,6 +10,6 @@ router.get('/', getNegocios);
 router.get('/:id', idValidator, getNegocioById);
 router.post('/', negocioValidator, addNegocio);
 router.patch('/:id', idValidator, negocioValidator, updateNegocio);
-router.delete('/:id', authenticateToken(['admin']), idValidator, deleteNegocio);
+router.delete('/:id', idValidator, deleteNegocio);
 
 module.exports = router;

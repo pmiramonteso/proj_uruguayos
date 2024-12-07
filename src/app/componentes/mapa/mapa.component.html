@@ -12,15 +12,28 @@
       <!-- Contenedor Principal -->
       <div class="flex flex-col gap-6 lg:flex-row shadow-lg rounded-lg overflow-hidden h-full">
         <!-- Mapa -->
-        <div
-          id="map"
-          class="h-[400px] lg:h-[600px] flex-[3] rounded-t-lg lg:rounded-l-lg lg:rounded-tr-none flex items-center justify-center"
-        >
+        <div id="map" class="h-[400px] lg:h-[600px] flex-[3] rounded-t-lg lg:rounded-l-lg lg:rounded-tr-none flex items-center justify-center relative">
           <p class="text-gray-300">Mapa Interactivo Aquí</p>
+          <!-- Filtro de Categorías -->
+          <div class="filtro absolute top-4 right-4 bg-white p-4 rounded-lg shadow-lg z-10 max-w-xs">
+            <div class="flex flex-col gap-2">
+              @for (categoria of categorias; track categoria) {
+                <label class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    (change)="toggleCategoriaSeleccionada(categoria, $event)"
+                    [checked]="categoriasSeleccionadas.includes(categoria)"
+                    class="cursor-pointer"
+                  />
+                  <span>{{ categoria }}</span>
+                </label>
+              }
+            </div>
+          </div>
         </div>
 
         <!-- Cards de Negocios -->
-        <div class="p-6 flex flex-col gap-4 border-t border-gray-100 lg:border-t-0 lg:border-l lg:rounded-r-lg flex-[1] lg:h-[600px] overflow-y-auto flex-grow">
+        <div class="card p-6 flex flex-col gap-4 border-t border-gray-100 lg:border-t-0 lg:border-l lg:rounded-r-lg flex-[1] lg:h-[600px] overflow-y-auto flex-grow">
           <!-- Título -->
           <h2 class="text-2xl font-semibold text-center mb-4">Negocios</h2>
 
@@ -30,35 +43,65 @@
           <!-- Tarjetas -->
           @for (negocio of negocios; track negocio.id_negocio) {
           <div
-            class=" border border-white rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow "
-          >
+          id="card-{{ negocio.id_negocio }}"
+            class="border border-white rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow "
+            [class.bg-gray-100]="negocio.seleccionado"
+            (click)="seleccionarNegocio(negocio); abrirModal(negocio)">
             <h3 class="text-lg font-bold text-teal-400">{{ negocio.nombre }}</h3>
             <p class="text-sm text-gray-400 mt-1">Dirección: {{ negocio.direccion }}</p>
-            <!-- Redes Sociales -->
-            @if(negocio.tipoRedSocial === 'instagram') {
-              <i class="fab fa-instagram text-pink-500 text-xl"></i>
-            }
-            @if(negocio.tipoRedSocial === 'twitter') {
-              <i class="fab fa-twitter text-blue-400 text-xl"></i>
-            }
-            @if(negocio.tipoRedSocial === 'facebook') {
-              <i class="fab fa-facebook text-blue-600 text-xl"></i>
-            }
-            @if(negocio.tipoRedSocial === 'youtube') {
-              <i class="fab fa-youtube text-red-500 text-xl"></i>
-            }
-            @if(negocio.tipoRedSocial === 'pagina_web') {
-              <i class="fas fa-globe text-green-500 text-xl"></i>
-            }
-  
-            <a [href]="negocio.urlRedSocial" target="_blank" class="text-blue-400 underline">
-              {{ negocio.urlRedSocial }}
-            </a>
+            <p class="text-sm text-gray-500 mt-1">
+              Distancia: {{ negocio.distancia?.toFixed(2) }} km
+            </p>
           </div>
           }
         </div>
       </div>
     </div>
+
+    @if(mostrarModal) {
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6">
+    <!-- Título -->
+    <h2 class="text-xl font-semibold mb-4">{{ negocioSeleccionado?.nombre }}</h2>
+
+    <!-- Contenido del modal -->
+    <div class="card-modal">
+      <p class="text-gray-600 mb-2">{{ negocioSeleccionado?.descripcion }}</p>
+      <p class="text-sm text-gray-500 mb-3">
+        <strong>Dirección:</strong> {{ negocioSeleccionado?.direccion }}
+      </p>
+      <!-- Redes Sociales -->
+      @if(negocioSeleccionado?.tipoRedSocial === 'instagram') {
+        <i class="fab fa-instagram text-pink-500 text-xl"></i>
+      }
+      @if(negocioSeleccionado?.tipoRedSocial === 'twitter') {
+        <i class="fab fa-twitter text-blue-400 text-xl"></i>
+      }
+      @if(negocioSeleccionado?.tipoRedSocial === 'facebook') {
+        <i class="fab fa-facebook text-blue-600 text-xl"></i>
+      }
+      @if(negocioSeleccionado?.tipoRedSocial === 'youtube') {
+        <i class="fab fa-youtube text-red-500 text-xl"></i>
+      }
+      @if(negocioSeleccionado?.tipoRedSocial === 'pagina_web') {
+        <i class="fas fa-globe text-green-500 text-xl"></i>
+      }
+
+      <a [href]="negocioSeleccionado?.urlRedSocial" target="_blank" class="text-blue-400 underline">
+        {{ negocioSeleccionado?.urlRedSocial }}
+      </a>
+    </div>
+
+    <!-- Botón de cierre -->
+    <button
+      (click)="cerrarModal()"
+      class="mt-6 w-full bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition"
+    >
+      Cerrar
+    </button>
+  </div>
+</div>
+}
   </body>
 </html>
 

@@ -8,4 +8,6 @@ export interface Negocio {
     tipoRedSocial?: string;
     urlRedSocial?: string;
     categoria: string;
+    seleccionado?: boolean;
+    distancia?: number;
   }

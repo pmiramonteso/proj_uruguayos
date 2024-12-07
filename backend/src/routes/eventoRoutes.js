@@ -11,7 +11,7 @@ router.get('/', getEventos);
 router.get('/:id', idValidator, getEventoById);
 router.post('/', eventoValidator, addEvento);
 router.patch('/:id', authenticateToken(['mod', 'admin']), idValidator, eventoValidator, updateEvento);
-router.delete('/:id', authenticateToken(['admin']), idValidator, deleteEvento);
+router.delete('/:id', idValidator, deleteEvento);
 
 module.exports = router;
 

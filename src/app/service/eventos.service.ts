@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, Subject } from 'rxjs';
 import { Evento } from '../interface/evento';
 import { ApiEventos } from '../interface/api-eventos';
 import { environment } from '../environments/environment';
@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class EventosService {
-
+  private eventosActualizados = new Subject<void>();
   private apiUrl = `${environment.endpoint}api/eventos`;
 
   constructor(private http: HttpClient) {}
@@ -30,5 +30,13 @@ export class EventosService {
   
   eliminarEvento(id:number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getEventosActualizados() {
+    return this.eventosActualizados.asObservable();
+  }
+
+  notificarActualizacion() {
+    this.eventosActualizados.next();
   }
 }
