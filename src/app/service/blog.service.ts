@@ -1,34 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from '../environments/environment';
+import { Blog } from '../interface/blog';
+import { ApiBlog } from '../interface/api-blog';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
 
-  private apiUrl = `${environment.endpoint}api/eventos`;
+  private apiUrl = `${environment.endpoint}api/posts`;
 
   constructor(private http: HttpClient) { }
 
-  getBlogs(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getBlogs(): Observable<Blog[]> {
+    return this.http.get<ApiBlog>(this.apiUrl).pipe(
+      map((response) => response.data)
+    );
   }
 
-  getBlogById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  createBlog(blog: Blog): Observable<Blog> {
+    return this.http.post<Blog>(this.apiUrl, blog);
   }
 
-  createBlog(blog: any): Observable<any> {
-    return this.http.post(this.apiUrl, blog);
+  updateBlog(id: number, blog: Blog): Observable<Blog> {
+    return this.http.put<Blog>(`${this.apiUrl}/${blog.id_blog}`, blog);
   }
 
-  updateBlog(id: number, blog: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, blog);
-  }
-
-  deleteBlog(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deleteBlog(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

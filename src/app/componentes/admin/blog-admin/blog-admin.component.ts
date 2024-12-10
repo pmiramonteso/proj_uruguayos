@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../../service/blog.service';
 import { EditorModule  } from '@tinymce/tinymce-angular';
+import { Blog } from '../../../interface/blog';
 
 @Component({
   selector: 'app-blog-admin',
@@ -12,8 +13,13 @@ import { EditorModule  } from '@tinymce/tinymce-angular';
   styleUrl: './blog-admin.component.scss'
 })
 export class BlogAdminComponent implements OnInit{
-  blogForm: FormGroup;
-  blogId: number | null = null;
+  blogForm!: FormGroup;
+  editando = false;
+  agregando = false;
+  mostrarFormularioBlog: boolean = false;
+  blogEditando: any = null;
+  blogs: Blog[] = [];
+
   editorConfig = {
     apiKey: 'qobixfl8d269htsdhbgkwr5cglvx91ltdouomicefl5sxc3x',
     height: 500,
@@ -27,38 +33,34 @@ export class BlogAdminComponent implements OnInit{
     private fb: FormBuilder,
     private blogService: BlogService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.blogForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(5)]],
-      content: ['', [Validators.required, Validators.minLength(20)]],
-      category: [''],
-      status: [true]
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.blogId = +params['id'];
-        this.loadBlog();
-      }
+    this.blogForm = this.fb.group({
+      titulo: ['', [Validators.required, Validators.minLength(5)]],
+      contenido: ['', [Validators.required, Validators.minLength(20)]],
+      categoria: [''],
+      status: [true]
     });
+    this.cargarBlogs();
   }
 
-  loadBlog(): void {
-    if (this.blogId) {
-      this.blogService.getBlogById(this.blogId).subscribe((data: any) => {
-        this.blogForm.patchValue(data.data);
+  cargarBlogs(): void {
+    this.blogService.getBlogs().subscribe((blogs) => {
+      console.log('Blogs obtenidos:', blogs);
+        this.blogs = blogs;
+      },
+      error => {
+        console.error('Error al obtener eventos', error);
       });
-    }
   }
-
-  saveBlog(): void {
+  
+  agregarBlog(): void {
     if (this.blogForm.valid) {
       const blogData = this.blogForm.value;
-      if (this.blogId) {
-        this.blogService.updateBlog(this.blogId, blogData).subscribe(() => {
+
+      if (this.editando && this.blogEditando) {
+        this.blogService.updateBlog(this.blogEditando.id_blog, blogData).subscribe(() => {
           this.router.navigate(['/blog']);
         });
       } else {
@@ -68,4 +70,26 @@ export class BlogAdminComponent implements OnInit{
       }
     }
   }
+
+  editarBlog(blog: Blog): void {
+    this.editando = true;
+    this.blogEditando = blog;
+    this.blogForm.patchValue(blog);
+  }
+
+  eliminarBlog(blogId: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar este blog?')) {
+      this.blogService.deleteBlog(blogId).subscribe({
+        next: () => {
+          alert('Blog eliminado correctamente.');
+          this.router.navigate(['/blog']);
+        },
+        error: (error) => {
+          console.error('Error al eliminar el blog:', error);
+          alert('Ocurrió un error al intentar eliminar el blog.');
+        }
+      });
+    }
+  }
+  
 }

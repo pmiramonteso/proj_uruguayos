@@ -3,7 +3,6 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors'); //para poder hacer puts, y tal desde el cliente al servidor
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
-const bookRoutes = require('./routes/bookRoutes');
 const testRoutes = require('./routes/testRoutes');
 const negociosRoutes = require('./routes/negociosRoutes');
 const eventosRoutes = require('./routes/eventoRoutes');
@@ -38,7 +37,6 @@ app.use(express.urlencoded({ extended: true })); // Para analizar datos de formu
 // Configurar rutas
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
-app.use('/book', bookRoutes);
 app.use('/test', testRoutes);
 app.use('/api/negocios', negociosRoutes);
 app.use('/api/eventos', eventosRoutes);

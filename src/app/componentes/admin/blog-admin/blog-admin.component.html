@@ -1,27 +1,29 @@
-<div class="bg-gray-900 text-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
-    <h2 class="text-2xl font-semibold mb-6">{{ blogId ? 'Editar Publicación' : 'Nueva Publicación' }}</h2>
-    <form [formGroup]="blogForm" (ngSubmit)="saveBlog()" class="space-y-6">
+<div class="space-y-6">
+ @if(!editando && !agregando){
+    <button (click)="agregarBlog()" class= "btn-agregar bg-teal-400">Agregar nuevo post</button>
+  }
+    @if (mostrarFormularioBlog) {
+    <form [formGroup]="blogForm" (ngSubmit)="agregarBlog()" class="space-y-6">
       
       <!-- Título -->
       <div>
-        <label class="block text-sm font-medium mb-1" for="title">Título</label>
+        <label class="block text-sm font-medium mb-1" for="titulo">Título</label>
         <input
-          id="title"
+          id="titulo"
           type="text"
-          formControlName="title"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          formControlName="titulo"
+          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
           required
         />
       </div>
   
       <!-- Contenido -->
       <div>
-        <label class="block text-sm font-medium mb-1" for="content">Contenido</label>
+        <label class="block text-sm font-medium mb-1" for="contenido">Contenido</label>
          <editor apiKey="qobixfl8d269htsdhbgkwr5cglvx91ltdouomicefl5sxc3x"
-          [(ngModel)]="blogForm.controls['content'].value"
-          id="content"
-          formControlName="content"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          id="contenido"
+          formControlName="contenido"
+          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
         </editor>
        
@@ -29,12 +31,12 @@
   
       <!-- Categoría -->
       <div>
-        <label class="block text-sm font-medium mb-1" for="category">Categoría</label>
+        <label class="block text-sm font-medium mb-1" for="categoria">Categoría</label>
         <input
-          id="category"
+          id="categoria"
           type="text"
-          formControlName="category"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          formControlName="categoria"
+          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
           required
         />
       </div>
@@ -45,7 +47,7 @@
         <select
           id="status"
           formControlName="status"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-teal-500"
           required
         >
           <option [value]="true">Activo</option>
@@ -54,20 +56,44 @@
       </div>
   
       <!-- Acciones -->
-      <div class="flex justify-between">
-        <button
-          type="submit"
-          class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
-        >
-          {{ blogId ? 'Actualizar Publicación' : 'Guardar' }}
-        </button>
-        <a
-          routerLink="/blog"
-          class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 focus:ring-2 focus:ring-gray-500"
-        >
-          Cancelar
-        </a>
-      </div>
+      <button
+    type="submit"
+    class="bg-teal-400 text-white px-4 py-2 rounded-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-500 w-full">
+    Guardar
+  </button>
     </form>
-  </div>
+  }
+
+    <div class="space-y-4 mt-8">
+      @if (!editando && !agregando) {
+        <h2 class="text-2xl font-semibold text-center">Lista de Blogs</h2>
+        @if (blogs && blogs.length > 0) {
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @for (blog of blogs; track blog.id_blog) {
+              <div class="blog-list">
+                <h3>{{ blog.titulo }}</h3>
+                <p>{{ blog.contenido }}</p>
+                <div class="mt-4 flex gap-4">
+                  <button
+                    (click)="editarBlog(blog)"
+                    class="btn-eventos bg-teal-400 text-white hover:text-black px-4 py-2 rounded-md hover:bg-teal-600"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    (click)="eliminarBlog(blog.id_blog)"
+                    class="btn-eventos bg-black text-white hover:text-black px-4 py-2 rounded-md"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+          } @else {
+          <div class="text-center text-gray-500">No hay blogs disponibles.</div>
+        }
+      }
+    </div>
+  
   

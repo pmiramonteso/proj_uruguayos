@@ -1,5 +1,62 @@
 full-calendar {
   display: block;
-  max-width: 800px;
+  max-width: 1200px; // Aumenta el tamaño máximo
   margin: auto;
+  padding: 20px; // Agrega espacio alrededor
+}
+
+.fc-event-title {
+  white-space: normal; // Permite que el título del evento se muestre en varias líneas
+  word-wrap: break-word; // Ajusta el texto al contenedor
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fc {
+  font-size: 16px; // Ajusta el tamaño de fuente para mejorar la legibilidad
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.card-modal {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.card-modal h2 {
+  margin: 0 0 10px 0;
+}
+
+.card-modal p {
+  margin: 10px 0;
+}
+
+button {
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #319795; /* Color más oscuro */
 }

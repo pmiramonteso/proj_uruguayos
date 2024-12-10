@@ -65,15 +65,15 @@ const getPosts = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
       }
   
-      const { title, content, author, category } = req.body;
+      const { titulo, contenido, autor, categoria } = req.body;
   
       let newPost;
       try {
         newPost = await Post.create({
-          title,
-          content,
-          author,
-          category,
+          titulo,
+          contenido,
+          autor,
+          categoria,
         });
       } catch (error) {
         if (error.name === 'SequelizeUniqueConstraintError') {
@@ -114,7 +114,7 @@ const getPosts = async (req, res) => {
       }
   
       const { id } = req.params;
-      const { title, content, category } = req.body;
+      const { titulo, contenido, categoria } = req.body;
   
       const post = await Post.findByPk(id);
       if (!post) {
@@ -124,9 +124,9 @@ const getPosts = async (req, res) => {
         });
       }
   
-      post.title = title;
-      post.content = content;
-      post.category = category;
+      post.titulo = titulo;
+      post.contenido = contenido;
+      post.categoria = categoria;
       await post.save();
   
       res.status(200).json({

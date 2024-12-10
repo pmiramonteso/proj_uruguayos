@@ -2,7 +2,7 @@ const { body } = require('express-validator');
 
 // Validación de los campos de las publicaciones del blog
 const blogValidator = [
-    body("title")
+    body("titulo")
         .exists()
         .withMessage("El título es obligatorio")
         .isString()
@@ -10,7 +10,7 @@ const blogValidator = [
         .isLength({ min: 5 })
         .withMessage("El título debe tener al menos 5 caracteres"),
 
-    body("content")
+    body("contenido")
         .exists()
         .withMessage("El contenido es obligatorio")
         .isString()
@@ -18,7 +18,7 @@ const blogValidator = [
         .isLength({ min: 20 })
         .withMessage("El contenido debe tener al menos 20 caracteres"),
 
-    body("category")
+    body("categoria")
         .optional()
         .isString()
         .withMessage("La categoría debe ser una cadena de texto")
