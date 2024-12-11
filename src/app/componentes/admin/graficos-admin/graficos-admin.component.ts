@@ -2,61 +2,81 @@ import { Component, OnInit } from '@angular/core';
 import { NgChartsModule } from 'ng2-charts';
 import { Grafico } from '../../../interface/grafico';
 import { GraficosService } from '../../../service/graficos.service';
-import { ChartOptions, ChartType, ChartData } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 
 @Component({
   selector: 'app-graficos-admin',
   standalone: true,
   imports: [NgChartsModule],
   templateUrl: './graficos-admin.component.html',
-  styleUrl: './graficos-admin.component.scss'
+  styleUrls: ['./graficos-admin.component.scss']
 })
 export class GraficosAdminComponent implements OnInit {
-  emigrantesData: Grafico[] = [];
+  grafico1Data: Grafico[] = [];
+  grafico2Data: Grafico[] = [];
+  grafico3Data: Grafico[] = [];
+
+  public barChartLabels1: string[] = [];
+  public barChartLabels2: string[] = [];
+  public barChartLabels3: string[] = [];
 
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  public barChartLabels: string[] = [];
+
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  public barChartData: ChartData<'bar'> = {
-    labels: [],
-    datasets: [
-      { data: [], label: '', backgroundColor: '', hoverBackgroundColor: '' }
-    ]
-  };
+
+  public barChartData1: ChartDataset<'bar'>[] = [
+    { data: [], label: 'Emigrantes en España', backgroundColor: '#42A5F5', hoverBackgroundColor: '#1E88E5' },
+    { data: [], label: 'Nacionalidad Extranjera', backgroundColor: '#66BB6A', hoverBackgroundColor: '#43A047' },
+    { data: [], label: 'Nacionalidad Española', backgroundColor: '#FF7043', hoverBackgroundColor: '#FF3D00' }
+  ];
+
+  public barChartData2: ChartDataset<'bar'>[] = [
+    { data: [], label: 'Emigrantes en España', backgroundColor: '#42A5F5', hoverBackgroundColor: '#1E88E5' },
+    { data: [], label: 'Emigrantes por Provincia', backgroundColor: '#66BB6A', hoverBackgroundColor: '#43A047' }
+  ];
+
+  public barChartData3: ChartDataset<'bar'>[] = [
+    { data: [], label: 'Emigrantes en el Mundo', backgroundColor: '#42A5F5', hoverBackgroundColor: '#1E88E5' },
+    { data: [], label: 'Emigrantes por País', backgroundColor: '#FF7043', hoverBackgroundColor: '#FF3D00' }
+  ];
 
   constructor(private servicioGraficos: GraficosService) { }
 
   ngOnInit(): void {
-    this.cargarDatos();
+    this.cargarGrafico1();
+    this.cargarGrafico2();
+    this.cargarGrafico3();
   }
 
-  cargarDatos(): void {
-    this.servicioGraficos.getDatos().subscribe(data => {
-      this.emigrantesData = data;
+  cargarGrafico1(): void {
+    this.servicioGraficos.getGrafico1().subscribe(data => {
+      this.grafico1Data = data;
+      this.barChartLabels1 = this.grafico1Data.map(d => String(d.año));
 
-      // Llenar las etiquetas y los datos para el gráfico
-      this.barChartLabels = this.emigrantesData.map(d => d.año.toString());
-      this.barChartData = {
-        labels: this.barChartLabels,
-        datasets: [
-          {
-            data: this.emigrantesData.map(d => d.emigrantes_hombres || 0),
-            label: 'Emigrantes Hombres',
-            backgroundColor: '#42A5F5',
-            hoverBackgroundColor: '#1E88E5',
-          },
-          {
-            data: this.emigrantesData.map(d => d.emigrantes_mujeres || 0),
-            label: 'Emigrantes Mujeres',
-            backgroundColor: '#66BB6A',
-            hoverBackgroundColor: '#43A047',
-          },
-        ],
-      };
+    this.barChartData1[0].data = this.grafico1Data.map(d => d.total_emigrantes_españa || 0);
+    this.barChartData1[1].data = this.grafico1Data.map(d => d.nacionalidad_extranjera || 0);
+    this.barChartData1[2].data = this.grafico1Data.map(d => d.nacionalidad_española || 0);
+  });
+  }
+
+  cargarGrafico2(): void {
+    this.servicioGraficos.getGrafico2().subscribe(data => {
+      this.grafico2Data = data;
+      this.barChartLabels2 = this.grafico2Data.map(d => d.provincia_destino || '');
+      this.barChartData2[0].data = this.grafico2Data.map(d => d.total_emigrantes_españa || 0);
+      this.barChartData2[1].data = this.grafico2Data.map(d => d.total_emigrantes_provincia || 0);
+    });
+  }
+
+  cargarGrafico3(): void {
+    this.servicioGraficos.getGrafico3().subscribe(data => {
+      this.grafico3Data = data;
+      this.barChartLabels3 = this.grafico3Data.map(d => d.pais_destino || '');
+      this.barChartData3[0].data = this.grafico3Data.map(d => d.total_emigrantes_mundo || 0);
+      this.barChartData3[1].data = this.grafico3Data.map(d => d.total_emigrantes_pais || 0);
     });
   }
 }
-

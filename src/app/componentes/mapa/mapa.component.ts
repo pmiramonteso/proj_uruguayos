@@ -25,7 +25,7 @@ export class MapaComponent implements OnInit, AfterViewInit {
   constructor(private negociosService: NegociosService) {}
 
   checkRole(): void {
-    const token = localStorage.getItem('token'); // Suponiendo que guardas el token en localStorage.
+    const token = localStorage.getItem('token');
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
       this.isAdmin = payload.role === 'admin';
@@ -107,14 +107,22 @@ cerrarModal(): void {
       iconAnchor: [15, 30],
       popupAnchor: [0, -30],
     });
-
-    const iconSelected = L.icon({
+    const iconRestauranteSelected = L.icon({
       iconUrl: '/assets/iconos/menu.png',
       iconSize: [40, 40],
       iconAnchor: [20, 40],
       popupAnchor: [0, -40],
     });
+  
+    const iconPanaderiaSelected = L.icon({
+      iconUrl: '/assets/iconos/panaderia.png',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -40],
+    });
+
     this.limpiarMarkers();
+    let currentSelectedMarker: L.Marker | null = null;
 
     negocios.forEach((negocio) => {
 
@@ -141,13 +149,23 @@ cerrarModal(): void {
         .addTo(this.map);
         
         marker.on('click', () => {
-          this.map.eachLayer((layer: any) => {
-            if (layer instanceof L.Marker) {
-              layer.setIcon(iconRestaurante);
+          if (currentSelectedMarker) {
+          
+            if (currentSelectedMarker.options.icon === iconRestauranteSelected) {
+              currentSelectedMarker.setIcon(iconRestaurante);
+            } else if (currentSelectedMarker.options.icon === iconPanaderiaSelected) {
+              currentSelectedMarker.setIcon(iconPanaderia);
             }
-          });
+          }
 
-          marker.setIcon(iconSelected);
+           if (negocio.categoria === 'restaurante') {
+            marker.setIcon(iconRestauranteSelected);
+          } else if (negocio.categoria === 'panaderia') {
+            marker.setIcon(iconPanaderiaSelected);
+          }
+
+          currentSelectedMarker = marker;
+
           this.seleccionarNegocio(negocio);
           this.irACard(negocio.id_negocio);
         });

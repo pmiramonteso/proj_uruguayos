@@ -19,28 +19,40 @@ const Emigrantes = sequelize.define('emigrantes', {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
-    total_emigrantes_españa: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-    },
     total_emigrantes_mundo: {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
-    pais_destino: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    total_emigrantes_pais: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
     },
-    nacionalidad: {
-        type: DataTypes.STRING,
+    total_emigrantes_españa: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    nacionalidad_extranjera: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    nacionalidad_española: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    pais_destino: {
+        type: DataTypes.STRING(50),
         allowNull: true,
     },
     provincia_destino: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
+        allowNull: true,
+    },
+    total_emigrantes_provincia: {
+        type: DataTypes.INTEGER,
         allowNull: true,
     }
 }, {
-    tableName: 'emigrantes', 
+    tableName: 'emigrantes',
     timestamps: false
 });
 

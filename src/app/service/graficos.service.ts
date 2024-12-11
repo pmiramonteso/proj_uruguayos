@@ -31,4 +31,28 @@ export class GraficosService {
   deleteDato(id: number): Observable<Grafico> {
     return this.http.delete<Grafico>(`${this.apiUrl}/${id}`);
   }
+
+  getGrafico1(): Observable<Grafico[]> {
+    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico1`).pipe(
+      map((response) => response.data)
+    );
+  }
+
+  getGrafico2(): Observable<Grafico[]> {
+    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico2`).pipe(
+      map((response) => response.data)
+    );
+  }
+
+  getGrafico3(): Observable<Grafico[]> {
+    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico3`).pipe(
+      map((response) => response.data)
+    );
+  }
+
+  getGrafico4(): Observable<Grafico[]> {
+    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico4`).pipe(
+      map((response) => response.data)
+    );
+  }
 }

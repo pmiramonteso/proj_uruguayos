@@ -1,9 +1,11 @@
-const Datos = require('../models/graficoModel');
+const Emigrantes = require('../models/graficoModel');
 const { validationResult } = require('express-validator');
+const Sequelize = require('sequelize');
+
 
 const getDatos = async (req, res) => {
   try {
-    const datos = await Datos.findAll();
+    const datos = await Emigrantes.findAll();
 
     if (!datos.length) {
       return res.status(200).json({
@@ -38,7 +40,7 @@ const getDatoById = async (req, res) => {
     const { id } = req.params;
 
     // Buscar un usuario por su ID en la base de datos
-    const dato = await Datos.findByPk(id);
+    const dato = await Emigrantes.findByPk(id);
     if (!dato) {
       return res.status(404).json({
         code: -6,
@@ -69,10 +71,12 @@ const addDato = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     } 
-    const { año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_españa, total_emigrantes_mundo, pais_destino, nacionalidad, provincia_destino } = req.body;
+    const { año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_mundo, total_emigrantes_pais, total_emigrantes_españa, nacionalidad_extranjera, nacionalidad_española, pais_destino, provincia_destino, total_emigrantes_provincia
+    } = req.body;
     let newDato;
     try {
-      newDato = await Datos.create({ año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_españa, total_emigrantes_mundo, pais_destino, nacionalidad, provincia_destino });
+      newDato = await Emigrantes.create({ año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_mundo, total_emigrantes_pais, total_emigrantes_españa, nacionalidad_extranjera, nacionalidad_española, pais_destino, provincia_destino, total_emigrantes_provincia
+      });
       console.log("Dato creado: ", newDato);
     } catch (error) {
       console.error('Error al guardar el dato:', error);
@@ -124,10 +128,11 @@ const updateDato = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_españa, total_emigrantes_mundo, pais_destino, nacionalidad, provincia_destino } = req.body;
+    const { año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_mundo, total_emigrantes_pais, total_emigrantes_españa, nacionalidad_extranjera, nacionalidad_española, pais_destino, provincia_destino, total_emigrantes_provincia
+    } = req.body;
 
     // Buscar un usuario por su ID en la base de datos
-    const dato = await Datos.findByPk(id);
+    const dato = await Emigrantes.findByPk(id);
     if (!dato) {
       return res.status(404).json({
         code: -3,
@@ -139,11 +144,15 @@ const updateDato = async (req, res) => {
     dato.año = año;
     dato.emigrantes_hombres = emigrantes_hombres;
     dato.emigrantes_mujeres = emigrantes_mujeres;
-    dato.total_emigrantes_españa = total_emigrantes_españa;
     dato.total_emigrantes_mundo = total_emigrantes_mundo;
+    dato.total_emigrantes_pais = total_emigrantes_pais;
+    dato.total_emigrantes_españa = total_emigrantes_españa;
+    dato.nacionalidad_extranjera = nacionalidad_extranjera;
+    dato.nacionalidad_española = nacionalidad_española;
     dato.pais_destino = pais_destino;
-    dato.nacionalidad = nacionalidad;
     dato.provincia_destino = provincia_destino;
+    dato.total_emigrantes_provincia = total_emigrantes_provincia;
+    
     await dato.save();
 
     // Enviar una respuesta al cliente
@@ -173,7 +182,7 @@ const deleteDato = async (req, res) => {
     const { id } = req.params;
 
     // Buscar un libro por su ID en la base de datos y eliminarlo
-    const deletedDato = await Datos.destroy({ where: { id_datos: id } });
+    const deletedDato = await Emigrantes.destroy({ where: { id_datos: id } });
 
     // Verificar si el libro fue encontrado y eliminado
     if (!deletedDato) {
@@ -196,12 +205,55 @@ const deleteDato = async (req, res) => {
       message: 'Ha ocurrido un error al eliminar el dato'
     });
   }
-};
+}
+
+  const getGrafico1 = async (req, res) => {
+    try {
+      const data = await Emigrantes.findAll({
+        attributes: [ 'año',
+          [Sequelize.fn('SUM', Sequelize.col('total_emigrantes_españa')), 'total_emigrantes_españa'],
+          [Sequelize.fn('SUM', Sequelize.col('nacionalidad_extranjera')), 'nacionalidad_extranjera'],
+          [Sequelize.fn('SUM', Sequelize.col('nacionalidad_española')), 'nacionalidad_española'],
+        ],
+        group: ['año'],
+      });
+      res.json({ data });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+  // Función para obtener datos para el gráfico 2
+  const getGrafico2 = async (req, res) => {
+    try {
+      const data = await Emigrantes.findAll({
+        attributes: ['año', 'total_emigrantes_españa', 'provincia_destino', 'total_emigrantes_provincia'],
+      });
+      res.json({ data });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+  // Función para obtener datos para el gráfico 3
+  const getGrafico3 = async (req, res) => {
+    try {
+      const data = await Emigrantes.findAll({
+        attributes: ['año', 'total_emigrantes_mundo', 'pais_destino', 'total_emigrantes_pais'],
+      });
+      res.json({ data });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 
 module.exports = {
     getDatos,
     getDatoById,
     addDato,
     updateDato,
-    deleteDato
+    deleteDato,
+    getGrafico1,
+    getGrafico2,
+    getGrafico3,
 };

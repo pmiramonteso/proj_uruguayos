@@ -1,9 +1,14 @@
 <div style="display: block;">
-    <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType">
-    </canvas>
-  </div>
+        <h3>Gráfico 1: Emigrantes en España</h3>
+        <canvas baseChart [datasets]="barChartData1" [labels]="barChartLabels1" [options]="barChartOptions" [legend]="barChartLegend"></canvas>
+      </div>
+      
+      <div style="display: block;">
+        <h3>Gráfico 2: Emigrantes por Provincia</h3>
+        <canvas baseChart [datasets]="barChartData2" [labels]="barChartLabels2" [options]="barChartOptions" [legend]="barChartLegend"></canvas>
+      </div>
+      
+      <div style="display: block;">
+        <h3>Gráfico 3: Emigrantes por País</h3>
+        <canvas baseChart [datasets]="barChartData3" [labels]="barChartLabels3" [options]="barChartOptions" [legend]="barChartLegend"></canvas>
+      </div>

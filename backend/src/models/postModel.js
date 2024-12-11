@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db.js');
 
-const Post = sequelize.define('Post', {
-  id_blog: {
+const Post = sequelize.define('posts', {
+  id_post: {
     type: DataTypes.INTEGER(8).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
@@ -24,10 +24,8 @@ const Post = sequelize.define('Post', {
     defaultValue: 1,
   },
 }, {
-  indexes: [{ unique: true, fields: ['titulo'] }],
-  timestamps: true, // Activa la creación automática de createdAt y updatedAt
-  updatedAt: 'updated_at',
-  createdAt: 'created_at',
+  tableName: 'posts',
+  timestamps: true
 });
 
 module.exports = Post;

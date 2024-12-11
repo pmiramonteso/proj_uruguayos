@@ -56,6 +56,10 @@ export class BlogAdminComponent implements OnInit{
   }
   
   agregarBlog(): void {
+    this.mostrarFormularioBlog = !this.mostrarFormularioBlog;
+    this.editando = false;
+    this.agregando = true;
+
     if (this.blogForm.valid) {
       const blogData = this.blogForm.value;
 

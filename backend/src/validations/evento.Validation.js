@@ -1,6 +1,5 @@
 const { body } = require('express-validator');
 
-// Validación de los campos de los eventos
 const eventoValidator = [
     body("titulo")
         .exists()

@@ -6,7 +6,7 @@ const RecoveryToken = sequelize.define('RecoveryToken', {
   token: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   user_id: {
     type: DataTypes.INTEGER(5).UNSIGNED,
@@ -19,12 +19,6 @@ const RecoveryToken = sequelize.define('RecoveryToken', {
   }
 }, {
   timestamps: false,
-  indexes: [
-    {
-      unique: true,
-      fields: ['token']
-    }
-  ]
 });
 
 User.hasMany(RecoveryToken, { foreignKey: 'user_id' });
