@@ -10,14 +10,12 @@ import { UsuariosAdminComponent } from './componentes/admin/usuarios-admin/usuar
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistroComponent } from './componentes/user/registro/registro.component';
 
-
 import { HomeComponent } from './componentes/home/home.component';
 import { CalendarioComponent } from './componentes/calendario/calendario.component';
 import { GraficosComponent } from './componentes/graficos/graficos.component';
 import { MapaComponent } from './componentes/mapa/mapa.component';
 import { BlogComponent } from './componentes/blog/blog.component';
 import { PresentacionComponent } from './componentes/presentacion/presentacion.component';
-
 
 
 export const routes: Routes = [

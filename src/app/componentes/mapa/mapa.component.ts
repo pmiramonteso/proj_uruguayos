@@ -2,11 +2,12 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { Negocio } from '../../interface/negocio';
 import { NegociosService } from '../../service/negocios.service';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [],
+  imports: [FooterComponent],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.scss'
 })

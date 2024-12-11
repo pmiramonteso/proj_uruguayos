@@ -7,6 +7,7 @@ const testRoutes = require('./routes/testRoutes');
 const negociosRoutes = require('./routes/negociosRoutes');
 const eventosRoutes = require('./routes/eventoRoutes');
 const blogRoutes = require('./routes/blogRoutes');
+const graficoRoutes = require('./routes/graficoRoutes');
 const { testConnection } = require('./db');
 const dotenv = require('dotenv');
 const { insertInitialUserData } = require('./start_data');
@@ -41,6 +42,7 @@ app.use('/test', testRoutes);
 app.use('/api/negocios', negociosRoutes);
 app.use('/api/eventos', eventosRoutes);
 app.use('/api/posts', blogRoutes);
+app.use('/api/graficos', graficoRoutes);
 
 
 // Iniciar el servidor

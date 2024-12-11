@@ -1,9 +1,17 @@
 <div class="space-y-6">
+
   @if(!editando && !agregando){
-  <button (click)="agregarEvento()" class= "btn-agregar bg-teal-400">Agregar nuevo evento</button>
+    <div class="flex justify-center mt-6">
+  <button
+    (click)="agregarEvento()"
+    class="btn-agregar px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
+  >
+    Agregar nuevo evento
+  </button>
+</div>
 }
   @if (mostrarFormularioEvento) {
-  <form  [formGroup]="eventoForm" class="space-y-6" (ngSubmit)="agregarEvento()">
+  <form  [formGroup]="eventoForm" class="space-y-6 mt-8 bg-gray-100 p-6 rounded-lg shadow-md transition-colors duration-300" (ngSubmit)="agregarEvento()">
     <!-- titulo -->
     <div>
       <label class="block text-sm font-medium mb-1" for="titulo">Titulo</label>
@@ -24,7 +32,7 @@
           type="date"
           id="fecha"
           formControlName="fecha"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
           />
       </div>
@@ -34,7 +42,7 @@
           type="date"
           id="fecha_fin"
           formControlName="fecha_fin"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 mt-6 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full border border-gray-700 rounded-md p-2 mt-6 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
       </div>
     </div>
@@ -47,7 +55,7 @@
           type="time"
           id="hora_inicio"
           formControlName="hora_inicio"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
           />
       </div>
@@ -57,7 +65,7 @@
           type="time"
           id="hora_fin"
           formControlName="hora_fin"
-          class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
       </div>
     </div>
@@ -85,7 +93,7 @@
       <textarea
         id="descripcion"
         formControlName="descripcion"
-        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         rows="4"
         required
         ></textarea>
@@ -97,7 +105,7 @@
         id="entrada"
         formControlName="entrada"
         required
-        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="Gratuito">Gratuito</option>
         <option value="Pago">Pago</option>
@@ -112,7 +120,7 @@
         type="number"
         id="precio"
         formControlName="precio"
-        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-fullborder border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
   }
@@ -125,7 +133,7 @@
         id="ubicacion"
         formControlName="ubicacion"
         required
-        class="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
 

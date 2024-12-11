@@ -1,21 +1,21 @@
-const Negocios = require('../models/negociosModel');
+const Datos = require('../models/graficoModel');
 const { validationResult } = require('express-validator');
 
-const getNegocios = async (req, res) => {
+const getDatos = async (req, res) => {
   try {
-    const negocios = await Negocios.findAll();
+    const datos = await Datos.findAll();
 
-    if (!negocios.length) {
+    if (!datos.length) {
       return res.status(200).json({
         code: 0,
-        message: 'No hay negocios disponibles.',
+        message: 'No hay datos disponibles.',
         data: [],
       });
     }
     res.status(200).json({
       code: 1,
-      message: 'Negocios List',
-      data: negocios
+      message: 'Datos List',
+      data: datos
     });
   } catch (error) {
     console.error(error);
@@ -26,7 +26,7 @@ const getNegocios = async (req, res) => {
   }
 };
 
-const getNegocioById = async (req, res) => {
+const getDatoById = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -38,19 +38,19 @@ const getNegocioById = async (req, res) => {
     const { id } = req.params;
 
     // Buscar un usuario por su ID en la base de datos
-    const negocio = await Negocios.findByPk(id);
-    if (!negocio) {
+    const dato = await Datos.findByPk(id);
+    if (!dato) {
       return res.status(404).json({
         code: -6,
-        message: 'Negocio no encontrado'
+        message: 'Dato no encontrado'
       });
     }
 
     // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
-      message: 'Negocio Detail',
-      data: negocio
+      message: 'Dato Detail',
+      data: dato
     });
   } catch (error) {
     console.error(error);
@@ -61,60 +61,60 @@ const getNegocioById = async (req, res) => {
   }
 };
 
-const addNegocio = async (req, res) => {
+const addDato = async (req, res) => {
   console.log(req.body);
   try {
     const errors = validationResult(req);
     // Si hay errores de validación, responde con un estado 400 Bad Request
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
-    }
-    const { nombre, descripcion, direccion, latitud, longitud, tipoRedSocial, urlRedSocial, categoria } = req.body;
-    let newNegocio;
+    } 
+    const { año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_españa, total_emigrantes_mundo, pais_destino, nacionalidad, provincia_destino } = req.body;
+    let newDato;
     try {
-      newNegocio = await Negocios.create({  nombre, descripcion, direccion, latitud, longitud, tipoRedSocial, urlRedSocial, categoria });
-      console.log("Negocio creado: ", newNegocio);
+      newDato = await Datos.create({ año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_españa, total_emigrantes_mundo, pais_destino, nacionalidad, provincia_destino });
+      console.log("Dato creado: ", newDato);
     } catch (error) {
-      console.error('Error al guardar el negocio:', error);
+      console.error('Error al guardar el dato:', error);
       // Si hay un error de duplicación de clave única (por ejemplo, título duplicado)
       if (error.nombre === 'SequelizeUniqueConstraintError') {
         res.status(400).json({
           code: -61,
-          message: 'Duplicate Negocio Title'
+          message: 'Duplicate Dato Title'
         });
       } else {
         res.status(500).json({
           code: -100,
-          message: 'Error creando el negocio',
+          message: 'Error creando el dato',
           error: error.message
         });
       }
       return;
     }
 
-    if (!newNegocio) {
+    if (!newDato) {
       return res.status(404).json({
         code: -6,
-        message: 'Ha ocurrido un error al agregar el negocio'
+        message: 'Ha ocurrido un error al agregar el dato'
       });
     }
 
     // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
-      message: 'Negocio agregado exitosamente',
-      data: newNegocio
+      message: 'Dato agregado exitosamente',
+      data: newDato
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       code: -100,
-      message: 'Ha ocurrido un error al añadir el negocio'
+      message: 'Ha ocurrido un error al añadir el dato'
     });
   }
 };
 
-const updateNegocio = async (req, res) => {
+const updateDato = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -124,44 +124,44 @@ const updateNegocio = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { nombre, descripcion, direccion, latitud, longitud, tipoRedSocial, urlRedSocial, categoria } = req.body;
+    const { año, emigrantes_hombres, emigrantes_mujeres, total_emigrantes_españa, total_emigrantes_mundo, pais_destino, nacionalidad, provincia_destino } = req.body;
 
     // Buscar un usuario por su ID en la base de datos
-    const negocio = await Negocios.findByPk(id);
-    if (!negocio) {
+    const dato = await Datos.findByPk(id);
+    if (!dato) {
       return res.status(404).json({
         code: -3,
-        message: 'Negocio no encontrado'
+        message: 'Dato no encontrado'
       });
     }
 
     // Actualizar el correo electrónico y la contraseña del usuario
-    negocio.nombre = nombre;
-    negocio.descripcion = descripcion;
-    negocio.direccion = direccion;
-    negocio.latitud = latitud;
-    negocio.longitud = longitud;
-    negocio.tipoRedSocial = tipoRedSocial;
-    negocio.urlRedSocial = urlRedSocial;
-    negocio.categoria = categoria;
-    await negocio.save();
+    dato.año = año;
+    dato.emigrantes_hombres = emigrantes_hombres;
+    dato.emigrantes_mujeres = emigrantes_mujeres;
+    dato.total_emigrantes_españa = total_emigrantes_españa;
+    dato.total_emigrantes_mundo = total_emigrantes_mundo;
+    dato.pais_destino = pais_destino;
+    dato.nacionalidad = nacionalidad;
+    dato.provincia_destino = provincia_destino;
+    await dato.save();
 
     // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
-      message: 'Negocio Updated Successfully',
-      data: negocio
+      message: 'Dato Updated Successfully',
+      data: dato
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       code: -100,
-      message: 'Ha ocurrido un error al actualizar el negocio'
+      message: 'Ha ocurrido un error al actualizar el dato'
     });
   }
 };
 
-const deleteNegocio = async (req, res) => {
+const deleteDato = async (req, res) => {
   try {
     const errors = validationResult(req);
 
@@ -173,35 +173,35 @@ const deleteNegocio = async (req, res) => {
     const { id } = req.params;
 
     // Buscar un libro por su ID en la base de datos y eliminarlo
-    const deletedNegocio = await Negocios.destroy({ where: { id_negocio: id } });
+    const deletedDato = await Datos.destroy({ where: { id_datos: id } });
 
     // Verificar si el libro fue encontrado y eliminado
-    if (!deletedNegocio) {
+    if (!deletedDato) {
       return res.status(404).json({
         code: -100,
-        message: 'Negocio Not Found'
+        message: 'Dato Not Found'
       });
     }
 
     // Enviar una respuesta al cliente
     res.status(200).json({
       code: 1,
-      message: 'Negocio Deleted Successfully'
+      message: 'Dato Deleted Successfully'
     });
 
   } catch (error) {
     console.error(error);
     res.status(500).json({
       code: -100,
-      message: 'Ha ocurrido un error al eliminar el negocio'
+      message: 'Ha ocurrido un error al eliminar el dato'
     });
   }
 };
 
 module.exports = {
-    getNegocios,
-    getNegocioById,
-    addNegocio,
-    updateNegocio,
-    deleteNegocio
+    getDatos,
+    getDatoById,
+    addDato,
+    updateDato,
+    deleteDato
 };

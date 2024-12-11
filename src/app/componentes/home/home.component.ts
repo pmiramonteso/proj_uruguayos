@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavegacionComponent } from '../navegacion/navegacion.component';
+import {  } from '../footer/footer.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NavegacionComponent],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

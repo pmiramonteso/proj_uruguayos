@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { getNegocios, getNegocioById, addNegocio, updateNegocio, deleteNegocio } = require('../controllers/negociosController');
 const { authenticateToken } = require('../middlewares/authenticateToken.js');
-const { negocioValidator } = require('../validations//negocio.Validation');
+const { negocioValidator } = require('../validations/negocio.Validation.js');
 const { idValidator } = require('../validations/generic.Validation');
 
 const router = Router();

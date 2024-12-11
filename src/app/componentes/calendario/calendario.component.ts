@@ -6,11 +6,12 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-calendario',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule],
+  imports: [CommonModule, FullCalendarModule, FooterComponent],
   templateUrl: './calendario.component.html',
   styleUrl: './calendario.component.scss'
 })

@@ -1,7 +1,7 @@
 <div class="container">
   <h1>Lista de Publicaciones</h1>
   <div class="row">
-    <!-- Crear una tarjeta para cada publicación -->
+
     @for (blog of blogs; track blog.title) {
       <div class="col-md-4">
         <div class="card mb-4">
@@ -9,12 +9,14 @@
           <div class="card-body">
             <h5 class="card-title">{{ blog.title }}</h5>
             <p class="card-text">{{ blog.category || 'Sin categoría' }}</p>
-            <a [routerLink]="['/blog']" class="btn btn-primary">Leer más</a> <!-- Cambiar a la ruta adecuada para abrir el post -->
+            <a [routerLink]="['/blog']" class="btn btn-primary">Leer más</a>
           </div>
         </div>
       </div>
     }
   </div>
 </div>
+
+<app-footer></app-footer>
 
   

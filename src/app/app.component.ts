@@ -5,7 +5,7 @@ import { NavegacionComponent } from './componentes/navegacion/navegacion.compone
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavegacionComponent],
+  imports: [RouterOutlet, NavegacionComponent, ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
