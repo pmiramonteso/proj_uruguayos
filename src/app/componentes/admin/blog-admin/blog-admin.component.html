@@ -4,14 +4,14 @@
     <div class="flex justify-center mt-6">
   <button
     (click)="agregarBlog()"
-    class="btn-agregar px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
+    class="btn-agregar btn-25 px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
   >
     Agregar nuevo post
   </button>
 </div>
 }
     @if (mostrarFormularioBlog) {
-    <form [formGroup]="blogForm" (ngSubmit)="agregarBlog()" class="mx-auto p-6 max-w-3xl border border-teal-600 rounded-md">
+    <form [formGroup]="blogForm" (ngSubmit)="agregarBlog()" class="mx-auto p-6 max-w-3xl bg-yellow-100 border-2 border-yellow-300 shadow-lg rounded-lg transition-colors duration-300">
       
       <!-- Título -->
       <div>
@@ -20,7 +20,7 @@
           id="titulo"
           type="text"
           formControlName="titulo"
-          class="w-full border border-teal-600 rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-teal-500"
+          class="w-full border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
           required
         />
       </div>
@@ -30,7 +30,7 @@
          <editor apiKey="qobixfl8d269htsdhbgkwr5cglvx91ltdouomicefl5sxc3x"
           id="contenido"
           formControlName="contenido"
-          class="w-full rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-teal-500 my-3"
+          class="w-full my-5 border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
         >
         </editor>
        
@@ -43,7 +43,7 @@
           id="categoria"
           type="text"
           formControlName="categoria"
-          class="w-full border border-teal-600 rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-teal-500"
+          class="w-full border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
           required
         />
       </div>
@@ -54,7 +54,7 @@
         <select
           id="status"
           formControlName="status"
-          class="w-full border border-teal-600 rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-teal-500"
+          class="w-full border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
           required
         >
           <option [value]="true">Activo</option>
@@ -77,19 +77,19 @@
         @if (blogs && blogs.length > 0) {
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @for (blog of blogs; track blog.id_blog) {
-              <div class="blog-list">
-                <h3>{{ blog.titulo }}</h3>
-                <p>{{ blog.contenido }}</p>
+              <div class="card">
+                <h3 class="font-semibold text-lg">{{ blog.titulo }}</h3>
+                <p class="text-sm text-gray-400">{{ blog.contenido }}</p>
                 <div class="mt-4 flex gap-4">
                   <button
                     (click)="editarBlog(blog)"
-                    class="btn-eventos bg-teal-400 text-white hover:text-black px-4 py-2 rounded-md hover:bg-teal-600"
+                    class="btn-blog bg-teal-400 text-white hover:text-black px-4 py-2 rounded-md hover:bg-teal-600"
                   >
                     Editar
                   </button>
                   <button
                     (click)="eliminarBlog(blog.id_blog)"
-                    class="btn-eventos bg-black text-white hover:text-black px-4 py-2 rounded-md"
+                    class="btn-blog bg-black text-white hover:text-black px-4 py-2 rounded-md"
                   >
                     Eliminar
                   </button>

@@ -207,45 +207,86 @@ const deleteDato = async (req, res) => {
   }
 }
 
-  const getGrafico1 = async (req, res) => {
-    try {
-      const data = await Emigrantes.findAll({
-        attributes: [ 'año',
-          [Sequelize.fn('SUM', Sequelize.col('total_emigrantes_españa')), 'total_emigrantes_españa'],
-          [Sequelize.fn('SUM', Sequelize.col('nacionalidad_extranjera')), 'nacionalidad_extranjera'],
-          [Sequelize.fn('SUM', Sequelize.col('nacionalidad_española')), 'nacionalidad_española'],
-        ],
-        group: ['año'],
-      });
-      res.json({ data });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-  
-  // Función para obtener datos para el gráfico 2
-  const getGrafico2 = async (req, res) => {
-    try {
-      const data = await Emigrantes.findAll({
-        attributes: ['año', 'total_emigrantes_españa', 'provincia_destino', 'total_emigrantes_provincia'],
-      });
-      res.json({ data });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-  
-  // Función para obtener datos para el gráfico 3
+const getGrafico1 = async (req, res) => {
+  try {
+    const datos = await Emigrantes.findAll({
+      attributes: [
+        'año',
+        [Sequelize.fn('SUM', Sequelize.col('total_emigrantes_españa')), 'total_emigrantes_españa'],
+        [Sequelize.fn('SUM', Sequelize.col('nacionalidad_extranjera')), 'nacionalidad_extranjera'],
+        [Sequelize.fn('SUM', Sequelize.col('nacionalidad_española')), 'nacionalidad_española'],
+      ],
+      where: Sequelize.literal(`
+        (total_emigrantes_españa IS NOT NULL AND total_emigrantes_españa > 0)
+        OR (nacionalidad_extranjera IS NOT NULL AND nacionalidad_extranjera > 0)
+        OR (nacionalidad_española IS NOT NULL AND nacionalidad_española > 0)
+      `),
+      group: ['año'],
+      order: [['año', 'ASC']],
+      raw: true,
+    });
+
+    res.json({
+      labels: datos.map(row => row.año),
+      values: {
+        total_emigrantes_españa: datos.map(row => row.total_emigrantes_españa),
+        nacionalidad_extranjera: datos.map(row => row.nacionalidad_extranjera),
+        nacionalidad_española: datos.map(row => row.nacionalidad_española),
+      },
+    });
+  } catch (error) {
+    res.status(500).send('Error al obtener datos para el gráfico 1');
+  }
+};
+
   const getGrafico3 = async (req, res) => {
     try {
-      const data = await Emigrantes.findAll({
-        attributes: ['año', 'total_emigrantes_mundo', 'pais_destino', 'total_emigrantes_pais'],
+      const datos = await Emigrantes.findAll({
+        attributes: ['año', [Sequelize.fn('SUM', Sequelize.col('total_emigrantes_mundo')), 'total']],
+        where: Sequelize.literal(`
+        (total_emigrantes_mundo IS NOT NULL AND total_emigrantes_mundo > 0)`),
+        group: ['año'],
+        order: [['año', 'ASC']],
+        raw: true,
       });
-      res.json({ data });
+  
+      res.json({
+        labels: datos.map(row => row.año),
+        values: datos.map(row => row.total),
+      });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).send('Error al obtener datos para el gráfico 3');
     }
   };
+
+  const getGrafico4 = async (req, res) => {
+    try {
+      const datos = await Emigrantes.findAll({
+        attributes: ['año', 'pais_destino', [Sequelize.fn('SUM', Sequelize.col('total_emigrantes_pais')), 'total']],
+        where: {
+          total_emigrantes_pais: { [Sequelize.Op.gt]: 0 },
+          año: { [Sequelize.Op.in]: [1990, 2000, 2010, 2020] }
+        },
+        group: ['año', 'pais_destino'],
+        order: [['año', 'ASC'], ['total', 'DESC']],
+        raw: true,
+      });
+  
+      const data = datos.reduce((result, row) => {
+        if (!result[row.año]) {
+          result[row.año] = { anio: row.año, labels: [], values: [] };
+        }
+        result[row.año].labels.push(row.pais_destino);
+        result[row.año].values.push(row.total);
+        return result;
+      }, {});
+  
+      res.json(Object.values(data));
+    } catch (error) {
+      res.status(500).send('Error al obtener datos para el gráfico 4');
+    }
+  };
+  
 
 module.exports = {
     getDatos,
@@ -254,6 +295,6 @@ module.exports = {
     updateDato,
     deleteDato,
     getGrafico1,
-    getGrafico2,
     getGrafico3,
+    getGrafico4,
 };

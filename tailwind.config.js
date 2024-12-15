@@ -3,6 +3,13 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+        fontFamily: {
+          poppins: ['Poppins', 'sans-serif'],
+        },
+      screens: {
+        '3xl': '1600px',
+        '4xl': '1920px',
+      },
       colors: {
         gray: {
           800: '#333333',

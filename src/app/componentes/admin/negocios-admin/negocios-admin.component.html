@@ -3,7 +3,7 @@
     <div class="flex justify-center mt-6">
   <button
     (click)="agregarNegocio()"
-    class="btn-agregar px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
+    class="btn-agregar btn-25px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
   >
     Agregar nuevo negocio
   </button>
@@ -14,7 +14,7 @@
   <form
     [formGroup]="negocioForm"
     (ngSubmit)="agregarNegocio()"
-    class="space-y-4 text-black p-4 rounded-lg shadow-lg max-w-2xl mx-auto"
+    class="space-y-4 bg-yellow-100 border-2 border-yellow-300 p-4 rounded-lg shadow-lg max-w-2xl mx-auto"
   >
     <!-- Nombre -->
     <div>
@@ -24,6 +24,7 @@
         formControlName="nombre"
         type="text"
         placeholder="Nombre del negocio"
+        class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
       />
     </div>
 
@@ -37,6 +38,7 @@
         formControlName="descripcion"
         type="text"
         placeholder="Breve descripción"
+        class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
       />
     </div>
 
@@ -50,6 +52,7 @@
         formControlName="direccion"
         type="text"
         placeholder="Dirección del negocio"
+        class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
       />
     </div>
 
@@ -63,6 +66,7 @@
         formControlName="latitud"
         type="text"
         placeholder="Latitud"
+        class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
       />
     </div>
 
@@ -76,6 +80,7 @@
         formControlName="longitud"
         type="text"
         placeholder="Longitud"
+        class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
       />
     </div>
 
@@ -89,7 +94,7 @@
         <select
           id="redSocial"
           formControlName="tipoRedSocial"
-          class="border border-teal-600 rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-teal-600"
+          class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
         >
           <option value="" disabled selected>Selecciona una red social</option>
           <option value="instagram">Instagram</option>
@@ -104,7 +109,7 @@
           id="urlRedSocial"
           formControlName="urlRedSocial"
           type="text"
-          class="w-full border border-teal-600 rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-teal-600"
+          class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
           placeholder="URL de la red social"
         />
       </div>
@@ -120,6 +125,7 @@
         formControlName="categoria"
         type="text"
         placeholder="Categoría del negocio"
+        class=" border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
       />
     </div>
 

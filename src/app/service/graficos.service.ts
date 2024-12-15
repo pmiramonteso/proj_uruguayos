@@ -15,7 +15,7 @@ export class GraficosService {
 
   constructor(private http: HttpClient) { }
 
-  getDatos(): Observable<Grafico[]> {
+ getDatos(): Observable<Grafico[]> {
     return this.http.get<ApiGrafico>(this.apiUrl).pipe(
       map((response) => response.data)
     );
@@ -32,27 +32,15 @@ export class GraficosService {
     return this.http.delete<Grafico>(`${this.apiUrl}/${id}`);
   }
 
-  getGrafico1(): Observable<Grafico[]> {
-    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico1`).pipe(
-      map((response) => response.data)
-    );
+  getGrafico1(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/grafico1`);
   }
 
-  getGrafico2(): Observable<Grafico[]> {
-    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico2`).pipe(
-      map((response) => response.data)
-    );
+  getGrafico3(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/grafico3`);
   }
 
-  getGrafico3(): Observable<Grafico[]> {
-    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico3`).pipe(
-      map((response) => response.data)
-    );
-  }
-
-  getGrafico4(): Observable<Grafico[]> {
-    return this.http.get<ApiGrafico>(`${this.apiUrl}/grafico4`).pipe(
-      map((response) => response.data)
-    );
+  getGrafico4(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/grafico4`);
   }
 }

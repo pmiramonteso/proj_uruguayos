@@ -29,6 +29,7 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent},
     { path: 'calendario', component: CalendarioComponent},
     { path: 'blog', component: BlogComponent},
+    { path: 'blog/:id', component: BlogComponent},
     { path: 'graficos', component: GraficosComponent},
     { path: 'mapa', component: MapaComponent},
     { path: 'presentacion', component: PresentacionComponent},

@@ -2,13 +2,13 @@
   <h1>Lista de Publicaciones</h1>
   <div class="row">
 
-    @for (blog of blogs; track blog.title) {
+    @for (blog of blogs; track blog.id_blog) {
       <div class="col-md-4">
         <div class="card mb-4">
-          <img src="{{ blog.image }}" class="card-img-top" alt="Imagen de {{ blog.title }}">
+         <!-- <img src="{{ blog.image }}" class="card-img-top" alt="Imagen de {{ blog.titulo }}">-->
           <div class="card-body">
-            <h5 class="card-title">{{ blog.title }}</h5>
-            <p class="card-text">{{ blog.category || 'Sin categoría' }}</p>
+            <h5 class="card-title">{{ blog.titulo }}</h5>
+            <p class="card-text">{{ blog.categoria || 'Sin categoría' }}</p>
             <a [routerLink]="['/blog']" class="btn btn-primary">Leer más</a>
           </div>
         </div>

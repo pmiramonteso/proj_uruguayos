@@ -33,16 +33,17 @@ export class BlogAdminComponent implements OnInit{
     private fb: FormBuilder,
     private blogService: BlogService,
     private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.blogForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(5)]],
-      contenido: ['', [Validators.required, Validators.minLength(20)]],
+      contenido: ['', [Validators.required, Validators.minLength(20)]], // Campo enlazado al editor
       categoria: [''],
       status: [true]
     });
-    this.cargarBlogs();
+      this.cargarBlogs();
   }
 
   cargarBlogs(): void {
@@ -57,7 +58,7 @@ export class BlogAdminComponent implements OnInit{
   
   agregarBlog(): void {
     this.mostrarFormularioBlog = !this.mostrarFormularioBlog;
-    this.editando = false;
+    this.editando = true;
     this.agregando = true;
 
     if (this.blogForm.valid) {
@@ -65,14 +66,24 @@ export class BlogAdminComponent implements OnInit{
 
       if (this.editando && this.blogEditando) {
         this.blogService.updateBlog(this.blogEditando.id_blog, blogData).subscribe(() => {
-          this.router.navigate(['/blog']);
+          this.resetFormulario();
+          this.cargarBlogs();
         });
       } else {
         this.blogService.createBlog(blogData).subscribe(() => {
-          this.router.navigate(['/blog']);
+          this.resetFormulario();
+          this.cargarBlogs();
         });
       }
     }
+  }
+
+  resetFormulario(): void {
+    this.mostrarFormularioBlog = false;
+    this.blogForm.reset();
+    this.editando = false;
+    this.agregando = false;
+    this.blogEditando = null;
   }
 
   editarBlog(blog: Blog): void {

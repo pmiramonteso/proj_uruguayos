@@ -1,1 +1,107 @@
-<p>Home works</p>
+<div class="relative h-screen bg-cover bg-center" style="background-image: url('assets/img/mate-pato.JPG');">
+    <div class="absolute inset-0 flex flex-col mt-32 justify-start items-center text-center text-white px-4">
+      <h1 class="text-6xl md:text-7xl font-extrabold drop-shadow-lg">COMPARTIR</h1>
+      <p class="text-lg md:text-2xl mt-4 drop-shadow-md">
+        Celebrando nuestra cultura, conectando a nuestra comunidad
+      </p>
+      <button class="mt-6 px-6 py-3 bg-teal-400 hover:bg-teal-600 text-white font-semibold rounded shadow">
+        UNIRSE A LA COMUNIDAD
+      </button>
+    </div>
+  </div>
+
+  <div class="relative h-96 bg-teal-400 py-12 flex items-center justify-center">
+    <div class="max-w-full mx-auto px-6 sm:px-8 text-center">
+      <div class="text-4xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-6xl font-semibold text-white font-poppins italic leading-relaxed">
+        "Somos padres, hijos, nietos y bisnietos de inmigrantes."
+      </div>
+      <div class="text-md xs:text-lg sm:text-lg xl:text-xl text-gray-600 font-medium mt-6 font-poppins italic">
+        - Jorge Drexler
+      </div>
+    </div>
+  </div>
+  
+  <div class="max-w-full bg-gray-100">
+  <div class="container mx-auto py-20 px-6 bg-gray-100">
+    <div class="text-center mb-12">
+      <h2 class="text-6xl font-bold text-teal-400 mb-10 font-poppins">¡BIENVENIDOS A LA COMUNIDAD!</h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-14 font-poppins">Descubre todo lo que tenemos para ti: un espacio para conectarte con otros uruguayos en España, explorar negocios locales, participar de eventos y mantenerte al tanto de noticias y novedades.</p>
+    </div>
+  
+    <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-12 text-center">
+      <!-- Eventos -->
+      <div class="flex flex-col items-center">
+        <div class="text-4xl text-yellow-400 mb-4">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Eventos Uruguayos</h3>
+        <p class="text-gray-600 lg:max-w-md xl:max-w-sm">Infórmate sobre los próximos eventos y celebraciones de la comunidad uruguaya en España. ¡No te los pierdas!</p>
+        <a href="/calendario" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+            Eventos
+          </a>
+      </div>
+  
+      <!-- Negocios -->
+      <div class="flex flex-col items-center">
+        <div class="text-4xl text-yellow-400 mb-4">
+          <i class="fas fa-store"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Negocios Uruguayos</h3>
+        <p class="text-gray-600 lg:max-w-md xl:max-w-sm">Descubre negocios, panaderías, restaurantes y tiendas uruguayas en España. ¡Apoya a la comunidad local!</p>
+        <a href="/mapa" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+            Negocios
+          </a>
+      </div>
+  
+      <!-- Estadísticas -->
+      <div class="flex flex-col items-center">
+        <div class="text-4xl text-yellow-400 mb-4">
+          <i class="fas fa-chart-pie"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Estadísticas de la Comunidad</h3>
+        <p class="text-gray-600 lg:max-w-md xl:max-w-sm">Consulta datos sobre la población uruguaya en España, desde la distribución por nacionalidad hasta las principales ciudades de residencia.</p>
+        <a href="/graficos" class="mt-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+            Estadísticas
+          </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="max-w-full bg-gray-100">
+  <div class="container mx-auto pb-20 px-6">
+    <h2 class="text-4xl font-semibold text-gray-900 text-center mb-10">Últimos Artículos</h2>
+
+    <div class="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8 lg:gap-6 xl:gap-4 justify-center">
+    
+      @for (blog of blogs.slice(0, 3); track blog.id_blog) {
+        <div class="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden max-w-xs mx-auto">
+          <!-- <img [src]="blog.image" alt="Imagen de {{ blog.titulo }}" class="w-full h-48 object-cover"> -->
+          <div class="p-6 flex flex-col justify-between h-full">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-2 truncate">{{ blog.titulo }}</h3>
+            <p class="text-teal-500 text-sm mb-4">{{ blog.categoria || 'Sin categoría' }}</p>
+            <p class="text-gray-600 mb-4 flex-grow truncate">{{ blog.contenido | slice: 0:100 }}...</p>
+            <a [routerLink]="['/blog', blog.id_blog]" class="hover:text-yellow-600 text-yellow-400 font-semibold py-2 px-4 rounded-lg transition duration-300 ml-auto">
+                LEER MÁS
+              </a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+  </div>
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

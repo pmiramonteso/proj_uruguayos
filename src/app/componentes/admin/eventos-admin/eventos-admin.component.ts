@@ -125,6 +125,7 @@ export class EventosAdminComponent implements OnInit {
         });
       }
     }
+    this.obtenerEventos();
   }
 
   editarEvento(evento: Evento): void {

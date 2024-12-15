@@ -1,82 +1,172 @@
 import { Component, OnInit } from '@angular/core';
-import { NgChartsModule } from 'ng2-charts';
-import { Grafico } from '../../../interface/grafico';
+import { Chart, registerables } from 'chart.js';
 import { GraficosService } from '../../../service/graficos.service';
-import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
+import { CommonModule } from '@angular/common';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-graficos-admin',
   standalone: true,
-  imports: [NgChartsModule],
+  imports: [CommonModule],
   templateUrl: './graficos-admin.component.html',
   styleUrls: ['./graficos-admin.component.scss']
 })
 export class GraficosAdminComponent implements OnInit {
-  grafico1Data: Grafico[] = [];
-  grafico2Data: Grafico[] = [];
-  grafico3Data: Grafico[] = [];
+  aniosDisponibles: number[] = [];
+  datosGrafico: any = {};
+  graficoActual: any;
 
-  public barChartLabels1: string[] = [];
-  public barChartLabels2: string[] = [];
-  public barChartLabels3: string[] = [];
-
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-  };
-
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-
-  public barChartData1: ChartDataset<'bar'>[] = [
-    { data: [], label: 'Emigrantes en España', backgroundColor: '#42A5F5', hoverBackgroundColor: '#1E88E5' },
-    { data: [], label: 'Nacionalidad Extranjera', backgroundColor: '#66BB6A', hoverBackgroundColor: '#43A047' },
-    { data: [], label: 'Nacionalidad Española', backgroundColor: '#FF7043', hoverBackgroundColor: '#FF3D00' }
-  ];
-
-  public barChartData2: ChartDataset<'bar'>[] = [
-    { data: [], label: 'Emigrantes en España', backgroundColor: '#42A5F5', hoverBackgroundColor: '#1E88E5' },
-    { data: [], label: 'Emigrantes por Provincia', backgroundColor: '#66BB6A', hoverBackgroundColor: '#43A047' }
-  ];
-
-  public barChartData3: ChartDataset<'bar'>[] = [
-    { data: [], label: 'Emigrantes en el Mundo', backgroundColor: '#42A5F5', hoverBackgroundColor: '#1E88E5' },
-    { data: [], label: 'Emigrantes por País', backgroundColor: '#FF7043', hoverBackgroundColor: '#FF3D00' }
-  ];
-
-  constructor(private servicioGraficos: GraficosService) { }
+  constructor(private graficosService: GraficosService) {}
 
   ngOnInit(): void {
-    this.cargarGrafico1();
-    this.cargarGrafico2();
-    this.cargarGrafico3();
+    this.cargarDatos();
   }
 
-  cargarGrafico1(): void {
-    this.servicioGraficos.getGrafico1().subscribe(data => {
-      this.grafico1Data = data;
-      this.barChartLabels1 = this.grafico1Data.map(d => String(d.año));
+  cargarDatos() {
+    this.graficosService.getGrafico1().subscribe((datos) => {
+      this.generarGraficoBarras(datos);
+    });
 
-    this.barChartData1[0].data = this.grafico1Data.map(d => d.total_emigrantes_españa || 0);
-    this.barChartData1[1].data = this.grafico1Data.map(d => d.nacionalidad_extranjera || 0);
-    this.barChartData1[2].data = this.grafico1Data.map(d => d.nacionalidad_española || 0);
-  });
-  }
+    this.graficosService.getGrafico3().subscribe((datos) => {
+      this.generarGraficoLineas(datos);
+    });
 
-  cargarGrafico2(): void {
-    this.servicioGraficos.getGrafico2().subscribe(data => {
-      this.grafico2Data = data;
-      this.barChartLabels2 = this.grafico2Data.map(d => d.provincia_destino || '');
-      this.barChartData2[0].data = this.grafico2Data.map(d => d.total_emigrantes_españa || 0);
-      this.barChartData2[1].data = this.grafico2Data.map(d => d.total_emigrantes_provincia || 0);
+ this.graficosService.getGrafico4().subscribe((datos) => {
+      this.datosGrafico = datos.reduce((result: any, item: any) => {
+        result[item.anio] = item;
+        return result;
+      }, {});
+
+      this.aniosDisponibles = Object.keys(this.datosGrafico).map(Number);
+      if (this.aniosDisponibles.length > 0) {
+        this.cambiarAnio(this.aniosDisponibles[0]);
+      }
     });
   }
 
-  cargarGrafico3(): void {
-    this.servicioGraficos.getGrafico3().subscribe(data => {
-      this.grafico3Data = data;
-      this.barChartLabels3 = this.grafico3Data.map(d => d.pais_destino || '');
-      this.barChartData3[0].data = this.grafico3Data.map(d => d.total_emigrantes_mundo || 0);
-      this.barChartData3[1].data = this.grafico3Data.map(d => d.total_emigrantes_pais || 0);
+  generarGraficoBarras(datos: any) {
+    if (!datos || !datos.labels || !datos.values) {
+      console.error('Datos inválidos para el gráfico de barras:', datos);
+      return;
+    }
+
+      const ctx = document.getElementById('graficoBarras') as HTMLCanvasElement;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: datos.labels,
+        datasets: [
+          {
+            label: 'Total emigrantes en España',
+            data: datos.values.total_emigrantes_españa,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          },
+          {
+            label: 'Nacionalidad Extranjera',
+            data: datos.values.nacionalidad_extranjera,
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+          },
+          {
+            label: 'Nacionalidad Española',
+            data: datos.values.nacionalidad_española,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          },
+          ],
+        },
+      });
+    }
+
+  generarGraficoLineas(datos: any) {
+    new Chart('graficoLineas', {
+      type: 'line',
+      data: {
+        labels: datos.labels,
+        datasets: [
+          {
+            label: 'Emigrantes en el mundo',
+            data: datos.values,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
     });
   }
+
+  cambiarAnio(anioSeleccionado: number) {
+    const datos = this.datosGrafico[anioSeleccionado];
+
+    if (this.graficoActual) {
+      this.graficoActual.destroy();
+    }
+
+    const ctx = document.getElementById('graficoTorta') as HTMLCanvasElement;
+    this.graficoActual = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: datos.labels,
+        datasets: [
+          {
+            label: `Emigrantes por país en ${anioSeleccionado}`,
+            data: datos.values,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(201, 203, 207, 0.2)',
+              'rgba(99, 255, 132, 0.2)',
+              'rgba(160, 160, 160, 0.2)',
+              'rgba(255, 102, 204, 0.2)',
+              'rgba(102, 204, 255, 0.2)',
+              'rgba(204, 255, 102, 0.2)',
+              'rgba(255, 204, 102, 0.2)',
+              'rgba(255, 102, 102, 0.2)',
+              'rgba(102, 255, 204, 0.2)',
+              'rgba(204, 102, 255, 0.2)',
+              'rgba(102, 255, 102, 0.2)',
+              'rgba(255, 153, 153, 0.2)',
+              'rgba(153, 255, 255, 0.2)',
+              'rgba(204, 153, 255, 0.2)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(201, 203, 207, 0.2)',
+              'rgba(99, 255, 132, 0.2)',
+              'rgba(160, 160, 160, 0.2)',
+              'rgba(255, 102, 204, 0.2)',
+              'rgba(102, 204, 255, 0.2)',
+              'rgba(204, 255, 102, 0.2)',
+              'rgba(255, 204, 102, 0.2)',
+              'rgba(255, 102, 102, 0.2)',
+              'rgba(102, 255, 204, 0.2)',
+              'rgba(204, 102, 255, 0.2)',
+              'rgba(102, 255, 102, 0.2)',
+              'rgba(255, 153, 153, 0.2)',
+              'rgba(153, 255, 255, 0.2)',
+              'rgba(204, 153, 255, 0.2)',
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {},
+    });
+}
 }

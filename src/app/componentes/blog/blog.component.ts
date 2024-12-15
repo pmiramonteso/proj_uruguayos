@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BlogService } from '../../service/blog.service';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
+import { Blog } from '../../interface/blog';
 
 @Component({
   selector: 'app-blog',
@@ -12,7 +13,7 @@ import { FooterComponent } from '../footer/footer.component';
 })
 export class BlogComponent implements OnInit{
 
-  blogs: any[] = [];
+  blogs: Blog[] = [];
 
   constructor(private blogService: BlogService) {}
 
