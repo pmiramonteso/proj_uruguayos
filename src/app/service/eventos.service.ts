@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, Subject } from 'rxjs';
 import { Evento } from '../interface/evento';
-import { ApiEventos } from '../interface/api-eventos';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -15,7 +14,7 @@ export class EventosService {
   constructor(private http: HttpClient) {}
 
   getEventos(): Observable<Evento[]> {
-    return this.http.get<ApiEventos>(this.apiUrl).pipe(
+    return this.http.get<{code:number, message:string, data:Evento[]}>(this.apiUrl).pipe(
       map((response) => response.data)
     );
   }
@@ -25,7 +24,7 @@ export class EventosService {
   }
 
   actualizarEvento(evento: Evento): Observable<Evento> {
-    return this.http.put<Evento>(`${this.apiUrl}/${evento.id_evento}`, evento);
+    return this.http.patch<Evento>(`${this.apiUrl}/${evento.id_evento}`, evento);
   }
   
   eliminarEvento(id:number): Observable<void> {

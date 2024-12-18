@@ -3,7 +3,7 @@
     <div class="flex justify-center mt-6">
   <button
     (click)="agregarNegocio()"
-    class="btn-agregar btn-25px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
+    class="btn-25 px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
   >
     Agregar nuevo negocio
   </button>
@@ -90,7 +90,6 @@
         >Redes Sociales</label
       >
       <div class="flex items-center gap-4">
-        <!-- Selección de Red Social -->
         <select
           id="redSocial"
           formControlName="tipoRedSocial"
@@ -104,7 +103,6 @@
           <option value="youtube">YouTube</option>
         </select>
 
-        <!-- Enlace de la Red Social -->
         <input
           id="urlRedSocial"
           formControlName="urlRedSocial"
@@ -115,7 +113,6 @@
       </div>
     </div>
 
-    <!-- Categoría -->
     <div>
       <label for="categoria" class="block text-sm font-medium mb-1"
         >Categoría</label
@@ -129,7 +126,6 @@
       />
     </div>
 
-    <!-- Botón Guardar -->
     <button
       type="submit"
       class="bg-teal-400 text-white px-4 py-2 rounded-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-500 w-full"
@@ -153,7 +149,6 @@
         <p class="text-sm text-gray-400">{{ negocio.direccion }}</p>
         <p class="text-sm text-gray-400">{{ negocio.categoria }}</p>
 
-        <!-- Red social con su ícono -->
         <div class="mt-2 flex items-center gap-4">
           @if(negocio.tipoRedSocial === 'instagram') {
           <i class="fab fa-instagram text-pink-500 text-xl"></i>
@@ -178,16 +173,16 @@
         <div class="mt-4 flex gap-4">
           <button
             (click)="editarNegocio(negocio)"
-            class="btn-negocios btn-9 bg-teal-400 text-white hover:text-black px-4 py-2 rounded-md hover:bg-teal-600"
+            class="btn-77 text-white hover:text-teal-600 bg-teal-400 rounded-md hover:bg-white"
           ><span>
-            Editar
+            EDITAR
           </span>
           </button>
           <button
-            (click)="onDelete(negocio.id_negocio)"
-            class="btn-negocios btn-9 bg-black text-white hover:text-black px-4 py-2 rounded-md hover:bg-gray-800"
+            (click)="eliminarNegocio(negocio.id_negocio)"
+            class="btn-77 text-white hover:text-teal-600  bg-black hover:bg-white rounded-md"
           ><span>
-            Eliminar
+            ELIMINAR
           </span>
           </button>
         </div>

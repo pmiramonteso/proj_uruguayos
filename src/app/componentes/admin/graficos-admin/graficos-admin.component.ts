@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { GraficosService } from '../../../service/graficos.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FooterComponent } from '../../footer/footer.component';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-graficos-admin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FooterComponent, RouterModule],
   templateUrl: './graficos-admin.component.html',
   styleUrls: ['./graficos-admin.component.scss']
 })

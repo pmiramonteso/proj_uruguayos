@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Blog } from '../interface/blog';
-import { ApiBlog } from '../interface/api-blog';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,7 @@ export class BlogService {
   constructor(private http: HttpClient) { }
 
   getBlogs(): Observable<Blog[]> {
-    return this.http.get<ApiBlog>(this.apiUrl).pipe(
+    return this.http.get<{code:number, message:string, data:Blog[]}>(this.apiUrl).pipe(
       map((response) => response.data)
     );
   }
@@ -24,8 +23,8 @@ export class BlogService {
     return this.http.post<Blog>(this.apiUrl, blog);
   }
 
-  updateBlog(id: number, blog: Blog): Observable<Blog> {
-    return this.http.put<Blog>(`${this.apiUrl}/${blog.id_blog}`, blog);
+  updateBlog(blog: Blog): Observable<Blog> {
+    return this.http.patch<Blog>(`${this.apiUrl}/${blog.id_blog}`, blog);
   }
 
   deleteBlog(id: number): Observable<void> {

@@ -110,7 +110,7 @@ const addEvento = async (req, res) => {
         hora_fin,
         color,
         entrada,
-        precio: entrada === 'Pago' ? precio : null, // Solo asignamos precio si es "Pago"
+        precio: entrada === 'Pago' ? precio : null,
         ubicacion
       });
     } catch (error) {

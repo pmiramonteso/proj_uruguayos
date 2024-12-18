@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/', getPosts);
 router.get('/:id',idValidator, getPostById);
 router.post('/', addPost);
-router.patch('/:id', authenticateToken(['mod', 'admin']), idValidator, blogValidator, updatePost);
-router.delete('/:id', authenticateToken(['admin']), idValidator, deletePost);
+router.patch('/:id', idValidator, blogValidator, updatePost);
+router.delete('/:id', idValidator, deletePost);
 
 module.exports = router;

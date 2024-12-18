@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../../service/blog.service';
 import { EditorModule  } from '@tinymce/tinymce-angular';
 import { Blog } from '../../../interface/blog';
+import { NotificacionesService } from '../../../service/notificaciones.service';
 
 @Component({
   selector: 'app-blog-admin',
@@ -33,7 +34,8 @@ export class BlogAdminComponent implements OnInit{
     private fb: FormBuilder,
     private blogService: BlogService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificacionesService
   ) {}
 
   ngOnInit(): void {
@@ -65,12 +67,15 @@ export class BlogAdminComponent implements OnInit{
       const blogData = this.blogForm.value;
 
       if (this.editando && this.blogEditando) {
-        this.blogService.updateBlog(this.blogEditando.id_blog, blogData).subscribe(() => {
+        const updatedBlog = { ...this.blogEditando, ...blogData };
+        this.blogService.updateBlog(updatedBlog).subscribe(() => {
+          this.notificationService.mostrarExito('Evento actualizado con éxito');
           this.resetFormulario();
           this.cargarBlogs();
         });
       } else {
         this.blogService.createBlog(blogData).subscribe(() => {
+          this.notificationService.mostrarExito('Evento creado con éxito');
           this.resetFormulario();
           this.cargarBlogs();
         });
@@ -88,23 +93,33 @@ export class BlogAdminComponent implements OnInit{
 
   editarBlog(blog: Blog): void {
     this.editando = true;
+    this.agregando = false;
+    
     this.blogEditando = blog;
-    this.blogForm.patchValue(blog);
+    this.blogForm.patchValue({
+      titulo: blog.titulo,
+      contenido: blog.contenido,
+      categoria: blog.categoria,
+      status: blog.status
+    });
+    this.mostrarFormularioBlog = true;
   }
 
-  eliminarBlog(blogId: number): void {
+  eliminarBlog(blog: Blog): void {
     if (confirm('¿Estás seguro de que deseas eliminar este blog?')) {
-      this.blogService.deleteBlog(blogId).subscribe({
+      if(blog.id_blog) {
+      this.blogService.deleteBlog(blog.id_blog).subscribe({
         next: () => {
-          alert('Blog eliminado correctamente.');
-          this.router.navigate(['/blog']);
+          this.notificationService.mostrarExito('Post eliminado con éxito');
+          this.cargarBlogs();
         },
         error: (error) => {
           console.error('Error al eliminar el blog:', error);
-          alert('Ocurrió un error al intentar eliminar el blog.');
+          this.notificationService.mostrarError('No se pudo eliminar el post');
         }
       });
     }
   }
+}
   
 }

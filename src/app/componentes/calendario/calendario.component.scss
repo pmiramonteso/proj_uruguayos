@@ -5,27 +5,6 @@ full-calendar {
   padding: 20px;
 }
 
-.fc-event-title {
-  white-space: normal;
-  word-wrap: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fc-prev-button, .fc-next-button {
-  color: #fff;
-  background-color: #319795;
-}
-
-.fc-prev-button:hover, .fc-next-button:hover {
-  background-color: #276d62;
-  color: #fff;
-}
-.fc-event {
-  padding: 10px 15px;
-}
-.fc {
-  font-size: 16px;
-}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -69,5 +48,33 @@ button {
 }
 
 button:hover {
-  background-color: #319795; /* Color más oscuro */
+  background-color: #319795;
+}
+
+.bg-pastelViolet {
+  background-color: #B39DDB !important;
+}
+
+.bg-pastelIndigo {
+  background-color: #7986CB !important;
+}
+
+.bg-pastelBlue {
+  background-color: #64B5F6 !important;
+}
+
+.bg-pastelGreen {
+  background-color: #81C784 !important;
+}
+
+.bg-pastelYellow {
+  background-color: #FFEB3B !important;
+}
+
+.bg-pastelOrange {
+  background-color: #FFB74D !important;
+}
+
+.bg-pastelRed {
+  background-color: #FF8A80 !important;
 }

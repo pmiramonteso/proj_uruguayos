@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavegacionComponent } from './componentes/navegacion/navegacion.component';
-
+import { NotificacionComponent } from './componentes/notificacion/notificacion.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavegacionComponent, ],
+  imports: [RouterOutlet, NotificacionComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

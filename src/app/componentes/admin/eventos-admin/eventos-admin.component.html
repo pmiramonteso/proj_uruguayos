@@ -4,9 +4,9 @@
     <div class="flex justify-center mt-6">
   <button
     (click)="agregarEvento()"
-    class="btn-agregar btn-25 px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
+    class="btn-25 px-6 py-3 bg-teal-400 text-white text-lg font-semibold rounded-full shadow-md hover:bg-teal-500 focus:ring-2 focus:ring-teal-500"
   >
-    Agregar nuevo evento
+    NUEVO EVENTO
   </button>
 </div>
 }
@@ -70,20 +70,18 @@
       </div>
     </div>
 
-    <!-- Tag Colors -->
-    <!-- Tag Colors -->
 <div>
   <label class="block text-sm font-medium mb-1">Identificación</label>
   <div class="flex space-x-2">
-    <button class="w-6 h-6 rounded-full bg-purple-500" type="button" (click)="setColor('purple')"></button>
-    <button class="w-6 h-6 rounded-full bg-blue-500" type="button" (click)="setColor('blue')"></button>
-    <button class="w-6 h-6 rounded-full bg-teal-500" type="button" (click)="setColor('teal')"></button>
-    <button class="w-6 h-6 rounded-full bg-green-500" type="button" (click)="setColor('green')"></button>
-    <button class="w-6 h-6 rounded-full bg-yellow-500" type="button" (click)="setColor('yellow')"></button>
-    <button class="w-6 h-6 rounded-full bg-orange-500" type="button" (click)="setColor('orange')"></button>
-    <button class="w-6 h-6 rounded-full bg-red-500" type="button" (click)="setColor('red')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelViolet" type="button" (click)="setColor('pastelViolet')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelIndigo" type="button" (click)="setColor('pastelIndigo')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelBlue" type="button" (click)="setColor('pastelBlue')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelGreen" type="button" (click)="setColor('pastelGreen')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelYellow" type="button" (click)="setColor('pastelYellow')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelOrange" type="button" (click)="setColor('pastelOrange')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelRed" type="button" (click)="setColor('pastelRed')"></button>
   </div>    
-      <!-- Campo oculto para almacenar el color seleccionado -->
+
       <input type="hidden" id="color" formControlName="color"/>
     </div>
 
@@ -137,7 +135,6 @@
       />
     </div>
 
-  <!-- Botón Guardar -->
   <button
     type="submit"
     class="bg-teal-400 text-white px-4 py-2 rounded-md hover:bg-teal-600 focus:ring-2 focus:ring-teal-500 w-full">
@@ -165,15 +162,15 @@
       <div class="mt-4 flex gap-4">
         <button
           (click)="editarEvento(evento)"
-          class="btn-eventos btn-9 bg-teal-400 text-white hover:text-black px-4 py-2 rounded-md hover:bg-teal-600"
+          class="btn-77 text-white hover:text-teal-600 bg-teal-400 rounded-md hover:bg-white"
         >
-          Editar
+          EDITAR
         </button>
         <button
           (click)="eliminarEvento(evento)"
-          class="btn-eventos btn-9 bg-black text-white hover:text-black px-4 py-2 rounded-md"
+          class="btn-77 text-white hover:text-teal-600  bg-black hover:bg-white rounded-md"
         >
-          Eliminar
+          ELIMINAR
         </button>
       </div>
     </div>

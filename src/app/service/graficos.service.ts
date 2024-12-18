@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Grafico } from '../interface/grafico';
-import { ApiGrafico } from '../interface/api-grafico';
 
 
 @Injectable({
@@ -16,7 +15,7 @@ export class GraficosService {
   constructor(private http: HttpClient) { }
 
  getDatos(): Observable<Grafico[]> {
-    return this.http.get<ApiGrafico>(this.apiUrl).pipe(
+    return this.http.get<{code:number, message:string, data:Grafico[]}>(this.apiUrl).pipe(
       map((response) => response.data)
     );
   }

@@ -3,11 +3,12 @@ import * as L from 'leaflet';
 import { Negocio } from '../../interface/negocio';
 import { NegociosService } from '../../service/negocios.service';
 import { FooterComponent } from '../footer/footer.component';
+import { NavegacionComponent } from '../navegacion/navegacion.component';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [FooterComponent],
+  imports: [FooterComponent, NavegacionComponent],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.scss'
 })
@@ -64,7 +65,7 @@ cerrarModal(): void {
   }
 
   cargarNegocios(): void {
-      this.negociosService.getNegocios().subscribe((negocios: Negocio[]) => {
+      this.negociosService.obtenerNegocios().subscribe((negocios: Negocio[]) => {
         console.log('Respuesta de la API:', negocios);
           this.negocios = negocios;
           this.añadirMarkers();

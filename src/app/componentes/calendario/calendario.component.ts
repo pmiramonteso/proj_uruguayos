@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Evento } from '../../interface/evento';
 import { EventosService } from '../../service/eventos.service';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
 import { FooterComponent } from '../footer/footer.component';
+import esLocale from '@fullcalendar/core/locales/es';
+import { NavegacionComponent } from '../navegacion/navegacion.component';
+
 
 @Component({
   selector: 'app-calendario',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule, FooterComponent],
+  imports: [CommonModule, FullCalendarModule, FooterComponent, NavegacionComponent],
   templateUrl: './calendario.component.html',
   styleUrl: './calendario.component.scss'
 })
@@ -21,7 +23,17 @@ export class CalendarioComponent {
   eventoSeleccionado: any = null;
 
   calendarOptions: CalendarOptions = {
+    locale: esLocale, 
+    buttonText: {
+      today: 'Hoy'
+    },
     initialView: 'dayGridMonth',
+    titleFormat: { year: 'numeric', month: 'long' },
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,dayGridWeek,dayGridDay'
+    },
     plugins: [dayGridPlugin, interactionPlugin],
     events: this.eventos,
     eventClick: this.mostrarModal.bind(this),
@@ -43,7 +55,7 @@ export class CalendarioComponent {
         descripcion: evento.descripcion,
         hora_inicio: evento.hora_inicio,
         hora_fin: evento.hora_fin,
-        backgroundColor: evento.color,
+        color: evento.color,
         entrada: evento.entrada,
         precio: evento.precio,
         ubicacion: evento.ubicacion,
@@ -53,13 +65,16 @@ export class CalendarioComponent {
         title: evento.titulo,
         start: evento.fecha,
         end: evento.fecha_fin,
+        backgroundColor: evento.color,
       }));
+
       this.calendarOptions.events = this.eventos.map(evento => ({
         title: evento.title,
         start: evento.start,
         end: evento.end,
         backgroundColor: evento.backgroundColor,
       }));
+      
     });
   }
   

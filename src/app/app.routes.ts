@@ -9,23 +9,26 @@ import { UsuariosAdminComponent } from './componentes/admin/usuarios-admin/usuar
 
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistroComponent } from './componentes/user/registro/registro.component';
-
+import { PerfilComponent } from './componentes/user/perfil/perfil.component';
 import { HomeComponent } from './componentes/home/home.component';
 import { CalendarioComponent } from './componentes/calendario/calendario.component';
+import { BlogComponent } from './componentes/blog/blog.component';
 import { GraficosComponent } from './componentes/graficos/graficos.component';
 import { MapaComponent } from './componentes/mapa/mapa.component';
-import { BlogComponent } from './componentes/blog/blog.component';
 import { PresentacionComponent } from './componentes/presentacion/presentacion.component';
 
 
 export const routes: Routes = [
-    { path: 'admin', component: PanelAdminComponent, canActivate: [authGuard]},
-    { path: 'admin-negocios', component: NegociosAdminComponent, canActivate: [authGuard]},
-    { path: 'admin-eventos', component: EventosAdminComponent, canActivate: [authGuard] },
-    { path: 'admin-usuarios', component: UsuariosAdminComponent, canActivate: [authGuard] },
-    { path: 'admin-blog', component: BlogAdminComponent, canActivate: [authGuard]},
+    { path: 'admin', component: PanelAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
+    { path: 'admin-negocios', component: NegociosAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
+    { path: 'admin-eventos', component: EventosAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
+    { path: 'admin-usuarios', component: UsuariosAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
+    { path: 'admin-blog', component: BlogAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
+
     { path: 'login', component: LoginComponent},
     { path: 'registro', component: RegistroComponent},
+    { path: 'perfil', component: PerfilComponent},
+
     { path: 'home', component: HomeComponent},
     { path: 'calendario', component: CalendarioComponent},
     { path: 'blog', component: BlogComponent},

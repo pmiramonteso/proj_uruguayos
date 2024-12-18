@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../db.js');
 
 const Post = sequelize.define('posts', {
-  id_post: {
+  id_blog: {
     type: DataTypes.INTEGER(8).UNSIGNED,
     primaryKey: true,
     autoIncrement: true,

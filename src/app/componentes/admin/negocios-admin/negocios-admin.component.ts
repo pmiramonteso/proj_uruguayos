@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NegociosService } from '../../../service/negocios.service';
 import { Negocio } from '../../../interface/negocio';
+import { NotificacionesService } from '../../../service/notificaciones.service';
 @Component({
   selector: 'app-negocios-admin',
   standalone: true,
@@ -19,7 +20,7 @@ export class NegociosAdminComponent implements OnInit{
   editando = false;
   agregando = false;
 
-  constructor(private fb: FormBuilder, private negociosService: NegociosService) {}
+  constructor(private fb: FormBuilder, private negociosService: NegociosService, private notificationService: NotificacionesService) {}
 
   ngOnInit(): void {
     this.negocioForm = this.fb.group({
@@ -32,14 +33,28 @@ export class NegociosAdminComponent implements OnInit{
       urlRedSocial: ['', Validators.required],
       categoria: ['', Validators.required],
     });
-    this.getNegocios();
+    this.obtenerNegocios();
   }
+  obtenerNegocios(): void {
+    this.negociosService.obtenerNegocios().subscribe(
+      (negocios) => {
+        console.log('Negocios obtenidos:', negocios);
+        this.negocios = negocios;
+      },
+      (error) => {
+        console.error('Error al obtener negocios:', error);
+      }
+    );
+  }
+  
   limpiarFormulario(): void {
+    this.editando = false;
+    this.agregando = false;
     this.negocioForm.reset();
     this.negocioEditando = null;
     this.mostrarFormulario = false;
   }
-  
+
   agregarNegocio(): void {
     this.mostrarFormulario = !this.mostrarFormulario;
     this.editando = false;
@@ -47,36 +62,36 @@ export class NegociosAdminComponent implements OnInit{
   
     if (this.negocioForm.valid) {
       const formValue = this.negocioForm.value;
-      console.log('Formulario enviado:', formValue);
       
       if (this.negocioEditando) {
         const negocioActualizado = { ...formValue, id_negocio: this.negocioEditando.id_negocio };
-        console.log('Negocio actualizado:', negocioActualizado);
-        this.negociosService.updateNegocio(negocioActualizado).subscribe({
+        this.negociosService.actualizarNegocio(negocioActualizado).subscribe({
           next: (response) => {
-            console.log('Negocio actualizado:', response);
-            this.getNegocios();
+            this.notificationService.mostrarExito('Negocio actualizado con éxito');
             this.limpiarFormulario();
+            this.obtenerNegocios();
           },
           error: (error) => {
+            this.notificationService.mostrarError('Error al actualizar el negocio');
             console.error('Error al actualizar negocio:', error);
           }
         });
       } else {
-        this.negociosService.addNegocio(formValue).subscribe({
+        this.negociosService.crearNegocio(formValue).subscribe({
           next: (response) => {
-            console.log('Negocio creado:', response);
-            this.getNegocios();
+            this.notificationService.mostrarExito('Negocio creado con éxito');
             this.limpiarFormulario();
+            this.obtenerNegocios();
           },
           error: (error) => {
+            this.notificationService.mostrarError('Error al crear el negocio');
             console.error('Error al crear negocio:', error);
           }
         });
       }
     }
+    this.obtenerNegocios();
   }
-  
 
 editarNegocio(negocio: Negocio): void {
   this.editando = true;
@@ -96,32 +111,18 @@ editarNegocio(negocio: Negocio): void {
   this.mostrarFormulario = true;
 }
 
-// Método para eliminar un negocio
-onDelete(id: number): void {
-  this.negociosService.deleteNegocio(id).subscribe(
+eliminarNegocio(id: number): void {
+  if (confirm('¿Estás seguro de que deseas eliminar este blog?')) {
+  this.negociosService.eliminarNegocio(id).subscribe(
     (response) => {
-      console.log('Negocio eliminado:', response);
-      // Aquí podrías actualizar la lista de negocios o hacer otras acciones después de la eliminación
-      this.getNegocios();
+      this.notificationService.mostrarExito('Negocio eliminado con éxito');
+      this.obtenerNegocios();
     },
     (error) => {
       console.error('Error al eliminar negocio:', error);
+      this.notificationService.mostrarError('No se pudo eliminar el negocio');
     }
   );
 }
-
-// Método para obtener los negocios
-getNegocios(): void {
-  this.negociosService.getNegocios().subscribe(
-    (negocios) => {
-      console.log('Negocios obtenidos:', negocios);
-      this.negocios = negocios;
-      // Aquí podrías almacenar los negocios en una variable para mostrarlos en el componente
-    },
-    (error) => {
-      console.error('Error al obtener negocios:', error);
-    }
-  );
 }
-
 }

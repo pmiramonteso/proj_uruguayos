@@ -3,9 +3,9 @@ export interface Evento {
     titulo: string;
     descripcion: string;
     fecha: string;
-    fecha_fin?: string,
+    fecha_fin?: string | null,
     hora_inicio: string,
-    hora_fin?: string,
+    hora_fin?: string | null,
     color?: string,
     entrada: string;
     precio?: number;

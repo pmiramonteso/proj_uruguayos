@@ -68,7 +68,7 @@ export class UsuariosAdminComponent implements OnInit {
       });
     } else {
       // Añadir nuevo usuario
-      this.usuariosService.ingresar(this.currentUser).subscribe({
+      this.usuariosService.guardar(this.currentUser).subscribe({
         next: () => {
           this.obtenerUsuarios(); // Refresca la lista
           this.toggleForm(); // Oculta el formulario

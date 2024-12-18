@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-panel-admin',
   standalone: true,
@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './panel-admin.component.scss'
 })
 export class PanelAdminComponent {
-
+  
+  constructor(private router: Router) {}
+  goHome() {
+    this.router.navigate(['/home']);
+}
 }

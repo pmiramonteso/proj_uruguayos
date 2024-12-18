@@ -1,129 +1,87 @@
-<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-    <span class="sr-only">Open sidebar</span>
+<!-- Botón para abrir la barra lateral -->
+<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-teal-500 rounded-lg sm:hidden hover:bg-teal-200 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-all duration-300 ease-in-out">
+    <span class="sr-only">Abrir barra lateral</span>
     <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-       <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
     </svg>
- </button>
- 
- <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidenav">
-   <div class="overflow-y-auto py-5 px-3 h-full bg-yellow-100 border-r border-gray-200">
-       <ul class="space-y-2">
-           <li>
-               <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group">
-                   <svg aria-hidden="true" class="w-6 h-6 text-teal-400 transition duration-75 group-hover:text-gray-900" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
-                   <span class="ml-3">Panel</span>
-               </a>
-           </li>
-           <li>
-               <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100" aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
-                <svg aria-hidden="true" class="w-6 h-6 text-teal-400 transition duration-75 group-hover:text-gray-900" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M6 2a1 1 0 00-1 1v1H5a3 3 0 00-3 3v8a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3h-.59V3a1 1 0 00-2 0v1H7V3a1 1 0 00-1-1zM4 8h12v7a1 1 0 01-1 1H5a1 1 0 01-1-1V8z"></path>
-              </svg>           
-                   <a href="/admin-eventos" class="flex-1 ml-3 text-left whitespace-nowrap">Eventos</a>
-                   <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-               </button>
-               <ul id="dropdown-pages" class="hidden py-2 space-y-2">
-                   <li>
-                       <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Settings</a>
-                   </li>
-                   <li>
-                       <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Kanban</a>
-                   </li>
-                   <li>
-                       <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Calendar</a>
-                   </li>
-               </ul>
-           </li>
-           <li>
-               <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100" aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
-                <svg aria-hidden="true" class="w-6 h-6 text-teal-400 transition duration-75 group-hover:text-gray-900" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M14.75 2a1.25 1.25 0 00-1.03.55L3.72 15.1a.75.75 0 00-.17.32l-1 4a.75.75 0 00.93.93l4-1a.75.75 0 00.32-.17l9.55-9.55a1.25 1.25 0 00-.88-2.13H14.75zm-.72 2.47l1.5 1.5-9.1 9.1-1.5-1.5 9.1-9.1zM4.3 14.7l1 1-1.25.31.31-1.25zm2.47 1.47l-1-1L14 6.93l1 1-8.22 8.22z"></path>
-              </svg>              
-                   <a href="/admin-blog" class="flex-1 ml-3 text-left whitespace-nowrap">Blog</a>
-                   <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-               </button>
-               <ul id="dropdown-sales" class="hidden py-2 space-y-2">
-                       <li>
-                           <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Products</a>
-                       </li>
-                       <li>
-                           <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Billing</a>
-                       </li>
-                       <li>
-                           <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Invoice</a>
-                       </li>
-               </ul>
-           </li>
-           <li>
-            <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100" aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
-                <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-teal-400 transition duration-75 group-hover:text-gray-900" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
-                <a href="/admin-negocios" class="flex-1 ml-3 text-left whitespace-nowrap">Negocios</a>
-                <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </button>
-            <ul id="dropdown-sales" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Products</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-10">Billing</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Invoice</a>
-                    </li>
-            </ul>
-        </li>
-        <li>
-            <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100" aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
-              <svg aria-hidden="true" class="w-6 h-6 text-teal-400 transition duration-75 group-hover:text-gray-900" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 2a4 4 0 100 8 4 4 0 000-8zm-6 14a6 6 0 1112 0H4z" clip-rule="evenodd"></path>
-            </svg>            
-                <a href="/admin-usuarios" class="flex-1 ml-3 text-left whitespace-nowrap">Usuarios</a>
-                <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </button>
-            <ul id="dropdown-sales" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Products</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Billing</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Invoice</a>
-                    </li>
-            </ul>
-        </li>
-           <li>
-               <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
-                   <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-teal-400 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"></path><path d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path></svg>
-                   <span class="flex-1 ml-3 whitespace-nowrap">Messages</span>
-                   <span class="inline-flex justify-center items-center w-5 h-5 text-xs font-semibold rounded-full text-primary-800 bg-primary-100 ">
-                       6   
-                   </span>
-               </a>
-           </li>
-           <li>
-               <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100" aria-controls="dropdown-authentication" data-collapse-toggle="dropdown-authentication">
-                   <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-teal-400 transition duration-75 group-hover:text-gray-900" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-                   <span class="flex-1 ml-3 text-left whitespace-nowrap">Authentication</span>
-                   <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-               </button>
-               <ul id="dropdown-authentication" class="hidden py-2 space-y-2">
-                   <li>
-                       <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Sign In</a>
-                   </li>
-                   <li>
-                       <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Sign Up</a>
-                   </li>
-                   <li>
-                       <a href="#" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100">Forgot Password</a>
-                   </li>
-               </ul>
-           </li>
-       </ul>
-         </div>
-   <div class="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white z-20 border-r border-gray-200">
-       <button type="button" data-dropdown-toggle="language-dropdown" class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-         <svg aria-hidden="true" class="h-5 w-5 rounded-full mt-0.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3900 3900"><path fill="#b22234" d="M0 0h7410v3900H0z"/><path d="M0 450h7410m0 600H0m0 600h7410m0 600H0m0 600h7410m0 600H0" stroke="#fff" stroke-width="300"/><path fill="#3c3b6e" d="M0 0h2964v2100H0z"/><g fill="#fff"><g id="d"><g id="c"><g id="e"><g id="b"><path id="a" d="M247 90l70.534 217.082-184.66-134.164h228.253L176.466 307.082z"/><use xlink:href="#a" y="420"/><use xlink:href="#a" y="840"/><use xlink:href="#a" y="1260"/></g><use xlink:href="#a" y="1680"/></g><use xlink:href="#b" x="247" y="210"/></g><use xlink:href="#c" x="494"/></g><use xlink:href="#d" x="988"/><use xlink:href="#c" x="1976"/><use xlink:href="#e" x="2470"/></g></svg>
-       </button>
-   </div>
- </aside>
+</button>
+
+<!-- Barra lateral -->
+<aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0 bg-gradient-to-b from-teal-500 to-teal-700 shadow-lg rounded-r-lg" aria-label="Sidenav">
+    <div class="overflow-hidden py-5 px-4 h-full">
+        <!-- Foto de usuario y datos ampliados -->
+        <div class="flex items-center mb-6">
+            <img src="assets/img/img-paola.jpeg" alt="Foto de Usuario" class="w-full h-full object-cover rounded-full mb-4"> <!-- Foto redonda -->
+        </div>
+        <div class="text-start text-white ml-3">
+            <p class="text-xl font-semibold">Paola Miramontes</p>
+            <p class="text-teal-100 text-sm">Rol: Administrador</p>
+            <p class="text-teal-100 text-sm">Email: juaexample.com</p>
+        </div>
+
+        <!-- Opciones del usuario -->
+        <div class="space-y-4 mt-4">
+            <a href="/admin-eventos" class="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-3 rounded-lg transition-colors duration-300">
+                <i class="fas fa-calendar-alt w-6 h-6"></i>
+                <span class="text-lg">Eventos</span>
+            </a>
+            <a href="/admin-blog" class="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-3 rounded-lg transition-colors duration-300">
+                <i class="fas fa-pencil-alt w-6 h-6"></i>
+                <span class="text-lg">Blog</span>
+            </a>
+            <a href="/admin-negocios" class="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-3 rounded-lg transition-colors duration-300">
+                <i class="fas fa-briefcase w-6 h-6"></i>
+                <span class="text-lg">Negocios</span>
+            </a>
+        </div>
+    </div>
+</aside>
+
+<!-- Contenedor principal con las cards de Eventos, Blog y Negocios -->
+<div class="absolute top-5 right-5 px-6 py-3">
+    <a href="/home">
+    <img class="h-16 w-auto" src="assets/img/logo-uru.png" alt="logo-uruguayos">
+  </a>
+  </div>
+
+<div class="h-screen flex items-center justify-center bg-gradient-to-b from-teal-500 via-teal-600 to-teal-700 p-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 max-w-screen-xl w-full">
+
+        <div class="w-full bg-white rounded-2xl shadow-xl overflow-hidden group relative hover:scale-105 transition-all duration-300">
+            <div class="w-full h-96 bg-teal-500 text-white flex items-center justify-center">
+                <i class="fas fa-calendar-alt text-8xl"></i>
+            </div>
+            <div class="absolute inset-0 flex items-start justify-center mt-12">
+                <!-- Capa de fondo con opacidad -->
+                <div class="absolute inset-0 bg-teal-500 opacity-20 group-hover:opacity-75"></div>
+                <span class="text-3xl font-semibold text-white z-10 group-hover:opacity-80">Eventos</span>
+            </div>
+            <a href="/admin-eventos" class="block w-full h-full p-6 absolute inset-0"></a>
+        </div>
+
+        <div class="w-full bg-white rounded-2xl shadow-xl overflow-hidden group relative hover:scale-105 transition-all duration-300">
+            <div class="w-full h-96 bg-teal-500 text-white flex items-center justify-center">
+                <i class="fas fa-pencil-alt text-8xl"></i>
+            </div>
+            <div class="absolute inset-0 flex items-start justify-center mt-12">
+                <!-- Capa de fondo con opacidad -->
+                <div class="absolute inset-0 bg-teal-500 opacity-20 group-hover:opacity-75"></div>
+                <span class="text-3xl font-semibold text-white z-10 group-hover:opacity-80">Blog</span>
+            </div>
+            <a href="/admin-blog" class="block w-full h-full p-6 absolute inset-0"></a>
+        </div>
+
+        <div class="w-full bg-white rounded-2xl shadow-xl overflow-hidden group relative hover:scale-105 transition-all duration-300">
+            <div class="w-full h-96 bg-teal-500 text-white flex items-center justify-center">
+                <i class="fas fa-briefcase text-8xl"></i>
+            </div>
+            <div class="absolute inset-0 flex items-start justify-center mt-12">
+                <!-- Capa de fondo con opacidad -->
+                <div class="absolute inset-0 bg-teal-500 opacity-20 group-hover:opacity-75"></div>
+                <span class="text-3xl font-semibold text-white z-10 group-hover:opacity-80">Negocios</span>
+            </div>
+            <a href="/admin-negocios" class="block w-full h-full p-6 absolute inset-0"></a>
+        </div>
+
+    </div>
+</div>

@@ -12,6 +12,7 @@ const { testConnection } = require('./db');
 const dotenv = require('dotenv');
 const { insertInitialUserData } = require('./start_data');
 dotenv.config();
+const path = require('path');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true })); // Para analizar datos de formu
   await insertInitialUserData();
 })();
 
+app.use('/assets/img', express.static(path.join(__dirname, '/uploads')));
 // Configurar rutas
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);

@@ -9,9 +9,9 @@ const router = Router();
 // Rutas para obtener y modificar los datos de los eventos
 router.get('/', getEventos);
 router.get('/:id', idValidator, getEventoById);
-router.post('/', eventoValidator, addEvento);
-router.patch('/:id', authenticateToken(['mod', 'admin']), idValidator, eventoValidator, updateEvento);
-router.delete('/:id', idValidator, deleteEvento);
+router.post('/', authenticateToken(['user','admin']), eventoValidator, addEvento);
+router.patch('/:id', authenticateToken(['admin']), idValidator, eventoValidator, updateEvento);
+router.delete('/:id', authenticateToken(['admin']), idValidator, deleteEvento);
 
 module.exports = router;
 

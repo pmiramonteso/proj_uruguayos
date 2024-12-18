@@ -22,11 +22,8 @@ const registro = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
       }
      
-      const { nombre, apellidos, email, password } = req.body;
-      let photo = null;
-      if (req.file) {
-        photo = req.file.filename;
-      }
+      const { nombre, apellidos, email, password, roles } = req.body;
+      let photo = req.file ? req.file.filename : null;
 
       // Verificar si ya existe un usuario con el mismo correo electrónico
       const existingUser = await User.findOne({ where: { email } });
@@ -39,7 +36,7 @@ const registro = async (req, res) => {
       
       // Crear un nuevo usuario
       const hashedPassword = await bcrypt.hash(password, Number(process.env.BCRYPT_SALT));
-      const newUser = new User({ nombre, apellidos, email, password: hashedPassword, photo, status: 1 });
+      const newUser = new User({ nombre, apellidos, email, password: hashedPassword, roles: 'user', photo, status: 1 });
       await newUser.save();
   
       // Generar un token de acceso y lo guardo en un token seguro (httpOnly)
@@ -57,7 +54,19 @@ const registro = async (req, res) => {
       res.status(200).json({
         code: 1,
         message: 'Usuario registrado correctamente',
+        accessToken: accessToken,  // Incluye el token
+        data: {
+          user: {
+            id_user: newUser.id_user,
+            nombre: newUser.nombre,
+            apellidos: newUser.apellidos,
+            email: newUser.email,
+            roles: newUser.roles,
+            photo: newUser.photo,
+          }
+        }
       });
+
     } catch (error) {
       console.error(error);
       res.status(500).json({
@@ -118,8 +127,10 @@ const login = async (req, res) => {
             nombre: user.nombre,
             apellidos: user.apellidos,
             email: user.email,
+            roles: user.roles,
             photo: user.photo
-          } 
+          },
+          accessToken: accessToken
         }
       });
     } catch (error) {

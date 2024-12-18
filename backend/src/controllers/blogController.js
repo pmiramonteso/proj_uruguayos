@@ -153,7 +153,7 @@ const getPosts = async (req, res) => {
   
       const { id } = req.params;
   
-      const deletedPost = await Post.destroy({ where: { id_post: id } });
+      const deletedPost = await Post.destroy({ where: { id_blog: id } });
   
       if (!deletedPost) {
         return res.status(404).json({

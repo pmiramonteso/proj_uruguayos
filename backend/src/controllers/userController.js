@@ -34,7 +34,7 @@ const getUser = async (req, res) => {
 
 const uploadPhoto = async (req, res) => {
   try {
-    const rutaArchivo = "./src/uploads/"; // Ruta completa al archivo que deseas eliminar
+    const rutaArchivo = "./uploads/"; // Ruta completa al archivo que deseas eliminar
 
     if (req.file == undefined) {
       return res.status(400).json({
@@ -71,9 +71,12 @@ const uploadPhoto = async (req, res) => {
     // Actualizo la imagen del usuario
     console.log("Guardo la imagen: " + req.file.filename + " en el id de usuario: " + req.user.id_user);
     await User.update({ photo: req.file.filename }, { where: { id_user: req.user.id_user } });
+    
+    const photoUrl = `http://localhost:3000/assets/img/${req.file.filename}`;
     return res.status(200).json({
       code: 1,
       message: "Uploaded the file successfully: " + req.file.originalname,
+      photoUrl
     });
 
   } catch (err) {
