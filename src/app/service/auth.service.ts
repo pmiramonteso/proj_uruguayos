@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError } from 'rxjs';
 import { environment } from '../environments/environment';
 import { User } from '../interface/user';
 import { Access } from '../interface/access';
@@ -19,7 +19,12 @@ export class AuthService {
   }
     
   registro(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}auth/registro`, formData);
+    return this.http.post<any>(`${this.apiUrl}auth/registro`, formData).pipe(
+      catchError(error => {
+        console.error('Error en el registro', error);
+        throw error;
+      })
+    );
   }
 
   login(email: string, password: string): Observable<Access> {

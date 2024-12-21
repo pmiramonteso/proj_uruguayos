@@ -24,7 +24,7 @@ const User = sequelize.define('User', {
     allowNull: false,
   },
   roles: {
-    type: DataTypes.ENUM("admin","user"),
+    type: DataTypes.ENUM("admin", "user"),
     allowNull: false,
     defaultValue: 'user',
     get() {
@@ -36,9 +36,16 @@ const User = sequelize.define('User', {
       return rawValue.split(',');
     },
     set(value) {
-      this.setDataValue('roles', value.join(','));
+      if (Array.isArray(value)) {
+        this.setDataValue('roles', value.join(','));
+      } else if (typeof value === 'string') {
+        this.setDataValue('roles', value);
+      } else {
+        console.log('Valor de roles no es un arreglo ni una cadena:', value);
+      }
     }
   },
+  
   photo: {
     type: DataTypes.STRING(30),
     allowNull: true,

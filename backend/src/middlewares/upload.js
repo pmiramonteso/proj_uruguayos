@@ -1,17 +1,18 @@
 const util = require("util");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 // Tamaño máximo del archivo: 2MB
 const maxSize = 2 * 1024 * 1024;
-
+const uploadsDir = path.join(__dirname, '..', 'uploads'); 
 // Configuración de almacenamiento
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads/');
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+    cb(null, `photo-${Date.now()}${path.extname(file.originalname)}`);
   },
 });
 

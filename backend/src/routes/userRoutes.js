@@ -6,7 +6,7 @@ const { uploadFileMiddleware } = require('../middlewares/upload.js');
 const router = Router();
 
 // Rutas para obtener y modificar los datos de los usuarios
-router.get('/', authenticateToken(['user']), getUser);
-router.post("/upload-photo", authenticateToken(['user']), uploadFileMiddleware, uploadPhoto);
+router.get('/', getUser);
+router.post("/upload-photo", uploadFileMiddleware, uploadPhoto);
 
 module.exports = router;

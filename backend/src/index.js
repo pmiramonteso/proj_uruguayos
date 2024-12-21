@@ -37,6 +37,8 @@ app.use(express.urlencoded({ extended: true })); // Para analizar datos de formu
 })();
 
 app.use('/assets/img', express.static(path.join(__dirname, '/uploads')));
+console.log("Ruta esperada:", path.join(__dirname, '/uploads'));
+
 // Configurar rutas
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);

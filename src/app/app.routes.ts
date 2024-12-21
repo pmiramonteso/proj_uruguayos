@@ -19,11 +19,11 @@ import { PresentacionComponent } from './componentes/presentacion/presentacion.c
 
 
 export const routes: Routes = [
-    { path: 'admin', component: PanelAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
-    { path: 'admin-negocios', component: NegociosAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
-    { path: 'admin-eventos', component: EventosAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
-    { path: 'admin-usuarios', component: UsuariosAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
-    { path: 'admin-blog', component: BlogAdminComponent, canActivate: [authGuard], data: { roles: ['admin'] }},
+    { path: 'admin', component: PanelAdminComponent},
+    { path: 'admin-negocios', component: NegociosAdminComponent},
+    { path: 'admin-eventos', component: EventosAdminComponent},
+    { path: 'admin-usuarios', component: UsuariosAdminComponent},
+    { path: 'admin-blog', component: BlogAdminComponent},
 
     { path: 'login', component: LoginComponent},
     { path: 'registro', component: RegistroComponent},

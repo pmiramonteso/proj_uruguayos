@@ -25,7 +25,7 @@
         </div>
         <div class="flex items-center space-x-4">
           @if(isAdmin){
-          <button class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-teal-400 hover:text-white">Panel</button>
+          <a routerLink="/admin" routerLinkActive="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-teal-400 hover:text-white">Panel</a>
         }
 
         @if (isLoggedIn) {
