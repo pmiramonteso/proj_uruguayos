@@ -22,21 +22,21 @@ const negocioValidator = [
         .isLength({ max: 200 })
         .withMessage("La dirección no puede superar los 200 caracteres"),
     body("latitud")
-        .optional()
+        .optional({ checkFalsy: true })
         .isDecimal()
         .withMessage("La latitud debe ser un número decimal válido"),
     body("longitud")
-        .optional()
+        .optional({ checkFalsy: true })
         .isDecimal()
         .withMessage("La longitud debe ser un número decimal válido"),
     body("tipoRedSocial")
-        .optional()
+        .optional({ checkFalsy: true })
         .isString()
         .withMessage("El tipo de red social debe ser una cadena de texto")
         .isIn(["instagram", "pagina_web", "twitter", "facebook", "youtube"])
         .withMessage("El tipo de red social debe ser una de las siguientes: instagram, pagina_web, twitter, facebook, youtube"),
     body("urlRedSocial")
-        .optional()
+        .optional({ checkFalsy: true })
         .isURL()
         .withMessage("La URL de la red social debe ser válida"),
     body("categoria")

@@ -9,7 +9,6 @@ import { FooterComponent } from '../footer/footer.component';
 import esLocale from '@fullcalendar/core/locales/es';
 import { NavegacionComponent } from '../navegacion/navegacion.component';
 
-
 @Component({
   selector: 'app-calendario',
   standalone: true,
@@ -21,6 +20,7 @@ import { NavegacionComponent } from '../navegacion/navegacion.component';
 export class CalendarioComponent {
   eventos: any[] = [];
   eventoSeleccionado: any = null;
+  defaultImageUrl: string = 'assets/img/default-blog.jpg';
 
   calendarOptions: CalendarOptions = {
     locale: esLocale, 
@@ -45,10 +45,25 @@ export class CalendarioComponent {
       this.obtenerEventos();
     });
   }
+  private mapearColor(color: string): string {
+    const colores: { [key: string]: string } = {
+      pastelYellow: '#ffca28',
+      pastelIndigo: '#ab47bc',
+      pastelBlue: '#26c6da',
+      pastelGreen: '#26a69a',
+      pastelOrange: '#ff7043',
+      pastelRed: '#ef5350',
+      pastelVioleta: '#7d54c4',
+    };
+    return colores[color] || '#a0c1e1';
+  }
 
   obtenerEventos() {
     this.eventosService.getEventos().subscribe((data) => {
-      this.eventos = data.map(evento => ({
+      this.eventos = data.map(evento => {
+        const colorValido = this.mapearColor(evento.color || '#0000FF');
+
+        const eventoFormateado = {
         titulo: evento.titulo,
         fecha: evento.fecha,
         fecha_fin: evento.fecha_fin,
@@ -59,15 +74,20 @@ export class CalendarioComponent {
         entrada: evento.entrada,
         precio: evento.precio,
         ubicacion: evento.ubicacion,
-        //imagen: evento.imagen || null,
+        photo: evento.photo ? `http://localhost:3000/assets/img/${evento.photo}` : this.defaultImageUrl,
 
         // Formato requerido por FullCalendar
         title: evento.titulo,
         start: evento.fecha,
         end: evento.fecha_fin,
-        backgroundColor: evento.color,
-      }));
+        backgroundColor: colorValido,
+      };
+      console.log('Color del evento:', eventoFormateado.backgroundColor); // Aquí ahora se puede acceder a backgroundColor
 
+      return eventoFormateado;
+    });
+      
+    
       this.calendarOptions.events = this.eventos.map(evento => ({
         title: evento.title,
         start: evento.start,

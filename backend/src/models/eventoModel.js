@@ -35,7 +35,7 @@ const Eventos = sequelize.define('Eventos', {
     type: DataTypes.STRING,
     allowNull: true,
     validate: {
-      isIn: [['pastelViolet', 'pastelIndig', 'pastelBlue', 'pastelGreen', 'pastelYellow', 'pastelOrange', 'pastelRed']]
+      isIn: [['pastelVioleta', 'pastelIndig', 'pastelBlue', 'pastelGreen', 'pastelYellow', 'pastelOrange', 'pastelRed']]
     }
   },
   entrada: {
@@ -57,6 +57,10 @@ const Eventos = sequelize.define('Eventos', {
   ubicacion: {
     type:DataTypes.STRING,
     allowNull: false
+},
+photo: {
+  type: DataTypes.STRING(255),
+  allowNull: true,
 }
 }, 
 {

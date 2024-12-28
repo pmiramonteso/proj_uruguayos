@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BlogService } from '../../../service/blog.service';
 import { EditorModule  } from '@tinymce/tinymce-angular';
 import { Blog } from '../../../interface/blog';
@@ -20,6 +19,7 @@ export class BlogAdminComponent implements OnInit{
   mostrarFormularioBlog: boolean = false;
   blogEditando: any = null;
   blogs: Blog[] = [];
+  selectedFile: File | null = null;
 
   editorConfig = {
     apiKey: 'qobixfl8d269htsdhbgkwr5cglvx91ltdouomicefl5sxc3x',
@@ -33,53 +33,75 @@ export class BlogAdminComponent implements OnInit{
   constructor(
     private fb: FormBuilder,
     private blogService: BlogService,
-    private router: Router,
-    private route: ActivatedRoute,
     private notificationService: NotificacionesService
   ) {}
 
   ngOnInit(): void {
     this.blogForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(5)]],
-      contenido: ['', [Validators.required, Validators.minLength(20)]], // Campo enlazado al editor
+      contenido: ['', [Validators.required, Validators.minLength(20)]],
       categoria: [''],
+      autor: [''],
       status: [true]
     });
       this.cargarBlogs();
   }
 
   cargarBlogs(): void {
-    this.blogService.getBlogs().subscribe((blogs) => {
-      console.log('Blogs obtenidos:', blogs);
+    this.blogService.cargarBlogs().subscribe((blogs) => {
+      console.log('Posts obtenidos:', blogs);
         this.blogs = blogs;
       },
       error => {
-        console.error('Error al obtener eventos', error);
+        console.error('Error al obtener posts', error);
       });
   }
   
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
   agregarBlog(): void {
     this.mostrarFormularioBlog = !this.mostrarFormularioBlog;
     this.editando = true;
     this.agregando = true;
 
     if (this.blogForm.valid) {
-      const blogData = this.blogForm.value;
+      const blogData = new FormData();
+    blogData.append('titulo', this.blogForm.get('titulo')?.value);
+    blogData.append('contenido', this.blogForm.get('contenido')?.value);
+    blogData.append('categoria', this.blogForm.get('categoria')?.value);
+    blogData.append('autor', 'Paola Miramontes');
+    blogData.append('status', this.blogForm.get('status')?.value);
+    if (this.selectedFile) {
+      blogData.append('photo', this.selectedFile);
+    }
 
       if (this.editando && this.blogEditando) {
-        const updatedBlog = { ...this.blogEditando, ...blogData };
-        this.blogService.updateBlog(updatedBlog).subscribe(() => {
-          this.notificationService.mostrarExito('Evento actualizado con éxito');
+        this.blogService.updateBlog(this.blogEditando.id_blog, blogData).subscribe(() => {
+          this.notificationService.mostrarExito('Post actualizado con éxito');
           this.resetFormulario();
           this.cargarBlogs();
         });
       } else {
-        this.blogService.createBlog(blogData).subscribe(() => {
-          this.notificationService.mostrarExito('Evento creado con éxito');
-          this.resetFormulario();
-          this.cargarBlogs();
+        this.blogService.createBlog(blogData).subscribe({
+          next: (response) => {
+            console.log('Post creado:', response);
+            this.notificationService.mostrarExito('Post creado con éxito');
+            this.resetFormulario();
+            this.cargarBlogs();
+          },
+          error: (error) => {
+            console.error('Error al crear el blog', error);
+            this.notificationService.mostrarError('No se pudo crear el blog');
+          }
         });
       }
+    } else {
+      console.log('Formulario inválido');
     }
   }
 

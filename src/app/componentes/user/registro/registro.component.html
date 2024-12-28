@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
+@if(isModalOpen) {
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40">
     <div class="flex items-center justify-center min-h-screen">
       <div class="bg-yellow-100 border-2 border-yellow-300 rounded-lg shadow-lg p-8 w-full max-w-md z-10">
         <div class="flex justify-center mb-6">
@@ -105,7 +99,10 @@
             Crear Cuenta
           </button>
         </form>
+        <button (click)="closeModal()" class="absolute top-2 right-2 text-xl text-gray-500">
+          &times;
+        </button>
       </div>
     </div>
-  </body>
-</html>
+  </div>
+  }

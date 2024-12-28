@@ -1,11 +1,12 @@
 <app-navegacion></app-navegacion>
 
+<div>
 <section class="relative bg-gradient-to-r from-teal-500 to-blue-400 text-white p-8 rounded-lg shadow-2xl">
   <!-- Contenedor principal con flex -->
-  <div class="flex flex-col md:flex-row items-center lg:space-x-8">
+  <div class="flex flex-col md:flex-row items-center lg:space-x-8 justify-center">
     <!-- Contenido de texto -->
-    <div class="relative z-10 md:w-2/3 lg:w-1/2">
-      <h2 class="text-4xl font-extrabold leading-tight mb-4">
+    <div class="relative z-10 md:w-2/3 lg:w-1/2 text-center">
+      <h2 class="text-4xl font-bold leading-tight mb-4">
         <span class="block text-2xl">¡No te pierdas los próximos eventos de Uruguayos!</span>
         Conoce lo que está sucediendo.
       </h2>
@@ -17,86 +18,56 @@
       </a>
     </div>
 
-    <!-- Imagen 
-    <div class="relative md:w-1/3 lg:w-1/2 mt-8 md:mt-0">
-      <img class="rounded-lg shadow-md lg:max-h-96 object-cover" src="assets/img/mate-primo.jpeg" alt="Eventos Uruguayos" />
-    </div>-->
   </div>
-</section>
-
-
-
-  
+</section>  
   
   <full-calendar
 [options]="calendarOptions">
 </full-calendar>
 
-<!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-  @for(evento of eventos; track evento.id_evento) {
-  <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+  @if(eventoSeleccionado) {
+  <div class="modal-overlay bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
   >
-    <div class="relative h-48">
-       <img
-        src="{{ evento.imagen || 'https://via.placeholder.com/400x300' }}"
-        alt="{{ evento.titulo }}"
-        class="w-full h-full object-cover"
-      /> 
-      <div class="absolute top-2 left-2 bg-teal-500 text-white text-sm font-bold px-3 py-1 rounded">
-        {{ evento.fecha | date: 'MMM d' }}
+  <div class="modal-content max-w-4xl mx-auto p-4">
+    <div class="card-modal">
+    <div class="relative h-auto max-h-72">
+        <img [src]="eventoSeleccionado.photo" alt="Imagen del evento" class="w-full max-h-72 object-cover"/>
+      <div class="absolute top-2 left-2 bg-teal-400 text-white text-sm font-bold px-3 py-1 rounded">
+        {{ eventoSeleccionado.fecha | date: 'MMM d' }}
       </div>
     </div>
 
     <div class="p-4">
-      <h3 class="text-lg font-bold text-gray-800 mb-2">{{ evento.titulo }}</h3>
-      <p class="text-gray-600 text-sm mb-2">{{ evento.descripcion }}</p>
+      <h2 class="text-xl font-bold text-teal-400 mb-4">{{ eventoSeleccionado.titulo }}</h2>
+      <p class="text-gray-600 text-sm mb-2">{{ eventoSeleccionado.descripcion }}</p>
 
       <div class="text-sm text-gray-500">
-        <p><strong>Hora:</strong> {{ evento.hora_inicio }} - {{ evento.hora_fin || 'No especificada' }}</p>
-        <p><strong>Ubicación:</strong> {{ evento.ubicacion }}</p>
-        @if(evento.entrada){
-          <p><strong>Entrada:</strong> {{ evento.entrada }}</p>
+        <p><strong>Fecha:</strong> {{ eventoSeleccionado.fecha }} </p>
+        @if(eventoSeleccionado.fecha_fin) {
+          <p><strong>Fecha fin:</strong> {{ eventoSeleccionado.fecha_fin }} </p>
         }
-        @if(evento.precio){
-        <p><strong>Precio:</strong> {{ evento.precio | currency:'EUR' }}</p>
+        <p><strong>Hora inicio:</strong> {{ eventoSeleccionado.hora_inicio }} </p>
+        @if(eventoSeleccionado.hora_fin) {
+          <p><strong>Hora fin:</strong> {{ eventoSeleccionado.hora_fin }} </p>
+        }
+        <p><strong>Ubicación:</strong> {{ eventoSeleccionado.ubicacion }} </p>
+        @if(eventoSeleccionado.entrada){
+          <p><strong>Entrada:</strong> {{ eventoSeleccionado.entrada }} </p>
+        }
+        @if(eventoSeleccionado.precio){
+        <p><strong>Precio:</strong> {{ eventoSeleccionado.precio | currency:'EUR' }}</p>
       }
       </div>
     </div>
 
     <button
-      (click)="seleccionarEvento(evento)"
-      class="w-full bg-teal-500 text-white py-2 px-4 hover:bg-teal-600 transition-colors"
-    >
-      Ver más
-    </button>
+    (click)="cerrarModal()"
+    class="mt-6 w-full bg-yellow-400 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition"
+  >
+    Cerrar
+  </button>
   </div>
-}
 </div>
--->
-<!-- Modal -->
-@if(eventoSeleccionado) {
-  <div class="modal-overlay">
-  <div class="modal-content">
-    <div class="card-modal">
-      <h2 class="text-xl font-bold text-gray-800 mb-4">{{ eventoSeleccionado.titulo }}</h2>
-      <p class="text-gray-600 mb-2">{{ eventoSeleccionado.descripcion }}</p>
-
-      <div class="text-sm text-gray-500">
-        <p><strong>Fecha:</strong> {{ eventoSeleccionado.fecha }} - {{ eventoSeleccionado.fecha_fin }}</p>
-        <p><strong>Hora:</strong> {{ eventoSeleccionado.hora_inicio }} - {{ eventoSeleccionado.hora_fin }}</p>
-        <p><strong>Ubicación:</strong> {{ eventoSeleccionado.ubicacion }}</p>
-        <p *ngIf="eventoSeleccionado.entrada"><strong>Entrada:</strong> {{ eventoSeleccionado.entrada }}</p>
-        <p *ngIf="eventoSeleccionado.precio"><strong>Precio:</strong> {{ eventoSeleccionado.precio | currency:'EUR' }}</p>
-      </div>
-    </div>
-
-    <button
-      (click)="cerrarModal()"
-      class="mt-6 w-full bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition"
-    >
-      Cerrar
-    </button>
-  </div>
 </div>
 }
 

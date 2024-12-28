@@ -47,6 +47,17 @@
           required
         />
       </div>
+
+      <!-- Imagen -->
+      <div>
+        <label class="block text-sm font-medium mb-1" for="photo">Imagen</label>
+        <input
+          id="photo"
+          type="file"
+          (change)="onFileSelected($event)"
+          class="w-full border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+        />
+      </div>
   
       <!-- Estado -->
       <div>

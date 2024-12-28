@@ -15,17 +15,21 @@ import { NavegacionComponent } from '../navegacion/navegacion.component';
 export class BlogComponent implements OnInit{
 
   blogs: Blog[] = [];
+  defaultImageUrl: string = 'assets/img/default-blog.jpg';
 
   constructor(private blogService: BlogService) {}
 
   ngOnInit(): void {
-    this.getBlogs();
+    this.cargarBlogs();
   }
 
-  getBlogs(): void {
-    this.blogService.getBlogs().subscribe((blogs) => {
+  cargarBlogs(): void {
+    this.blogService.cargarBlogs().subscribe((blogs) => {
       console.log('Blogs obtenidos:', blogs);
-        this.blogs = blogs;
+        this.blogs = blogs.map(blog => {
+          blog.photo = blog.photo ? `http://localhost:3000/assets/img/${blog.photo}` : this.defaultImageUrl;
+          return blog;
+        });
       },
       error => {
         console.error('Error al obtener eventos', error);

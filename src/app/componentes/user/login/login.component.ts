@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
+import { Access } from '../../../interface/access';
 import { NotificacionesService } from '../../../service/notificaciones.service';
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent {
 
   isAdmin: boolean = false;
   isLoggedIn: boolean = false;
+  isModalOpen = false;
   userName: string = '';
   userImage: string = 'assets/img/default-profile.png'; // Imagen predeterminada
 
@@ -37,36 +39,40 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
 
       this.authService.login(email, password).subscribe({
-        next: response => {
+        next: (response: Access) => {
           console.log("Respuesta del servidor:", response);
 
-          if (response && response.message === 'Login OK') {
-            localStorage.setItem('token', response.accessToken);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+          if (response?.message === 'Login OK') {
+            this.guardarDatosUsuario(response);
 
-            const userRole = response.data.user.roles;
+            const esAdmin = response.data.user.roles?.includes('admin');
+            const rutaDestino = esAdmin ? 'admin' : 'perfil';
 
-            this.isAdmin = userRole === 'admin';
-            this.isLoggedIn = true;
-            this.userName = response.data.user.nombre;
-            this.userImage = response.data.user.photo || 'assets/img/default-profile.png'; // Validar profileImage
-
-            if (this.isAdmin) {
-              this.notificacionService.mostrarExito(`Hola ${response.data.user.nombre}`);
-              this.router.navigate(['admin']);
-            } else {
-              this.notificacionService.mostrarExito(`Hola ${response.data.user.nombre}`);
-              this.router.navigate(['perfil']);
-            }
+            this.notificacionService.mostrarExito(`Hola ${response.data.user.nombre}`);
+            this.router.navigate([rutaDestino]);
           } else {
-            alert("Error al registrar por token");
+            this.errorMessage = 'Error al iniciar sesión. Por favor, intenta de nuevo.';
           }
         },
-
         error: (error) => {
-          console.log("Error al registrarse:", error);
-        }
+          console.error("Error al iniciar sesión:", error);
+          this.errorMessage = 'No se pudo iniciar sesión. Verifica tus credenciales.';
+        },
       });
     }
+  }
+
+  private guardarDatosUsuario(response: Access) {
+    const { accessToken, data: { user } } = response;
+
+    localStorage.setItem('token', accessToken);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  openModalLogin() {
+    this.isModalOpen = true;
+  }
+  closeModal() {
+    this.isModalOpen = false;
   }
 }

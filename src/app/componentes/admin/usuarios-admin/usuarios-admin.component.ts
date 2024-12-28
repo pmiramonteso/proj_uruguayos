@@ -21,7 +21,7 @@ export class UsuariosAdminComponent implements OnInit {
     apellidos: '',
     email: '',
     password: '',
-    roles: '',
+    roles: [],
     photo: '', // Si usas photo en el modelo, inicialízalo
   };
   showForm: boolean = false;
@@ -116,7 +116,7 @@ export class UsuariosAdminComponent implements OnInit {
       apellidos: '',
       email: '',
       password: '',
-      roles: '',
+      roles: [],
       photo: '',
     };
   }

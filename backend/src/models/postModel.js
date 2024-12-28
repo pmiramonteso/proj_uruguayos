@@ -15,8 +15,16 @@ const Post = sequelize.define('posts', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  autor: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
   categoria: {
     type: DataTypes.STRING(50),
+    allowNull: true,
+  },
+  photo: {
+    type: DataTypes.STRING(255),
     allowNull: true,
   },
   status: {

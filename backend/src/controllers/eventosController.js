@@ -89,6 +89,7 @@ const addEvento = async (req, res) => {
     }
 
     const { titulo, descripcion, fecha, fecha_fin, hora_inicio, hora_fin, color, entrada, precio, ubicacion } = req.body;
+    let photo = req.file ? req.file.filename : null;
 
     // Validación adicional para precio si la entrada es 'Pago'
     if (entrada === 'Pago' && (!precio || precio <= 0)) {
@@ -98,10 +99,7 @@ const addEvento = async (req, res) => {
       });
     }
 
-    let newEvento;
-
-    try {
-      newEvento = await Eventos.create({
+    const newEvento = new Eventos ({
         titulo,
         descripcion,
         fecha,
@@ -111,36 +109,17 @@ const addEvento = async (req, res) => {
         color,
         entrada,
         precio: entrada === 'Pago' ? precio : null,
-        ubicacion
+        ubicacion,
+        photo
       });
-    } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        return res.status(400).json({
-          code: -20,
-          message: "Error de validación en los datos enviados",
-          errors: error.errors.map(err => err.message)
-        });
-      }
-      console.error(error);
-      res.status(500).json({
-        code: -100,
-        message: 'Ha ocurrido un error al añadir el evento'
-      });
-    }
+      await newEvento.save();
 
-    if (!newEvento) {
-      return res.status(404).json({
-        code: -6,
-        message: 'Error al agregar el evento'
-      });
-    }
-
-    // Enviar una respuesta al cliente
-    res.status(200).json({
+      res.status(200).json({
       code: 1,
       message: 'Evento agregado con éxito',
       data: newEvento
     });
+   
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -161,7 +140,7 @@ const updateEvento = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { titulo, descripcion, fecha, fecha_fin, hora_inicio, hora_fin, color, entrada, precio, ubicacion } = req.body;
+    const { titulo, descripcion, fecha, fecha_fin, hora_inicio, hora_fin, color, entrada, precio, ubicacion, photo } = req.body;
 
     // Validación adicional para precio si la entrada es 'Pago'
     if (entrada === 'Pago' && (!precio || precio <= 0)) {
@@ -191,6 +170,7 @@ const updateEvento = async (req, res) => {
     evento.entrada = entrada;
     evento.precio = entrada === 'Pago' ? req.body.precio : null; // Solo asignamos precio si es "Pago"
     evento.ubicacion = ubicacion;
+    evento.photo = photo;
     await evento.save();
 
     // Enviar una respuesta al cliente

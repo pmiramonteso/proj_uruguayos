@@ -10,6 +10,7 @@ export interface Evento {
     entrada: string;
     precio?: number;
     ubicacion: string;
+    photo?: string;
     createdAt?: string;
     updatedAt?: string;
   }

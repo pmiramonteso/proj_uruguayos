@@ -11,13 +11,13 @@
     <div class="overflow-hidden py-5 px-4 h-full">
         <!-- Foto de usuario y datos ampliados -->
         <div class="flex items-center mb-6">
-            <img src="assets/img/img-paola.jpeg" alt="Foto de Usuario" class="w-full h-full object-cover rounded-full mb-4"> <!-- Foto redonda -->
+            <img [src]="userImage" alt="Foto de Usuario" class="w-52 h-52 object-cover rounded-full mb-4"/>
         </div>
         <div class="text-start text-white ml-3">
-            <p class="text-xl font-semibold">Paola Miramontes</p>
-            <p class="text-teal-100 text-sm">Rol: Administrador</p>
-            <p class="text-teal-100 text-sm">Email: juaexample.com</p>
-        </div>
+            <p class="text-xl font-semibold">{{ user?.nombre || 'Nombre de Usuario' }}</p>
+            <p class="text-teal-100 text-sm">{{ user?.roles || 'Usuario' }}</p>
+            <p class="text-teal-100 text-sm">{{ user?.email || 'email@example.com' }}</p>
+          </div>
 
         <!-- Opciones del usuario -->
         <div class="space-y-4 mt-4">
@@ -40,7 +40,7 @@
 <!-- Contenedor principal con las cards de Eventos, Blog y Negocios -->
 <div class="absolute top-5 right-5 px-6 py-3">
     <a href="/home">
-    <img class="h-16 w-auto" src="assets/img/logo-uru.png" alt="logo-uruguayos">
+    <img class="h-16 w-auto" src="assets/img/logo-blanco.png" alt="logo-uruguayos">
   </a>
   </div>
 

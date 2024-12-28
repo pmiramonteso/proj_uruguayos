@@ -42,8 +42,8 @@ const eventoValidator = [
         .optional()
         .isString()
         .withMessage("El color debe ser una cadena de texto")
-        .isIn(['pastelViolet', 'pastelIndig', 'pastelBlue', 'pastelGreen', 'pastelYellow', 'pastelOrange', 'pastelRed'])
-        .withMessage("El color debe ser uno de los siguientes: 'pastelViolet', 'pastelIndig', 'pastelBlue', 'pastelGreen', 'pastelYellow', 'pastelOrange', 'pastelRed'"),
+        .isIn(['pastelVioleta', 'pastelIndig', 'pastelBlue', 'pastelGreen', 'pastelYellow', 'pastelOrange', 'pastelRed'])
+        .withMessage("El color debe ser uno de los siguientes: 'pastelVioleta', 'pastelIndig', 'pastelBlue', 'pastelGreen', 'pastelYellow', 'pastelOrange', 'pastelRed'"),
 
     body("entrada")
         .exists()
@@ -61,7 +61,14 @@ const eventoValidator = [
     body("ubicacion")
         .exists()
         .isString()
-        .withMessage("La ubicación debe ser una cadena de texto")
+        .withMessage("La ubicación debe ser una cadena de texto"),
+        
+    body("photo")
+    .optional()
+    .isString()
+    .withMessage("La imagen debe ser una cadena de texto (URL o nombre de archivo)")
+    .isLength({ max: 255 })
+    .withMessage("La URL de la imagen no debe exceder los 255 caracteres"),
 ];
 
 module.exports = {

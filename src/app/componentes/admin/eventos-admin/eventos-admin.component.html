@@ -73,17 +73,15 @@
 <div>
   <label class="block text-sm font-medium mb-1">Identificación</label>
   <div class="flex space-x-2">
-    <button class="w-6 h-6 rounded-full bg-pastelViolet" type="button" (click)="setColor('pastelViolet')"></button>
+    <button class="w-6 h-6 rounded-full bg-pastelVioleta" type="button" (click)="setColor('pastelViolet')"></button>
     <button class="w-6 h-6 rounded-full bg-pastelIndigo" type="button" (click)="setColor('pastelIndigo')"></button>
     <button class="w-6 h-6 rounded-full bg-pastelBlue" type="button" (click)="setColor('pastelBlue')"></button>
     <button class="w-6 h-6 rounded-full bg-pastelGreen" type="button" (click)="setColor('pastelGreen')"></button>
     <button class="w-6 h-6 rounded-full bg-pastelYellow" type="button" (click)="setColor('pastelYellow')"></button>
     <button class="w-6 h-6 rounded-full bg-pastelOrange" type="button" (click)="setColor('pastelOrange')"></button>
     <button class="w-6 h-6 rounded-full bg-pastelRed" type="button" (click)="setColor('pastelRed')"></button>
-  </div>    
-
-      <input type="hidden" id="color" formControlName="color"/>
-    </div>
+  </div>
+</div>
 
     <!-- Description -->
     <div>
@@ -132,6 +130,17 @@
         formControlName="ubicacion"
         required
         class="w-full border border-yellow-300 rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
+      />
+    </div>
+
+     <!-- Imagen -->
+     <div>
+      <label class="block text-sm font-medium mb-1" for="photo">Imagen</label>
+      <input
+        id="photo"
+        type="file"
+        (change)="onFileSelected($event)"
+        class="w-full border border-yellow-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
       />
     </div>
 

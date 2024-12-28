@@ -7,13 +7,13 @@ module.exports = {
     extend: {
       appearance: ['webkit', 'moz'],
       colors: {
-        pastelRed: '#FFADAD',
-        pastelOrange: '#FFD6A5',
-        pastelYellow: '#FDFFB6',
-        pastelGreen: '#CAFFBF',
-        pastelBlue: '#A0C4FF',
-        pastelIndigo: '#BDB2FF',
-        pastelViolet: '#FFC6FF',
+        pastelYellow: '#ffca28',
+        pastelIndigo: '#ab47bc',
+        pastelBlue: '#26c6da',
+        pastelGreen: '#26a69a',
+        pastelOrange: '#ff7043',
+        pastelRed: '#ef5350',
+        pastelVioleta: '#7d54c4',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

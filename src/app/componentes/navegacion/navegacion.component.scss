@@ -1,4 +1,17 @@
-/* Asegúrate de que el dropdown se muestre correctamente */
+:host {
+  display: block;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -10,11 +23,30 @@
     z-index: 10;
   }
   
-  /* Estilo para el saludo */
   .saludo {
-    font-size: 1.125rem; /* Ajuste del tamaño */
-    font-weight: 600; /* Resaltado */
-    color: #14b8a6; /* Teal color */
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #14b8a6;
     padding-right: 10px;
   }
-  
+  .fixed {
+    position: fixed;
+  }
+  .inset-0 {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .bg-black {
+    background-color: #000;
+  }
+  .bg-opacity-50 {
+    opacity: 0.5;
+  }
+  .z-40 {
+    z-index: 40;
+  }
+  .z-50 {
+    z-index: 50;
+  }

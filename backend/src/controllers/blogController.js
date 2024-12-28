@@ -55,7 +55,7 @@ const getPosts = async (req, res) => {
         message: 'Ha ocurrido un error al obtener la publicación',
       });
     }
-  };
+  }
 
   const addPost = async (req, res) => {
     try {
@@ -66,44 +66,39 @@ const getPosts = async (req, res) => {
       }
   
       const { titulo, contenido, autor, categoria } = req.body;
+      let photo = req.file ? req.file.filename : null;
   
-      let newPost;
-      try {
-        newPost = await Post.create({
+      if (!titulo || !contenido || !autor || !categoria) {
+        return res.status(400).json({
+          code: -101,
+          message: 'Faltan campos requeridos',
+        });
+      }
+
+       const newPost = new Post ({
           titulo,
           contenido,
           autor,
           categoria,
+          photo
         });
-      } catch (error) {
-        if (error.name === 'SequelizeUniqueConstraintError') {
-          return res.status(400).json({
-            code: -61,
-            message: 'Duplicate Post Title',
-          });
-        }
-      }
+        await newPost.save();
   
-      if (!newPost) {
-        return res.status(404).json({
-          code: -6,
-          message: 'Error When Adding The Post',
-        });
-      }
-  
-      res.status(200).json({
+        res.status(200).json({
         code: 1,
         message: 'Post Added Successfully',
         data: newPost,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        code: -100,
-        message: 'Ha ocurrido un error al añadir la publicación',
-      });
-    }
+        });
+
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+          code: -100,
+          message: 'Error creando el post',
+        });
+      }
   };
+  
 
   const updatePost = async (req, res) => {
     try {
@@ -114,7 +109,7 @@ const getPosts = async (req, res) => {
       }
   
       const { id } = req.params;
-      const { titulo, contenido, categoria } = req.body;
+      const { titulo, contenido, categoria, photo, status } = req.body;
   
       const post = await Post.findByPk(id);
       if (!post) {
@@ -123,10 +118,13 @@ const getPosts = async (req, res) => {
           message: 'Publicación no encontrada',
         });
       }
-  
+
       post.titulo = titulo;
       post.contenido = contenido;
       post.categoria = categoria;
+      post.photo = photo;
+      post.status = status;
+
       await post.save();
   
       res.status(200).json({

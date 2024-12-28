@@ -25,6 +25,13 @@ const blogValidator = [
         .isLength({ max: 50 })
         .withMessage("La categoría no debe exceder los 50 caracteres"),
 
+    body("photo")
+        .optional()
+        .isString()
+        .withMessage("La imagen debe ser una cadena de texto (URL o nombre de archivo)")
+        .isLength({ max: 255 })
+        .withMessage("La URL de la imagen no debe exceder los 255 caracteres"),
+
     body("status")
         .optional()
         .isBoolean()

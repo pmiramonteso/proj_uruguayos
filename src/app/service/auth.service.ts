@@ -57,9 +57,16 @@ export class AuthService {
   IsLogin(){
     return !!localStorage.getItem('token');
   }
-
-  removeLogin(){
-    return localStorage.removeItem('token');
+  logout(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}auth/logout`, {}, { withCredentials: true }).pipe(
+      map(() => {
+        console.log('Sesión cerrada correctamente en el servidor');
+      }),
+      catchError((error) => {
+        console.error('Error al cerrar sesión en el servidor:', error);
+        throw error;
+      })
+    );
   }
 
   isAuthenticated(): boolean {

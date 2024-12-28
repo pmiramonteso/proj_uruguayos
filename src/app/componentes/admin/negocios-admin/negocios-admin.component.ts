@@ -27,10 +27,10 @@ export class NegociosAdminComponent implements OnInit{
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
       direccion: ['', Validators.required],
-      latitud: ['', Validators.required],
-      longitud: ['', Validators.required],
-      tipoRedSocial: ['', Validators.required],
-      urlRedSocial: ['', Validators.required],
+      latitud: [''],
+      longitud: [''],
+      tipoRedSocial: [''],
+      urlRedSocial: [''],
       categoria: ['', Validators.required],
     });
     this.obtenerNegocios();
@@ -63,6 +63,10 @@ export class NegociosAdminComponent implements OnInit{
     if (this.negocioForm.valid) {
       const formValue = this.negocioForm.value;
       
+    formValue.latitud = formValue.latitud || null;
+    formValue.longitud = formValue.longitud || null
+    console.log('Formulario con valores:', formValue); 
+
       if (this.negocioEditando) {
         const negocioActualizado = { ...formValue, id_negocio: this.negocioEditando.id_negocio };
         this.negociosService.actualizarNegocio(negocioActualizado).subscribe({

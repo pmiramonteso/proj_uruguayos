@@ -3,12 +3,13 @@ import { EventosService } from '../../../service/eventos.service';
 import { Evento } from '../../../interface/evento';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NotificacionesService } from '../../../service/notificaciones.service';
-type ColorKey = 'pastelViolet' | 'pastelIndigo' | 'pastelBlue' | 'pastelGreen' | 'pastelYellow' | 'pastelOrange' | 'pastelRed';
+import { CommonModule } from '@angular/common';
+type ColorKey = 'pastelVioleta' | 'pastelIndigo' | 'pastelBlue' | 'pastelGreen' | 'pastelYellow' | 'pastelOrange' | 'pastelRed';
 
 @Component({
   selector: 'app-eventos-admin',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './eventos-admin.component.html',
   styleUrl: './eventos-admin.component.scss'
 })
@@ -20,7 +21,8 @@ export class EventosAdminComponent implements OnInit {
   editando = false;
   agregando = false;
   evento: Partial<Evento> = {};
-  
+  selectedColor: ColorKey = 'pastelBlue';  
+  selectedFile: File | null = null;
 
   constructor(private fb: FormBuilder, private eventosService: EventosService, private notificationService: NotificacionesService, private cdr: ChangeDetectorRef) {}
   ngOnInit(): void {
@@ -31,7 +33,7 @@ export class EventosAdminComponent implements OnInit {
       fecha_fin: [''],
       hora_inicio: ['', Validators.required],
       hora_fin: [''],
-      color: ['', Validators.required],
+      color: ['#ffffff', Validators.required],
       entrada: ['', Validators.required],
       precio: [null, Validators.min(0)],
       ubicacion: ['', Validators.required]
@@ -71,10 +73,35 @@ export class EventosAdminComponent implements OnInit {
     this.mostrarFormularioEvento = false;
   }
 
-  setColor(color: ColorKey): void {
-    this.eventoForm.patchValue({ color });
+  setColor(color: string): void {
+    const colorHex = this.mapearColor(color || '#26c6da');
+    this.eventoForm.get('color')?.setValue(colorHex);
   }
+
+  private mapearColor(color: string): string {
+    const colores: { [key: string]: string } = {
+    '#ffca28': 'pastelYellow',
+    '#ab47bc': 'pastelIndigo',
+    '#26c6da': 'pastelBlue',
+    '#26a69a': 'pastelGreen',
+    '#ff7043': 'pastelOrange',
+    '#ef5350': 'pastelRed',
+    '#7d54c4': 'pastelVioleta',
+    };
+    if (Object.values(colores).includes(color)) {
+      return color
+    }
+    return colores[color] || '#26c6da';
+  }
+
   
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
   agregarEvento() {
     this.mostrarFormularioEvento = !this.mostrarFormularioEvento;
     this.editando = false;
@@ -103,17 +130,31 @@ export class EventosAdminComponent implements OnInit {
     } else {
       this.evento.hora_fin = null;
     }
-
     if (this.eventoForm.valid) {
       const formValue = this.eventoForm.value;
 
-      Object.keys(formValue).forEach(key => {
-        if (formValue[key] === '') {
-          formValue[key] = null;
-        }
-      });
-    if (formValue.entrada === 'Gratuito') {
-      delete formValue.precio;
+      if (!['pastelVioleta', 'pastelIndigo', 'pastelBlue', 'pastelGreen', 'pastelYellow', 'pastelOrange', 'pastelRed'].includes(formValue.color)) {
+        console.error('Color inválido:', formValue.color);
+        return;
+      }
+
+    formValue.fecha = formValue.fecha ? new Date(formValue.fecha).toISOString().split('T')[0] : null;
+    formValue.fecha_fin = formValue.fecha_fin ? new Date(formValue.fecha_fin).toISOString().split('T')[0] : null;
+
+      if (formValue.entrada === 'Gratuito') {
+        delete formValue.precio;
+      }
+
+    const formData = new FormData();
+    Object.keys(formValue).forEach(key => {
+      if (formValue[key] !== null) {
+        formData.append(key, formValue[key]);
+      }
+    });
+
+    // Añadir el archivo si está presente
+    if (this.selectedFile) {
+      formData.append('photo', this.selectedFile);
     }
       
       if (this.eventoEditando) {
@@ -131,7 +172,7 @@ export class EventosAdminComponent implements OnInit {
           }
         });
       } else {
-        this.eventosService.crearEvento(formValue).subscribe({
+        this.eventosService.crearEvento(formData).subscribe({
           next: (response) => {
             this.notificationService.mostrarExito('Evento creado con éxito');
             this.limpiarFormulario();
@@ -152,7 +193,8 @@ export class EventosAdminComponent implements OnInit {
     this.agregando = false;
   
     this.eventoEditando = evento;
-    
+    const colorName = this.mapearColor(evento.color || '#26c6da');
+
     this.eventoForm.setValue({
       titulo: evento.titulo || '',
       descripcion: evento.descripcion || '',
@@ -160,7 +202,7 @@ export class EventosAdminComponent implements OnInit {
       fecha_fin: evento.fecha_fin ? new Date(evento.fecha_fin).toISOString().split('T')[0] : '',
       hora_inicio: evento.hora_inicio ? evento.hora_inicio.slice(0, 5) : '',
       hora_fin: evento.hora_fin ? evento.hora_fin.slice(0, 5) : '',
-      color: evento.color || '',
+      color: evento.color || 'pastelBlue',
       entrada: evento.entrada || 'Gratuito',
       precio: evento.precio ?? null,
       ubicacion: evento.ubicacion || '',
@@ -169,7 +211,7 @@ export class EventosAdminComponent implements OnInit {
   }
   
   eliminarEvento(evento: Evento) {
-    if (confirm('¿Estás seguro de que deseas eliminar este blog?')) {
+    if (confirm('¿Estás seguro de que deseas eliminar este evento?')) {
     if (evento.id_evento) {
       this.eventosService.eliminarEvento(evento.id_evento).subscribe(() => {
         this.notificationService.mostrarExito('Evento eliminado con éxito');

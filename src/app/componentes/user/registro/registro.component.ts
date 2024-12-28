@@ -15,6 +15,7 @@ export class RegistroComponent {
   selectedFile: File | null = null;
   correoEnUso: string | null = null;
   registroForm: FormGroup;
+  isModalOpen = false;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -85,5 +86,12 @@ export class RegistroComponent {
         }
       });
     }
+  }
+
+  openModalRegistro() {
+    this.isModalOpen = true;
+  }
+  closeModal() {
+    this.isModalOpen = false;
   }
 }

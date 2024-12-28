@@ -9,6 +9,6 @@ router.post('/registro', uploadFileMiddleware, registroValidator, registro);
 router.post('/login', loginValidator, login);
 router.post('/forgot-password', forgotPasswordValidator, forgotPassword);
 router.post('/change-password', changePasswordValidator, changePassword);
-router.get('/logout', logout);
+router.post('/logout', logout);
 
 module.exports = router;
