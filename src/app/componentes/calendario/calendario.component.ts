@@ -7,12 +7,11 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
 import { FooterComponent } from '../footer/footer.component';
 import esLocale from '@fullcalendar/core/locales/es';
-import { NavegacionComponent } from '../navegacion/navegacion.component';
 
 @Component({
   selector: 'app-calendario',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule, FooterComponent, NavegacionComponent],
+  imports: [CommonModule, FullCalendarModule, FooterComponent, ],
   templateUrl: './calendario.component.html',
   styleUrl: './calendario.component.scss'
 })
@@ -76,13 +75,13 @@ export class CalendarioComponent {
         ubicacion: evento.ubicacion,
         photo: evento.photo ? `http://localhost:3000/assets/img/${evento.photo}` : this.defaultImageUrl,
 
-        // Formato requerido por FullCalendar
+        // Formato de FullCalendar
         title: evento.titulo,
         start: evento.fecha,
         end: evento.fecha_fin,
         backgroundColor: colorValido,
       };
-      console.log('Color del evento:', eventoFormateado.backgroundColor); // Aquí ahora se puede acceder a backgroundColor
+      console.log('Color del evento:', eventoFormateado.backgroundColor);
 
       return eventoFormateado;
     });

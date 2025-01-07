@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
 import { NotificacionesService } from '../../../service/notificaciones.service';
-
+import { ModalService } from '../../../service/modal.service';
 @Component({
   selector: 'app-registro',
   standalone: true,
@@ -16,10 +16,12 @@ export class RegistroComponent {
   correoEnUso: string | null = null;
   registroForm: FormGroup;
   isModalOpen = false;
+  
   constructor(
     private authService: AuthService,
     private router: Router,
     private notificacionService: NotificacionesService,
+    private modalService: ModalService
   ) {
     this.registroForm = new FormGroup({
       nombre: new FormControl('', Validators.required),
@@ -30,6 +32,10 @@ export class RegistroComponent {
         Validators.minLength(6),
         Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&.]{6,}$/)
       ]),
+      photo: new FormControl(null)
+    });
+    this.modalService.isModalOpen$.subscribe((state) => {
+      this.isModalOpen = state;
     });
   }
   
@@ -43,7 +49,6 @@ export class RegistroComponent {
     }
   }
 
-  // Método para manejar el envío del formulario
   onSubmit() {
     if (this.registroForm.valid) {
       this.correoEnUso = null;
@@ -56,12 +61,10 @@ export class RegistroComponent {
       formData.append('email', email);
       formData.append('password', password);
   
-      // Agregar el archivo si se seleccionó
       if (this.selectedFile) {
         formData.append('photo', this.selectedFile);
       }
-  
-      // Llamar al servicio
+
       this.authService.registro(formData).subscribe({
         next: (response) => {
           if (response.accessToken) {
@@ -77,6 +80,7 @@ export class RegistroComponent {
               this.notificacionService.mostrarExito(`Registrado con éxito ${response.data.user.nombre}`);
               this.router.navigate(['perfil']);
             }
+            this.closeModal();
           } else {
             alert('Error al registrar por token');
           }
@@ -88,10 +92,7 @@ export class RegistroComponent {
     }
   }
 
-  openModalRegistro() {
-    this.isModalOpen = true;
-  }
   closeModal() {
-    this.isModalOpen = false;
+    this.modalService.closeModal();
   }
 }

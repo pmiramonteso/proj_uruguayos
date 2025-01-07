@@ -168,7 +168,34 @@ export class GraficosAdminComponent implements OnInit {
           },
         ],
       },
-      options: {},
+      options: {responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              boxWidth: 12,
+              padding: 20,
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                return tooltipItem.label + ': ' + tooltipItem.raw + '%'; 
+              },
+            },
+          },
+        },
+        layout: {
+          padding: {
+            left: 10,
+            right: 10,
+            top: 10,
+            bottom: 10,
+          },
+        },
+        aspectRatio: 1,
+      },
     });
+
 }
 }

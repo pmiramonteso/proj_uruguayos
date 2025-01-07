@@ -1,15 +1,16 @@
 <div class="relative h-screen bg-cover bg-center" style="background-image: url('assets/img/mate-pato.JPG');">
 
-<app-navegacion></app-navegacion>
-
     <div class="absolute inset-0 flex flex-col mt-48 justify-start items-center text-center text-white px-4">
       <h1 class="text-6xl md:text-7xl font-extrabold drop-shadow-lg">COMPARTIR</h1>
       <p class="text-lg md:text-2xl mt-4 drop-shadow-md">
         Celebrando nuestra cultura, conectando a nuestra comunidad
       </p>
-      <a href="/registro" class="mt-6 bg-teal-400 hover:bg-teal-600 text-white font-semibold py-3 px-6 rounded shadow">
+      <button (click)="openModal('registro')" class="mt-6 bg-teal-400 hover:bg-teal-600 text-white font-semibold py-3 px-6 rounded shadow">
         UNIRSE A LA COMUNIDAD
-      </a>
+      </button>
+      @if(showModal === 'registro') {
+        <app-registro></app-registro>
+      }
     </div>
   </div>
 
@@ -159,18 +160,3 @@
 </div>
 
   <app-footer></app-footer>
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  

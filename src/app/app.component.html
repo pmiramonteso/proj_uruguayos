@@ -1,4 +1,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-<router-outlet></router-outlet>
+@if(showNavbar){
+    <app-navegacion></app-navegacion>
+}
+<div [ngClass]="{ 'content': !excludeMargin, 'content-excluded': excludeMargin }">
+    <router-outlet></router-outlet>
+</div>
 <app-notificacion></app-notificacion>

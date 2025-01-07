@@ -4,20 +4,22 @@ import { BlogService } from '../../service/blog.service';
 import { Blog } from '../../interface/blog';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../footer/footer.component';
-import { NavegacionComponent } from '../navegacion/navegacion.component';
+import { ModalService } from '../../service/modal.service';
+import { RegistroComponent } from '../user/registro/registro.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, FooterComponent, NavegacionComponent],
+  imports: [RouterModule, CommonModule, FooterComponent, RegistroComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit{
   blogs: Blog[] = [];
   defaultImageUrl: string = 'assets/img/avatar-IG.jpg';
+  showModal: 'login' | 'registro' | 'none' = 'none';
 
-constructor(private blogService: BlogService) {}
+constructor(private blogService: BlogService, private modalService: ModalService) {}
 
 
 ngOnInit(): void {
@@ -37,4 +39,12 @@ ngOnInit(): void {
       });
   }
 
+  openModal(modalType: 'login' | 'registro'): void {
+    this.showModal = modalType;
+    this.modalService.openModal();
+  }
+  closeModal(): void {
+    this.showModal = 'none';
+    this.modalService.closeModal();
+  }
 }

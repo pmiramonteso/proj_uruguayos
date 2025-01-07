@@ -3,12 +3,11 @@ import * as L from 'leaflet';
 import { Negocio } from '../../interface/negocio';
 import { NegociosService } from '../../service/negocios.service';
 import { FooterComponent } from '../footer/footer.component';
-import { NavegacionComponent } from '../navegacion/navegacion.component';
 
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [FooterComponent, NavegacionComponent],
+  imports: [FooterComponent],
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.scss'
 })

@@ -3,12 +3,11 @@ import { BlogService } from '../../service/blog.service';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { Blog } from '../../interface/blog';
-import { NavegacionComponent } from '../navegacion/navegacion.component';
 
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [RouterModule, FooterComponent, NavegacionComponent],
+  imports: [RouterModule, FooterComponent],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss'
 })

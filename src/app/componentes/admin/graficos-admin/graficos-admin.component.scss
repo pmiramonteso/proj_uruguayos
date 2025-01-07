@@ -4,7 +4,8 @@
   gap: 2rem;
 
   canvas {
-    max-width: 600px;
+    max-width: 70%;
+    width: 70%;
     margin: 0 auto;
   }
 }
@@ -20,7 +21,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    max-width: 600px;
+    max-width: 1000px;
 
     canvas {
       max-width: 100%;

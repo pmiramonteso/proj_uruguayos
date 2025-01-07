@@ -1,10 +1,8 @@
-<app-navegacion></app-navegacion>
 <div class="user-panel flex flex-col items-center bg-white p-6 rounded-lg space-y-4">
 
     <!-- Foto de perfil -->
     <div class="relative w-24 h-24 mb-4">
-        <!-- Foto del usuario, se usa user.photo si está disponible -->
-        <img  [src]="userImage" alt="img-perfil" class="w-full h-full object-cover rounded-full border-4 border-teal-500">
+        <img  [src]="userImage" alt="img-perfil" class="w-24 h-24 object-cover rounded-full border-4 border-teal-500">
 
         <!-- Botón para cambiar foto -->
         <button (click)="changeProfilePicture()" class="absolute bottom-0 right-0 bg-teal-500 text-white rounded-full p-2 shadow-md hover:bg-teal-600 focus:outline-none">
@@ -12,16 +10,13 @@
         </button>
     </div>
   
-    <!-- Nombre completo -->
+    <!-- Datos -->
     <h2 class="text-2xl font-semibold text-teal-600">{{ user?.nombre }} {{ user?.apellido }}</h2>
-    
-    <!-- Correo -->
     <p class="text-teal-500 text-sm">{{ user?.email }}</p>
-
-    <!-- Información adicional -->
+    <!--
     <p class="text-teal-400 text-sm">Última conexión: {{ user?.lastLogin }}</p>
-  
-    <!-- Botón para cerrar sesión -->
+  -->
+    <!-- Cerrar sesión -->
     <button (click)="logout()" class="logout-btn bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-300 transition-all duration-300">
         <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
     </button>

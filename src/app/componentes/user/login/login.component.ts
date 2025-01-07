@@ -4,6 +4,7 @@ import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
 import { Access } from '../../../interface/access';
 import { NotificacionesService } from '../../../service/notificaciones.service';
+import { ModalService } from '../../../service/modal.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -24,12 +25,16 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private notificacionService: NotificacionesService) {
+    private notificacionService: NotificacionesService,
+    private modalService: ModalService) {
 
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
-    })
+    });
+    this.modalService.isModalOpen$.subscribe((state) => {
+      this.isModalOpen = state;
+    });
   }
 
   onSubmit() {
@@ -50,9 +55,10 @@ export class LoginComponent {
 
             this.notificacionService.mostrarExito(`Hola ${response.data.user.nombre}`);
             this.router.navigate([rutaDestino]);
+            this.closeModal();
           } else {
             this.errorMessage = 'Error al iniciar sesión. Por favor, intenta de nuevo.';
-          }
+          }  
         },
         error: (error) => {
           console.error("Error al iniciar sesión:", error);
@@ -69,10 +75,7 @@ export class LoginComponent {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  openModalLogin() {
-    this.isModalOpen = true;
-  }
   closeModal() {
-    this.isModalOpen = false;
+    this.modalService.closeModal();
   }
 }

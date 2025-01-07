@@ -40,7 +40,8 @@ const registro = async (req, res) => {
       await newUser.save();
   
       // Generar un token de acceso y lo guardo en un token seguro (httpOnly)
-      const accessToken = jwt.sign({ id_user: newUser.id_user, nombre: newUser.nombre }, process.env.JWT_SECRET);
+      const accessToken = jwt.sign({ id_user: newUser.id_user, nombre: newUser.nombre }, process.env.JWT_SECRET,
+      { expiresIn: '2h' });
       const token = serialize('token', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -107,7 +108,8 @@ const login = async (req, res) => {
       }
   
       // Generar un token de acceso y lo guardo en un token seguro (httpOnly)
-      const accessToken = jwt.sign({ id_user: user.id_user, nombre: user.nombre }, process.env.JWT_SECRET);
+      const accessToken = jwt.sign({ id_user: user.id_user, nombre: user.nombre }, process.env.JWT_SECRET,
+        { expiresIn: '2h' });
       const token = serialize('token', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

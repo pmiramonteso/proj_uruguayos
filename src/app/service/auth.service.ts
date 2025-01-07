@@ -20,8 +20,22 @@ export class AuthService {
     
   registro(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}auth/registro`, formData).pipe(
+      map((response: Access) => {
+        const { accessToken, data } = response;
+  
+        if (accessToken && data?.user) {
+          console.log('Datos del usuario registrado:', data.user);
+          
+          localStorage.setItem('token', accessToken);
+          localStorage.setItem('user', JSON.stringify(data.user));
+        } else {
+          console.error('La respuesta no contiene un token o datos de usuario válidos.');
+        }
+  
+        return response;
+      }),
       catchError(error => {
-        console.error('Error en el registro', error);
+        console.error('Error en el registro:', error);
         throw error;
       })
     );
@@ -33,7 +47,7 @@ export class AuthService {
         const { accessToken, data } = response;
         console.log('User data:', data.user)
         localStorage.setItem('token', accessToken);
-        localStorage.setItem('user', JSON.stringify(data.user));  // Guarda solo la propiedad 'user' dentro de 'data'
+        localStorage.setItem('user', JSON.stringify(data.user));
         return response;
       })
     );
@@ -54,9 +68,11 @@ export class AuthService {
       })
     );
   }
+
   IsLogin(){
     return !!localStorage.getItem('token');
   }
+  
   logout(): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}auth/logout`, {}, { withCredentials: true }).pipe(
       map(() => {
@@ -73,9 +89,19 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
   
-  getUser() {
-    return this.currentUser;
+  getUser(): any {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        return user;
+      } catch {
+        return null;
+      }
+    }
+    return null;
   }
+
   getToken() {
     return localStorage.getItem('token');
   }
