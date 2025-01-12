@@ -38,17 +38,17 @@ El backend del proyecto está desarrollado con Node.js y Express, permitiendo ma
 🛠️ **Instalación**
 
 Clona este repositorio:
-```bash
+bash
 Copiar código
 git clone https://github.com/pmiramonteso/proj_uruguayos.git
 
 Ingresa al directorio del proyecto:
-```bash
+bash
 Copiar código
 cd proj_uruguayos
 
 Instala las dependencias del backend y frontend:
-```bash
+bash
 Copiar código
 npm install
 cd backend
