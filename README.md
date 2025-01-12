@@ -1,4 +1,5 @@
-# 🇺🇾 Uruguayos en España
+# <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Uruguay.svg" alt="Bandera de Uruguay" width="50">
+ Uruguayos en España
 
 📄 **Descripción**  
 "Uruguayos en España" es una plataforma diseñada para fortalecer los vínculos culturales de uruguayos en España. Este proyecto ofrece un espacio donde los usuarios pueden explorar eventos, negocios y un blog con noticias y contenido relacionado. Además, incluye un panel de administración para gestionar los recursos del sitio.
