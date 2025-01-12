@@ -1,27 +1,74 @@
-# ProjUruguayos
+# 🇺🇾 Uruguayos en España
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.11.
+📄 **Descripción**  
+"Uruguayos en España" es una plataforma diseñada para fortalecer los vínculos culturales de uruguayos en España. Este proyecto ofrece un espacio donde los usuarios pueden explorar eventos, negocios y un blog con noticias y contenido relacionado. Además, incluye un panel de administración para gestionar los recursos del sitio.
 
-## Development server
+✨ **Características**  
+- **Roles de Usuario y Administrador**: Implementación de roles con autenticación mediante tokens JWT.  
+- **Gestión de Recursos**: Panel administrativo para agregar, editar o eliminar eventos, negocios y publicaciones del blog.  
+- **Calendario Interactivo**: Visualización de eventos mediante FullCalendar.  
+- **Mapa Interactivo**: Negocios uruguayos en España ubicados en un mapa creado con Leaflet.  
+- **Blog de Noticias**: Espacio para difundir contenido variado sobre los vínculos culturales entre ambos países.  
+- **Base de Datos MySQL**: Gestión de datos eficiente y robusta utilizando MySQL.  
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+☁️ **Interacción con la API**  
+El backend del proyecto está desarrollado con Node.js y Express, permitiendo manejar las peticiones y la comunicación con la base de datos MySQL. 
 
-## Code scaffolding
+💻 **Tecnologías Utilizadas**  
+- **Frontend**:  
+  - Angular 18  
+  - Tailwind CSS  
+  - SCSS  
+  - FullCalendar  
+  - Leaflet  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Backend**:  
+  - Node.js  
+  - Express.js  
+  - MySQL  
+  - JWT para autenticación  
+  - Nodemon para el desarrollo  
 
-## Build
+📋 **Requisitos**  
+1. **Node.js** y **npm** instalados en tu sistema. Puedes descargarlos desde [nodejs.org](https://nodejs.org/).  
+2. **Angular CLI** instalado globalmente:  
+   ```bash
+   npm install -g @angular/cli
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+🛠️ **Instalación**
 
-## Running unit tests
+Clona este repositorio:
+git clone https://github.com/pmiramonteso/proj_uruguayos.git
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Ingresa al directorio del proyecto:
+cd proj_uruguayos
 
-## Running end-to-end tests
+Instala las dependencias del backend y frontend:
+npm install
+cd backend
+npm install
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Configura el archivo .env con los datos de tu base de datos MySQL:
+env
+Copiar código
+DB_HOST=localhost
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contraseña
+DB_NAME=uruguayos_en_espana
+JWT_SECRET=tu_secreto_jwt
 
-## Further help
+🖥️ **Ejecución**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Levanta el servidor del backend:
+cd backend
+npm run dev
+
+Levanta la aplicación Angular:
+cd proj_uruguayos
+ng serve -o
+
+🤝 **Contribuciones**
+Si deseas colaborar en este proyecto o informar sobre problemas, crea un "issue" o envía un "pull request".
+
+📧 **Contacto**
+Paola Miramontes – pmiramonteso@gmail.com
