@@ -38,24 +38,31 @@ El backend del proyecto está desarrollado con Node.js y Express, permitiendo ma
 🛠️ **Instalación**
 
 Clona este repositorio:
+```bash
+Copiar código
 git clone https://github.com/pmiramonteso/proj_uruguayos.git
 
 Ingresa al directorio del proyecto:
+```bash
+Copiar código
 cd proj_uruguayos
 
 Instala las dependencias del backend y frontend:
+```bash
+Copiar código
 npm install
 cd backend
 npm install
 
 Configura el archivo .env con los datos de tu base de datos MySQL:
-env
+Tienes un .env.ejemplo que puedes configurar como .env con tus datos
+
+Para generar un JWT SECRET, desde la terminal, puedes ejecutar:
+bash
 Copiar código
-DB_HOST=localhost
-DB_USER=tu_usuario
-DB_PASSWORD=tu_contraseña
-DB_NAME=uruguayos_en_espana
-JWT_SECRET=tu_secreto_jwt
+openssl rand -hex 32
+
+Copialo en el campo correspondiente.
 
 🖥️ **Ejecución**
 
