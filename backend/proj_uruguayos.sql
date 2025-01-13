@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-01-2025 a las 18:09:16
+-- Tiempo de generación: 12-01-2025 a las 13:57:29
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `proj_uruguayos`
 --
+CREATE DATABASE IF NOT EXISTS `proj_uruguayos` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `proj_uruguayos`;
 
 -- --------------------------------------------------------
 
@@ -27,8 +29,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `books`
 --
 
-DROP TABLE IF EXISTS `books`;
-CREATE TABLE IF NOT EXISTS `books` (
+CREATE TABLE `books` (
   `id_book` int(8) UNSIGNED NOT NULL,
   `user_id` int(8) UNSIGNED DEFAULT NULL,
   `title` varchar(100) NOT NULL,
@@ -38,6 +39,11 @@ CREATE TABLE IF NOT EXISTS `books` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncar tablas antes de insertar `books`
+--
+
+TRUNCATE TABLE `books`;
 --
 -- Volcado de datos para la tabla `books`
 --
@@ -52,9 +58,8 @@ INSERT INTO `books` (`id_book`, `user_id`, `title`, `year`, `status`, `created_a
 -- Estructura de tabla para la tabla `emigrantes`
 --
 
-DROP TABLE IF EXISTS `emigrantes`;
-CREATE TABLE IF NOT EXISTS `emigrantes` (
-  `id_datos` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `emigrantes` (
+  `id_datos` int(8) UNSIGNED NOT NULL,
   `año` int(11) NOT NULL,
   `emigrantes_hombres` int(11) DEFAULT NULL,
   `emigrantes_mujeres` int(11) DEFAULT NULL,
@@ -65,10 +70,14 @@ CREATE TABLE IF NOT EXISTS `emigrantes` (
   `total_emigrantes_pais` int(11) DEFAULT NULL,
   `nacionalidad_extranjera` int(11) DEFAULT NULL,
   `nacionalidad_española` int(11) DEFAULT NULL,
-  `total_emigrantes_provincia` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_datos`)
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `total_emigrantes_provincia` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncar tablas antes de insertar `emigrantes`
+--
+
+TRUNCATE TABLE `emigrantes`;
 --
 -- Volcado de datos para la tabla `emigrantes`
 --
@@ -167,9 +176,8 @@ INSERT INTO `emigrantes` (`id_datos`, `año`, `emigrantes_hombres`, `emigrantes_
 -- Estructura de tabla para la tabla `eventos`
 --
 
-DROP TABLE IF EXISTS `eventos`;
-CREATE TABLE IF NOT EXISTS `eventos` (
-  `id_evento` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `eventos` (
+  `id_evento` int(8) UNSIGNED NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha` datetime NOT NULL,
@@ -182,10 +190,14 @@ CREATE TABLE IF NOT EXISTS `eventos` (
   `ubicacion` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `photo` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_evento`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `photo` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncar tablas antes de insertar `eventos`
+--
+
+TRUNCATE TABLE `eventos`;
 --
 -- Volcado de datos para la tabla `eventos`
 --
@@ -205,9 +217,8 @@ INSERT INTO `eventos` (`id_evento`, `titulo`, `descripcion`, `fecha`, `fecha_fin
 -- Estructura de tabla para la tabla `negocios`
 --
 
-DROP TABLE IF EXISTS `negocios`;
-CREATE TABLE IF NOT EXISTS `negocios` (
-  `id_negocio` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `negocios` (
+  `id_negocio` int(8) UNSIGNED NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   `direccion` varchar(255) DEFAULT NULL,
@@ -215,10 +226,14 @@ CREATE TABLE IF NOT EXISTS `negocios` (
   `longitud` decimal(11,8) DEFAULT NULL,
   `tipoRedSocial` varchar(255) DEFAULT NULL,
   `urlRedSocial` varchar(255) DEFAULT NULL,
-  `categoria` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_negocio`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `categoria` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncar tablas antes de insertar `negocios`
+--
+
+TRUNCATE TABLE `negocios`;
 --
 -- Volcado de datos para la tabla `negocios`
 --
@@ -253,9 +268,8 @@ INSERT INTO `negocios` (`id_negocio`, `nombre`, `descripcion`, `direccion`, `lat
 -- Estructura de tabla para la tabla `posts`
 --
 
-DROP TABLE IF EXISTS `posts`;
-CREATE TABLE IF NOT EXISTS `posts` (
-  `id_blog` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `posts` (
+  `id_blog` int(8) UNSIGNED NOT NULL,
   `titulo` varchar(100) NOT NULL,
   `contenido` text NOT NULL,
   `categoria` varchar(50) DEFAULT NULL,
@@ -263,11 +277,14 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `autor` varchar(100) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_blog`),
-  UNIQUE KEY `posts_titulo` (`titulo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `photo` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncar tablas antes de insertar `posts`
+--
+
+TRUNCATE TABLE `posts`;
 --
 -- Volcado de datos para la tabla `posts`
 --
@@ -283,69 +300,26 @@ INSERT INTO `posts` (`id_blog`, `titulo`, `contenido`, `categoria`, `status`, `c
 -- Estructura de tabla para la tabla `recoverytokens`
 --
 
-DROP TABLE IF EXISTS `recoverytokens`;
-CREATE TABLE IF NOT EXISTS `recoverytokens` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `recoverytokens` (
+  `id` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   `user_id` int(5) UNSIGNED NOT NULL,
-  `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `token` (`token`),
-  UNIQUE KEY `recovery_tokens_token` (`token`),
-  UNIQUE KEY `token_2` (`token`),
-  UNIQUE KEY `token_3` (`token`),
-  UNIQUE KEY `token_4` (`token`),
-  UNIQUE KEY `token_5` (`token`),
-  UNIQUE KEY `token_6` (`token`),
-  UNIQUE KEY `token_7` (`token`),
-  UNIQUE KEY `token_8` (`token`),
-  UNIQUE KEY `token_9` (`token`),
-  UNIQUE KEY `token_10` (`token`),
-  UNIQUE KEY `token_11` (`token`),
-  UNIQUE KEY `token_12` (`token`),
-  UNIQUE KEY `token_13` (`token`),
-  UNIQUE KEY `token_14` (`token`),
-  UNIQUE KEY `token_15` (`token`),
-  UNIQUE KEY `token_16` (`token`),
-  UNIQUE KEY `token_17` (`token`),
-  UNIQUE KEY `token_18` (`token`),
-  UNIQUE KEY `token_19` (`token`),
-  UNIQUE KEY `token_20` (`token`),
-  UNIQUE KEY `token_21` (`token`),
-  UNIQUE KEY `token_22` (`token`),
-  UNIQUE KEY `token_23` (`token`),
-  UNIQUE KEY `token_24` (`token`),
-  UNIQUE KEY `token_25` (`token`),
-  UNIQUE KEY `token_26` (`token`),
-  UNIQUE KEY `token_27` (`token`),
-  UNIQUE KEY `token_28` (`token`),
-  UNIQUE KEY `token_29` (`token`),
-  UNIQUE KEY `token_30` (`token`),
-  UNIQUE KEY `token_31` (`token`),
-  UNIQUE KEY `token_32` (`token`),
-  UNIQUE KEY `token_33` (`token`),
-  UNIQUE KEY `token_34` (`token`),
-  UNIQUE KEY `token_35` (`token`),
-  UNIQUE KEY `token_36` (`token`),
-  UNIQUE KEY `token_37` (`token`),
-  UNIQUE KEY `token_38` (`token`),
-  UNIQUE KEY `token_39` (`token`),
-  UNIQUE KEY `token_40` (`token`),
-  UNIQUE KEY `token_41` (`token`),
-  UNIQUE KEY `token_42` (`token`),
-  UNIQUE KEY `token_43` (`token`),
-  KEY `user_id` (`user_id`)
+  `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncar tablas antes de insertar `recoverytokens`
+--
+
+TRUNCATE TABLE `recoverytokens`;
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id_user` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id_user` int(5) UNSIGNED NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `apellidos` varchar(30) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
@@ -353,22 +327,149 @@ CREATE TABLE IF NOT EXISTS `users` (
   `roles` enum('admin','user') NOT NULL DEFAULT 'user',
   `photo` varchar(30) DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id_user`),
-  UNIQUE KEY `users_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Truncar tablas antes de insertar `users`
+--
+
+TRUNCATE TABLE `users`;
 --
 -- Volcado de datos para la tabla `users`
 --
 
 INSERT INTO `users` (`id_user`, `nombre`, `apellidos`, `email`, `password`, `roles`, `photo`, `created_at`, `updated_at`) VALUES
-(2, 'prueba', 'prueba', 'pruebagatito@gmail.com', '$2b$10$/m2YMy12bhFXTZ6vxe4Rz.zBgDA3HmUaDvOuimHr3WmMgBEHN8qNu', 'user', 'photo-1734803737644.jpeg', '2024-12-21 17:55:37', '2024-12-21 17:55:37'),
-(3, 'Gatito', 'De Prueba', 'gatitodeprueba@gmail.com', '$2b$10$1aDSAq2sRmvvbL8ukIG92Oa42CJLyLRhH5iQEZQ5KQqoaaeWlLj8O', 'admin', 'photo-1734804332547.jpeg', '2024-12-21 18:05:32', '2024-12-21 18:05:32'),
-(5, 'Ana Paola', 'Miramontes Ojeda', 'pmiramonteso@gmail.com', '$2b$10$WoCf7FfSEFk2BYl7HHmBTu5VwvXFxb7phuJpaqWzvAbUrfT8iInVi', 'admin', 'photo-1735418104431.jpeg', '2024-12-28 20:35:04', '2024-12-28 20:35:04'),
-(6, 'Ana Paola', 'Miramontes Ojeda', 'pmiramo@gmail.com', '$2b$10$0Q4Ba8wiLe1Icmh6lTmWBuEHwk87D8u9kOcPAoB7.kMiEe5PWvgBq', 'user', NULL, '2024-12-28 23:24:39', '2024-12-28 23:24:39'),
-(7, 'Paola', 'Miramontes', 'ana@gmail.com', '$2b$10$tZz9IiW1GRChRxc.RNF5t.RKoqn.VUDjEPuJBS3kwOHwukncvXpja', 'user', NULL, '2024-12-30 17:13:01', '2024-12-30 17:13:01'),
-(8, 'Ana Paola', 'Miramontes Ojeda', 'prueba@gmail.com', '$2b$10$jAh/sW0UDu93kGXPcf3t4O0TkNdKlLBz.cZIMdmL62gmyCTpr/EO.', 'admin', NULL, '2025-01-02 16:07:54', '2025-01-02 16:07:54');
+(9, 'Gatito', 'Prueba', 'gatitodeprueba@gmail.com', '$2b$10$nGQwdj/GNZwhNSHWkfjII.LKN.WJMURfy7U/id3bXZXwZjFQ7tijC', 'admin', 'photo-1736684640994.jpg', '2025-01-12 12:24:01', '2025-01-12 12:24:01');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `emigrantes`
+--
+ALTER TABLE `emigrantes`
+  ADD PRIMARY KEY (`id_datos`);
+
+--
+-- Indices de la tabla `eventos`
+--
+ALTER TABLE `eventos`
+  ADD PRIMARY KEY (`id_evento`);
+
+--
+-- Indices de la tabla `negocios`
+--
+ALTER TABLE `negocios`
+  ADD PRIMARY KEY (`id_negocio`);
+
+--
+-- Indices de la tabla `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id_blog`),
+  ADD UNIQUE KEY `posts_titulo` (`titulo`);
+
+--
+-- Indices de la tabla `recoverytokens`
+--
+ALTER TABLE `recoverytokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD UNIQUE KEY `recovery_tokens_token` (`token`),
+  ADD UNIQUE KEY `token_2` (`token`),
+  ADD UNIQUE KEY `token_3` (`token`),
+  ADD UNIQUE KEY `token_4` (`token`),
+  ADD UNIQUE KEY `token_5` (`token`),
+  ADD UNIQUE KEY `token_6` (`token`),
+  ADD UNIQUE KEY `token_7` (`token`),
+  ADD UNIQUE KEY `token_8` (`token`),
+  ADD UNIQUE KEY `token_9` (`token`),
+  ADD UNIQUE KEY `token_10` (`token`),
+  ADD UNIQUE KEY `token_11` (`token`),
+  ADD UNIQUE KEY `token_12` (`token`),
+  ADD UNIQUE KEY `token_13` (`token`),
+  ADD UNIQUE KEY `token_14` (`token`),
+  ADD UNIQUE KEY `token_15` (`token`),
+  ADD UNIQUE KEY `token_16` (`token`),
+  ADD UNIQUE KEY `token_17` (`token`),
+  ADD UNIQUE KEY `token_18` (`token`),
+  ADD UNIQUE KEY `token_19` (`token`),
+  ADD UNIQUE KEY `token_20` (`token`),
+  ADD UNIQUE KEY `token_21` (`token`),
+  ADD UNIQUE KEY `token_22` (`token`),
+  ADD UNIQUE KEY `token_23` (`token`),
+  ADD UNIQUE KEY `token_24` (`token`),
+  ADD UNIQUE KEY `token_25` (`token`),
+  ADD UNIQUE KEY `token_26` (`token`),
+  ADD UNIQUE KEY `token_27` (`token`),
+  ADD UNIQUE KEY `token_28` (`token`),
+  ADD UNIQUE KEY `token_29` (`token`),
+  ADD UNIQUE KEY `token_30` (`token`),
+  ADD UNIQUE KEY `token_31` (`token`),
+  ADD UNIQUE KEY `token_32` (`token`),
+  ADD UNIQUE KEY `token_33` (`token`),
+  ADD UNIQUE KEY `token_34` (`token`),
+  ADD UNIQUE KEY `token_35` (`token`),
+  ADD UNIQUE KEY `token_36` (`token`),
+  ADD UNIQUE KEY `token_37` (`token`),
+  ADD UNIQUE KEY `token_38` (`token`),
+  ADD UNIQUE KEY `token_39` (`token`),
+  ADD UNIQUE KEY `token_40` (`token`),
+  ADD UNIQUE KEY `token_41` (`token`),
+  ADD UNIQUE KEY `token_42` (`token`),
+  ADD UNIQUE KEY `token_43` (`token`),
+  ADD UNIQUE KEY `token_44` (`token`),
+  ADD UNIQUE KEY `token_45` (`token`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_user`),
+  ADD UNIQUE KEY `users_email` (`email`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `emigrantes`
+--
+ALTER TABLE `emigrantes`
+  MODIFY `id_datos` int(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
+
+--
+-- AUTO_INCREMENT de la tabla `eventos`
+--
+ALTER TABLE `eventos`
+  MODIFY `id_evento` int(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `negocios`
+--
+ALTER TABLE `negocios`
+  MODIFY `id_negocio` int(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT de la tabla `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id_blog` int(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `recoverytokens`
+--
+ALTER TABLE `recoverytokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id_user` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
@@ -416,6 +517,8 @@ ALTER TABLE `recoverytokens`
   ADD CONSTRAINT `recoverytokens_ibfk_41` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recoverytokens_ibfk_42` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recoverytokens_ibfk_43` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recoverytokens_ibfk_44` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `recoverytokens_ibfk_45` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recoverytokens_ibfk_5` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recoverytokens_ibfk_6` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `recoverytokens_ibfk_7` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,

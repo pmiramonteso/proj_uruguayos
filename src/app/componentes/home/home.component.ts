@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { BlogService } from '../../service/blog.service';
 import { Blog } from '../../interface/blog';
 import { CommonModule } from '@angular/common';
@@ -10,7 +9,7 @@ import { RegistroComponent } from '../user/registro/registro.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, FooterComponent, RegistroComponent],
+  imports: [CommonModule, FooterComponent, RegistroComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
